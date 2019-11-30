@@ -1,0 +1,40 @@
+/* startup splash */
+div#splash-container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  width: 99.9vw;
+  height: 99.9vh;
+  justify-content: center;
+  align-items: center;
+  background: black;
+  z-index: 9001;
+}
+div#splash {
+  background: black url('/images/splash.png') no-repeat;
+  border: 1px solid #303030;
+  width: 640px;
+  height: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+div#splash-text {
+  height: 100px;
+  width: 640px;
+  padding-top: 380px;
+  line-height: 120%;
+  text-align: center;
+}
+div#splash-logo {
+  display: block;
+  font-size: 14pt;
+  font-variant: small-caps;
+  font-style: italic;
+  margin: 0 0 25px 0;
+}
+/* home-workspace */
+div#home-workspace {
+  position: relative;
+}

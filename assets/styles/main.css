@@ -1,0 +1,122 @@
+html, body, * {
+   padding: 0;
+   margin: 0;
+}
+body {
+  background: black;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  overflow: hidden;
+}
+p, pre, h1, h2, h3, h4, h5, h6, li, div, a, a:visited, a:hover, a:active,
+blockquote, span {
+  color: #BEC0BE;
+  text-decoration: none;
+  line-height: 100%;
+}
+p, li, div, h6, a, blockquote, span { font-size: 11pt; }
+
+/* system interface */
+.btn {padding:.8em; background:#444; border:1px solid black; color:#bdbdbd;}
+.home-btn { }
+
+div#context-menu {
+  background-color: #444;
+  width: 250px;
+  padding: 5px;
+  display: none;
+}
+div#context-menu ul {
+  display: block;
+  list-style: none;
+  padding: 0;
+}
+li.context-menu-item {
+  padding: 0;
+  margin: 0;
+}
+div#context-menu ul li.context-menu-item a {
+  width: 100%;
+  line-height: 125%;
+  display: block;
+  margin: 7px;
+  padding: 4px 2px;
+}
+div#context-menu ul li.context-menu-item a:hover {
+  color: black;
+}
+div#context-menu ul li.context-menu-item:hover {
+  background-color: #F84;
+}
+
+/* ckeditor */
+.cke_reset { color: #BEC0BE; background: black; }
+
+
+/* #icon-container and related */
+div#deskicon-container {
+  position: relative;
+  padding-bottom: 16px;
+  background: black;
+  width: 99.9vw;
+  height: 98.2vh;
+  display: flex;
+  flex-flow: row-reverse wrap-reverse;
+  justify-content: flex-end;
+  align-content: flex-start;
+}
+div.deskicon {
+  margin: 16px;
+  font-size: 8pt;
+  height: 64px;
+  width: 64px;
+  background: #323232;
+  text-align: center;
+}
+div.deskicon.ui-selecting {
+  background: #F84;
+}
+div.deskicon.ui-selected {
+  background: #842;
+}
+div.deskicon.ui-draggable-dragging.multi-drag {
+  box-shadow: 8px 8px #632;
+}
+div.deskicon.ui-draggable-dragging.multi-drag a {
+  box-shadow: -8px -8px #632;
+}
+div.deskicon a {
+  font-size: 9pt;
+  margin: 0;
+  position: absolute;
+  padding: 64px 0 0 0;
+  height: 16px;
+  width: 64px;
+  display: block;
+}
+div.deskicon.story-icon a {
+  background-image: url('/images/story-icon.png');
+  background-repeat: no-repeat;
+}
+div.deskicon.location-icon a {
+  background-image: url('/images/location-icon.png');
+  background-repeat: no-repeat;
+}
+div.deskicon.character-icon a {
+  background-image: url('/images/character-icon.png');
+  background-repeat: no-repeat;
+}
+div.deskicon.event-icon a {
+  background-image: url('/images/event-icon.png');
+  background-repeat: no-repeat;
+}
+div.deskicon.setting-icon a {
+  background-image: url('/images/setting-icon.png');
+  background-repeat: no-repeat;
+}
+div.deskicon.new-icon {
+  background-image: url('/images/new-icon.png');
+  background-repeat: no-repeat;
+}
+div.deskicon:hover {
+  background-color: #f84;
+}

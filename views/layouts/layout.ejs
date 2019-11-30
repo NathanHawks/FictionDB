@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Fiction DB</title>
+
+    <!-- Viewport mobile tag for sensible mobile support -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <%/* If you want to discourage search engines from indexing this site, uncomment the following line: */%>
+    <%/* <meta name="robots" content="noindex"> */%>
+
+    <script src="/js/ckeditor/ckeditor.js"></script>
+    <script src="/js/jquery-ui/external/jquery/jquery.js"></script>
+
+    <script>
+// startup ====================================================================
+// these icons are immune from being selected
+const launcherIcons = ['new-story','new-event','new-character','new-location','new-setting'];
+// store selected id's because jquery's logic thwarts mine otherwise
+var iconSelection = [];
+// state for hover-selecting
+var hoverOldXY = {x: undefined, y: undefined};
+// false when we don't want to do a hover action because we already did; redundant?
+var hoverClean = true;
+// when true we move on to waiting for exit
+var hoverDidAction = false;
+// set true once we are testing for stillness
+var hoverWaiting = false;
+// default delay for multiple hover-action setTimeout
+var hoverDelay = 2000;
+// hover mouseout handler
+var addedCleaner = false;
+// we track this
+var mouseCurrentXY = {x: undefined, y: undefined};
+
+$(document).ready(function() {
+
+  setTimeout(()=>{ $('#splash-container').fadeOut(500); }, 2600);
+  setTimeout(()=>{ $('#splash').effect('drop', {direction: 'up', duration: 600}); }, 2500);
+  makeIconsDraggable();
+  makeIconsSelectable();
+  makeIconsRightClickable();
+  makeDesktopCloseThings();
+  captureMousePos();
+});
+// UI =========================================================================
+async function makeIconsDraggable() {
+  try { $(".deskicon").draggable({
+    helper: "clone", revert: true, containment: "parent",
+    start: (e, ui) => {
+      let multiSelect = [];
+      let els = $(".ui-draggable.ui-selected");
+      for (let x = 0; x < els.length; x++) {
+        if (multiSelect.indexOf(els.get(x).id) === -1)
+          multiSelect[multiSelect.length] = els.get(x).id;
+      }
+      let target = e.currentTarget;
+      multiSelect.map((id)=>{
+        console.log(id);
+      });
+      console.log(target.id);
+      if (multiSelect.indexOf(target.id) === -1) {
+        console.log('ignore multi-selection');
+        for (let x = 0; x < els.length; x++) {
+          els.get(x).classList.remove('ui-selected');
+        }
+      } else {
+        console.log('use multi-selection');
+        $(".ui-draggable-dragging").get(0).classList.add('multi-drag');
+      }
+    }
+  });
+  } catch (e) { console.log(e); }
+}
+async function makeIconsSelectable() {
+  $('#deskicon-container').selectable({
+    tolerance: 'touch',
+    filter: '.deskicon',
+    start: (event, ui) => {
+      // store selected icons now bcz touching rubberband changes an item's class
+      iconSelection = $('.deskicon.ui-selected');
+    },
+    selecting: (event, ui) => {
+      // de-select already-selected items if ctrl is held down
+      let tgtID = ui.selecting.id;
+      // build an index of element IDs
+      let selectedArr = [];
+      if (event.ctrlKey) {
+        let selected = iconSelection;
+        for (let x = 0; x < selected.length; x++) {
+          selectedArr[selectedArr.length] = selected.get(x).id;
+        }
+      }
+      // abort selecting & deselect if ctrl-selecting an already selected element
+      // same if the item is a launcher
+      if ((event.ctrlKey && selectedArr.indexOf(tgtID)!==-1)
+        || launcherIcons.indexOf(tgtID)!==-1)
+      {
+        event.stopImmediatePropagation();
+        el = $(`#${tgtID}`).get(0);
+        el.classList.remove('ui-selected');
+        el.classList.remove('ui-selecting');
+      }
+    }
+  });
+}
+async function makeIconsRightClickable() {
+  $('.deskicon').contextmenu((event, ui) => {
+    console.log(`${event.currentTarget.id} was right-clicked`);
+    var bodyH = window.innerHeight || document.body.clientHeight;
+    var bodyW = window.innerWidth  || document.body.clientWidth;
+    let menu = $('#context-menu');
+    menu.css('position', 'fixed');
+    menu.css('display', 'block');
+    var menuH = document.getElementById('context-menu').offsetHeight;
+    var menuW = document.getElementById('context-menu').offsetWidth;
+    var offsH = 0;
+    var offsW = 0;
+    if (event.clientY > bodyH/2) offsH = menuH;
+    if (event.clientX > bodyW/2) offsW = menuW;
+    menu.css('top', event.clientY-offsH);
+    menu.css('left', event.clientX-offsW);
+    console.log(`menuH=${menuH};bodyH=${bodyH};offsH=${offsH};clientY=${event.clientY}`);
+  });
+}
+async function makeDesktopCloseThings() {
+  $("#deskicon-container").mousedown(()=>{
+    // close context menu
+    $('#context-menu').css('display', 'none');
+  })
+}
+async function captureMousePos() {
+  document.onmousemove = (e) => {
+    let x = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+    let y = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+    mouseCurrentXY = {x: x, y: y};
+  };
+}
+
+// ajax =======================================================================
+async function requestPage(url) {
+  $.ajax({url: url}).done(handleResponse_requestPage);
+}
+function handleResponse_requestPage(data) {
+  let home = $('#home-workspace');
+  home.fadeOut(250);
+  setTimeout(()=>{home.html(data)},249);
+  home.fadeIn(250);
+}
+
+    </script>
+    <!--STYLES-->
+    <link rel="stylesheet" href="/styles/importer.css">
+    <link rel="stylesheet" href="/styles/main.css">
+    <link rel="stylesheet" href="/styles/startup.css">
+    <!--STYLES END-->
+  </head>
+
+  <body>
+    <%- body %>
+
+    <!--TEMPLATES-->
+    <!--TEMPLATES END-->
+
+
+    <!--SCRIPTS-->
+    <script src="/dependencies/sails.io.js"></script>
+    <!--SCRIPTS END-->
+  </body>
+  <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+  <script src="/js/jquery-ui/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.structure.css">
+  <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.theme.css">
+</html>
