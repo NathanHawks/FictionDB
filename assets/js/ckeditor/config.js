@@ -9,11 +9,11 @@ CKEDITOR.editorConfig = function( config ) {
 	// For complete reference see:
 	// https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html
 
-	config.extraPlugins = 'font,colorbutton,colordialog,autolink,find,justify,emoji';
+	config.extraPlugins = 'font,colorbutton,colordialog,autolink,find,justify,emoji,save';
 	config.removePlugins = 'specialchar,about';
 	// The toolbar groups arrangement, optimized for two toolbar rows.
 	config.toolbarGroups = [
-		{ name: 'editing',     groups: [ 'undo', 'find', 'selection' ] },
+		{ name: 'editing',     groups: [ 'save', 'undo', 'find', 'selection' ] },
 		{ name: 'links' },
 		{ name: 'forms' },
 		{ name: 'tools', groups: [ 'others', 'tools'] },

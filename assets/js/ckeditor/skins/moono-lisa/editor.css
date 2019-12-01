@@ -44,11 +44,12 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 }
 .cke_chrome
 {
-	display:block;border:1px solid #404040;padding:0; margin: 1.2em;
+	display:block;border:none;padding:0;margin: 0;
 }
 .cke_inner
 {
-	display:block;background:#111;padding:0;-webkit-touch-callout:none
+	display:block;background:#111;padding:0;-webkit-touch-callout:none;
+	height: 100%;
 }
 .cke_float
 {

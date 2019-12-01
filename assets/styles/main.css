@@ -7,18 +7,102 @@ body {
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   overflow: hidden;
 }
-p, pre, h1, h2, h3, h4, h5, h6, li, div, a, a:visited, a:hover, a:active,
-blockquote, span {
+p, pre, h1, h2, h3, h4, h5, h6, li, div, a, blockquote, span {
   color: #BEC0BE;
-  text-decoration: none;
   line-height: 100%;
 }
+a:visited, a:hover, a:active {
+  text-decoration: none;
+}
+h1 { margin: 1px 1px .5em 1px; }
 p, li, div, h6, a, blockquote, span { font-size: 11pt; }
-
+p, pre { display: block; margin: 1px 1px .8em 1px;}
+/* layout system */
+.col-1-container, .col-2-container, .col-3-container, .col-4-container {
+  height: 98.2vh;
+  padding: 0 0 2vh 0;
+  display: flex;
+  flex-direction: column;
+}
+.col-1-container, .col-2-container {
+  width: 32vw;
+}
+.col-1-container {
+  background-color: #101017;
+  position: fixed;
+  left: 0vw;
+  top: 0vh;
+}
+.col-2-container {
+  position: fixed;
+  left: 32vw;
+  top: 0vh;
+  background-color: #101717;
+}
+.mod-col-1, .mod-col-2 {
+  display: block;
+  margin: 4px 0 1.2em 0;
+}
+.mod-main-content {
+  background-color: #222;
+  font-size: 1.1em;
+  padding: .3em;
+  margin: 0 .3em;
+}
+.col-3-container, .col-4-container {
+  width: 18vw;
+}
+.col-3-container {
+  position: fixed;
+  left: 64vw;
+  top: 0vh;
+  background-color: #1A1510;
+}
+.col-4-container {
+  position: fixed;
+  left: 82vw;
+  top: 0vh;
+  background-color: #171017;
+}
+.mod-col-3, .mod-col-4 {
+  display: block;
+  margin: 4px 0 1.2em 0;
+}
+.mod p, .mod p, .mod p, .mod p {
+  margin: 4px .5em;
+  padding: 0;
+  text-align: center;
+}
 /* system interface */
-.btn {padding:.8em; background:#444; border:1px solid black; color:#bdbdbd;}
-.home-btn { }
-
+.mod.toolbar-top {
+  height: 3vh;
+  padding: 4px;
+  background-color: #404040;
+}
+.ui-controlgroup { /* jquery */
+  border-color: #101010;
+}
+.ui-button.ui-widget.ui-checkboxradio-radio-label.ui-controlgroup-item.ui-checkboxradio-label,
+.ui-button.ui-widget,
+.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited,
+a.ui-button, a:link.ui-button, a:visited.ui-button, .ui-button,
+a.btn.ui-button.ui-widget {
+   /* jquery */
+  background: #444; color: #bdbdbd;
+  border-color: black;
+}
+.ui-button.ui-widget.ui-checkboxradio-radio-label.ui-controlgroup-item.ui-checkboxradio-label.ui-checkboxradio-checked,
+a.btn.ui-button:hover {
+   /* jquery */
+  background: rgb(0,62,255); color: #dcdcdc;
+}
+span.ui-checkboxradio-icon.ui-icon.ui-icon-background.ui-icon-blank {
+  background-color: black;
+}
+.ui-checkboxradio-radio-label.ui-state-active.ui-controlgroup-item.ui-checkboxradio-label
+ > span.ui-checkboxradio-icon {
+   background-color: #F84;
+ }
 div#context-menu {
   background-color: #444;
   width: 250px;
@@ -47,11 +131,50 @@ div#context-menu ul li.context-menu-item a:hover {
 div#context-menu ul li.context-menu-item:hover {
   background-color: #F84;
 }
+#item-toaster {
+  display: none;
+  position: absolute;
+  text-align: center;
+  padding: 12px;
+  margin-bottom: 6px;
+  height: 32px;
+  width: 64px;
+}
+#item-toaster:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 51%;
+  background: #040;
+  transform: skew(0deg, 12deg);
+}
+#item-toaster:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 50%;
+  background: #040;
+  transform: skew(0deg, -12deg);
+}
 
+/* navigator */
+#navigator {
+  outline: 1px solid #444;
+  outline-offset: -2px;
+  height: 100%; 
+  background-color: #101717;
+}
 /* ckeditor */
 .cke_reset { color: #BEC0BE; background: black; }
-
-
+.mod textarea { width: 100%; margin: 4px 0; padding: 0; border: 0; outline: 0;}
+.mod-col-2 textarea, .mod-col-2 textarea { width: 32vw; }
+#cke_noteEditor { flex-grow: 8; display: flex; }
+#cke_noteEditor div .cke_contents { flex-grow: 8; }
+#cke_noteEditor > div { width: 32vw; }
 /* #icon-container and related */
 div#deskicon-container {
   position: relative;
@@ -117,6 +240,6 @@ div.deskicon.new-icon {
   background-image: url('/images/new-icon.png');
   background-repeat: no-repeat;
 }
-div.deskicon:hover {
+div.deskicon:hover, div.deskicon.ui-droppable-hover {
   background-color: #f84;
 }

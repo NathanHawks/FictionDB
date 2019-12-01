@@ -1,4 +1,86 @@
-<link href="/styles/main.css" rel="stylesheet">
-<h1>Yay it works</h1>
-<pre>storyID: <%= storyID %></pre>
-<a href="#" onclick="requestPage('/home');">Back</a>
+<div class="col-1-container">
+  <div class="mod-col-1 mod toolbar-top">
+    <fieldset id="mainToolbar">
+      <a class='btn back-btn' href="#" onclick="requestPage('/home');">Back</a>
+    </fieldset>
+    <br/>
+  </div>
+  <div class="mod-col-1 mod-main-content mod">
+    <h1><%= title %></h1>
+    <pre>storyID: <%= storyID %></pre>
+  </div>
+  <div class="mod-col-1 mod" style="flex-grow: 8;">
+    <div id="navigator">
+      <p>Navigator:<br/>Characters, Events, Locations & Settings</p>
+      <pre>
+Characters: <%- characters.length %>
+Events: <%- events.length %>
+Settings: <%- settings.length %>
+      </pre>
+    </div>
+  </div>
+</div>
+
+<div class="col-2-container">
+  <div class="mod-col-2 mod toolbar-top" style="margin-bottom: 0px; height: ">
+    <form>
+      <fieldset id="col-2-editorType">
+        <label for="editorType_summary">Summary</label>
+        <input type="radio" name="editorType" id="editorType_summary" checked="checked">
+        <label for="editorType_elevator">Elevator Pitch</label>
+        <input type="radio" name="editorType" id="editorType_elevator">
+      </fieldset>
+      <fieldset id="col-2-mainToolbar">
+        <input class="btn" type="button" id="editorSubmit" value="Save">
+      </fieldset>
+    </form>
+    <br/>
+  </div>
+  <div class="mod-col-2 mod" style="flex-grow: 8; display: flex; margin-top: 0px;">
+    <textarea id="noteEditor"><%- (story.summary !== null)
+      ? story.summary.content : '' %></textarea>
+  </div>
+</div>
+
+<div class="col-3-container">
+  <div class="mod-col-3 mod" style="height: 5vh;">
+    <p>Sequence of Events<br/>&amp;<br/>Event Properties</p>
+  </div>
+</div>
+
+<div class="col-4-container">
+  <div class="mod-col-4 mod" style="height: 5vh;">
+    <p>Generated Summary:<br/>
+      Sequence of Events w/ Character Counts & Location sequences
+    </p>
+  </div>
+</div>
+
+<script>
+  // a switch for saveStoryContent_helper (twas first writ for radio btn logic)
+  var saveNoteWasClicked = false;
+  try {
+    var storyID = `<%= story.id %>`;
+    var elevatorPitchContent = `<%- (story.elevatorPitch !== null)
+      ? story.elevatorPitch.content : '' %>`;
+    var summaryContent = `<%- (story.summary !== null)
+      ? story.summary.content : '' %>`;
+    var elevatorPitchID = `<%= (story.elevatorPitch !== null)
+      ? story.elevatorPitch.id : -1 %>`;
+    var summaryID = `<%= (story.summary !== null)
+      ? story.summary.id : -1  %>`;
+    CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+    $('.btn').button();
+    $('input[name="editorType"]').checkboxradio();
+    $('#col-2-editorType').controlgroup();
+    $('#mainToolbar').controlgroup();
+    $('#col-2-mainToolbar').controlgroup();
+    var sumBtn = $('#editorType_summary');
+    var elvBtn = $('#editorType_elevator');
+    $('input[type=radio][name=editorType]').change(saveStoryContent_helper);
+    $('#editorSubmit').click((e,ui) => {
+      saveNoteWasClicked = true;
+      saveStoryContent_helper(e,ui);
+    });
+  } catch (e) { console.log(e); }
+</script>

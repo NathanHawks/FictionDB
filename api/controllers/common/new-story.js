@@ -10,17 +10,11 @@ module.exports = {
     },
   },
   fn: async function (inputs) {
-    content = 'Untitled #' + Math.floor((Math.random() * 100000000000) + 1);
+    let title = await sails.helpers.getUntitledString();
     try {
-      var t = await Title.create({
-        roleLabel: 'mainTitle', content: content
-      }).fetch();
-      while (t===undefined) {}
+      var t = await Title.create({roleLabel:'mainTitle',content:title}).fetch();
       var s = await Story.create({ mainTitle: t.id }).fetch();
-      while (t===undefined) {}
-      var rt = await Title.findOne({content: content });
-      var rs = await Story.findOne({mainTitle: rt.id});
+      return { story: s, title: t };
     } catch (e) { console.log(e); }
-    return { story: rs, title: rt };
   }
 };

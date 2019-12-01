@@ -38,6 +38,7 @@ $(document).ready(function() {
   setTimeout(()=>{ $('#splash-container').fadeOut(500); }, 2600);
   setTimeout(()=>{ $('#splash').effect('drop', {direction: 'up', duration: 600}); }, 2500);
   makeIconsDraggable();
+  makeIconsDroppable();
   makeIconsSelectable();
   makeIconsRightClickable();
   makeDesktopCloseThings();
@@ -55,21 +56,42 @@ async function makeIconsDraggable() {
           multiSelect[multiSelect.length] = els.get(x).id;
       }
       let target = e.currentTarget;
-      multiSelect.map((id)=>{
-        console.log(id);
-      });
-      console.log(target.id);
+      // did we drag something outside of the multi-select?
       if (multiSelect.indexOf(target.id) === -1) {
-        console.log('ignore multi-selection');
+        // ignore multi-selection
         for (let x = 0; x < els.length; x++) {
           els.get(x).classList.remove('ui-selected');
         }
+        iconSelection = [];
       } else {
-        console.log('use multi-selection');
+        // use multi-selection
         $(".ui-draggable-dragging").get(0).classList.add('multi-drag');
       }
     }
   });
+  } catch (e) { console.log(e); }
+}
+async function makeIconsDroppable() {
+  try {
+    $('.deskicon').droppable({
+      classes: {
+        'ui-droppable-hover': 'ui-droppable-hover'
+      },
+      drop: (event,ui) => {
+        iconSelection = $('.deskicon.ui-selected');
+        let dropTargetID = event.target.id;
+        let dragTargets = (iconSelection.length)
+          ? iconSelection
+          : ui.draggable;
+        let draggedIDs = [];
+        for (let x = 0; x < dragTargets.length; x++) {
+          if (dragTargets.get(x).id.length) {
+            draggedIDs[draggedIDs.length] = dragTargets.get(x).id;
+          }
+        }
+        handleIconDrop(draggedIDs, dropTargetID);
+      }
+    });
   } catch (e) { console.log(e); }
 }
 async function makeIconsSelectable() {
@@ -101,12 +123,16 @@ async function makeIconsSelectable() {
         el.classList.remove('ui-selected');
         el.classList.remove('ui-selecting');
       }
+    },
+    stop: (event,ui) => {
+      // store result
+      iconSelection = $('.deskicon.ui-selected');
     }
   });
 }
 async function makeIconsRightClickable() {
   $('.deskicon').contextmenu((event, ui) => {
-    console.log(`${event.currentTarget.id} was right-clicked`);
+    // console.log(`${event.currentTarget.id} was right-clicked`);
     var bodyH = window.innerHeight || document.body.clientHeight;
     var bodyW = window.innerWidth  || document.body.clientWidth;
     let menu = $('#context-menu');
@@ -120,7 +146,7 @@ async function makeIconsRightClickable() {
     if (event.clientX > bodyW/2) offsW = menuW;
     menu.css('top', event.clientY-offsH);
     menu.css('left', event.clientX-offsW);
-    console.log(`menuH=${menuH};bodyH=${bodyH};offsH=${offsH};clientY=${event.clientY}`);
+    // console.log(`menuH=${menuH};bodyH=${bodyH};offsH=${offsH};clientY=${event.clientY}`);
   });
 }
 async function makeDesktopCloseThings() {
@@ -136,8 +162,64 @@ async function captureMousePos() {
     mouseCurrentXY = {x: x, y: y};
   };
 }
+// helpers ====================================================================
+async function saveStoryContent_helper(event,ui) {
+  let inst = CKEDITOR.instances.noteEditor;
+  if (saveNoteWasClicked) {
+    if (elvBtn.is(':checked')) {
+      let newElevatorPitchContent = inst.getData();
+      if (newElevatorPitchContent !== elevatorPitchContent && newElevatorPitchContent !== '') {
+        saveStoryContent(storyID, elevatorPitchID, newElevatorPitchContent, 'elevatorPitch');
+        elevatorPitchContent = newElevatorPitchContent;
+      }
+    } else if (sumBtn.is(':checked')) {
+      let newSummaryContent = inst.getData();
+      if (newSummaryContent !== summaryContent && newSummaryContent !== '') {
+        saveStoryContent(storyID, summaryID, newSummaryContent, 'summary');
+        summaryContent = newSummaryContent;
+      }
+    }
+    saveNoteWasClicked = false;
+  }
+  else if (elvBtn.is(':checked')) {
+    let newSummaryContent = inst.getData();
+    inst.setData(elevatorPitchContent);
+    if (newSummaryContent !== summaryContent && newSummaryContent !== '') {
+      saveStoryContent(storyID, summaryID, newSummaryContent, 'summary');
+      summaryContent = newSummaryContent;
+    }
+  }
+  else if (sumBtn.is(':checked')) {
+    let newElevatorPitchContent = inst.getData();
+    inst.setData(summaryContent);
+    if (newElevatorPitchContent !== elevatorPitchContent && newElevatorPitchContent !== '') {
+      saveStoryContent(storyID, elevatorPitchID, newElevatorPitchContent, 'elevatorPitch');
+      elevatorPitchContent = newElevatorPitchContent;
+    }
+  } else {
+    console.log('wait what?');
+  }
+}
 
 // ajax =======================================================================
+async function handleIconDrop(draggedIDs, dropTargetID) {
+  $.ajax({
+    url: '/dragdrop', method: 'POST',
+    data: {draggedIDs: draggedIDs, dropTargetID: dropTargetID },
+    success: (data) => { handleResponse_dragdrop(data); }
+  });
+}
+async function handleResponse_dragdrop(data) {
+  data = JSON.parse(data);
+  let tgt = $(`#${data.dropTargetID}`);
+  let pop = $('#item-toaster');
+  let xy = tgt.position();
+  let y = xy.top - 48;
+  let x = xy.left + 2;
+  pop.css({position: 'absolute', top: `${y}px`, left: `${x}px`});
+  pop.hide().fadeIn();
+  setTimeout(()=>{pop.effect('drop', {direction: 'up'});}, 1400);
+}
 async function requestPage(url) {
   $.ajax({url: url}).done(handleResponse_requestPage);
 }
@@ -146,6 +228,15 @@ function handleResponse_requestPage(data) {
   home.fadeOut(250);
   setTimeout(()=>{home.html(data)},249);
   home.fadeIn(250);
+}
+async function saveStoryContent(storyID, noteID, content, fieldName) {
+  $.ajax({ url: 'story/save-content', method: 'POST',
+    data: {storyID:storyID, noteID:noteID, content:content, fieldName:fieldName},
+    success: handleResponse_saveStoryContent
+  });
+}
+function handleResponse_saveStoryContent(data) {
+  console.log(data);
 }
 
     </script>
@@ -167,8 +258,6 @@ function handleResponse_requestPage(data) {
     <script src="/dependencies/sails.io.js"></script>
     <!--SCRIPTS END-->
   </body>
-  <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
   <script src="/js/jquery-ui/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.structure.css">
-  <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.theme.css">
+  <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
 </html>

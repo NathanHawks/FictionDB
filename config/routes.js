@@ -19,10 +19,20 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': { action: 'common/startup' },
+  '/': { action: 'common/startup'},
   '/home': { action: 'common/home', locals: {layout: null} },
+  'POST /dragdrop': { action: 'common/dragdrop', locals: {layout: null}},
   'GET /new-story': { action: 'common/new-story', locals: {layout: null} },
-  '/story/:storyID': { action: 'story/workspace' }
+  'POST /story/save-content': { action: 'story/save-content', locals: {layout: null} },
+  'GET /new-character': { action: 'common/new-character', locals: {layout: null} },
+  'GET /new-event': { action: 'common/new-event', locals: {layout: null} },
+  'GET /new-location': { action: 'common/new-location', locals: {layout: null} },
+  'GET /new-setting': { action: 'common/new-setting', locals: {layout: null} },
+  '/story/:storyID': { action: 'story/workspace', locals: {layout: null} },
+  '/character/:characterID': { action: 'character/workspace', locals: {layout: null} },
+  '/event/:eventID': { action: 'event/workspace', locals: {layout: null} },
+  '/location/:locationID': { action: 'location/workspace', locals: {layout: null} },
+  '/setting/:settingID': { action: 'setting/workspace', locals: {layout: null} },
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

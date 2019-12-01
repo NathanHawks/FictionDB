@@ -1,17 +1,18 @@
 <div id="deskicon-container">
+  <%- characterIcons %>
   <%- storyIcons %>
+  <%- eventIcons %>
+  <%- locationIcons %>
+  <%- settingIcons %>
   <div id="new-character" class="deskicon new-icon character-icon"><a onclick="requestPage('new-character');" href="#">New Character</a></div>
   <div id="new-event" class="deskicon new-icon event-icon"><a onclick="requestPage('new-event');" href="#">New Event</a></div>
   <div id="new-location" class="deskicon new-icon location-icon"><a onclick="requestPage('new-location');" href="#">New Location</a></div>
   <div id="new-setting" class="deskicon new-icon setting-icon"><a onclick="requestPage('new-setting');" href="#">New Setting</a></div>
   <div id="new-story" class="deskicon new-icon story-icon"><a onclick="requestPage('new-story');" href="#">New Story</a></div>
 </div>
-<script> makeIconsDraggable(); makeIconsSelectable(); makeIconsRightClickable(); makeDesktopCloseThings();</script>
-<div id="context-menu">
-  <ul>
-    <li class="context-menu-item"><a href="#">Duplicate</a></li>
-    <li class="context-menu-item"><a href="#">Open</a></li>
-    <li class="context-menu-item"><a href="#">Rename</a></li>
-    <li class="context-menu-item"><a href="#">Delete</a></li>
-  </ul>
-</div>
+<script>
+  makeIconsDraggable();
+  makeIconsDroppable();
+  makeIconsSelectable();
+  makeIconsRightClickable();
+  makeDesktopCloseThings();</script>
