@@ -206,3 +206,12 @@ a > img {
 	max-height: 1080px;
 	margin:0 auto;
 }
+
+::-webkit-scrollbar              { width: 16px; }
+::-webkit-scrollbar-button       { background: #444; color: black; }
+::-webkit-scrollbar-track        { background: black; }
+::-webkit-scrollbar-thumb        { background: #444; }
+::-webkit-scrollbar-corner       { background: black; }
+::-webkit-resizer                { background: #444; }
+
+body { overflow-y: scroll; }

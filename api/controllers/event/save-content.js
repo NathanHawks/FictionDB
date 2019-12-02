@@ -2,7 +2,7 @@ module.exports = {
   friendlyName: 'Save content',
   description: '',
   inputs: {
-    storyID: {
+    eventID: {
       type: 'number'
     },
     contentType: {
@@ -24,11 +24,11 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'story/save-content'
+      viewTemplatePath: 'event/save-content'
     }
   },
-  fn: async function ({storyID, contentType, assocID, content, fieldName}) {
-    // console.log(` storyID: ${storyID}\n contentType: ${contentType}\n`
+  fn: async function ({eventID, contentType, assocID, content, fieldName}) {
+    // console.log(` eventID: ${eventID}\n contentType: ${contentType}\n`
     //   +` assocID: ${assocID}\n content: ${content}\n fieldName: ${fieldName}`);
     try {
       let n = null;
@@ -57,7 +57,7 @@ module.exports = {
         }
         let s = null;
         let q = {}; q[fieldName] = n.id;
-        s = await Story.update({id: storyID}).set(q).fetch();
+        s = await Event.update({id: eventID}).set(q).fetch();
         while (s === undefined) {}
         console.log(s);
       }

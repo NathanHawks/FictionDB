@@ -17,6 +17,12 @@ a:visited, a:hover, a:active {
 h1 { margin: 1px 1px .5em 1px; }
 p, li, div, h6, a, blockquote, span { font-size: 11pt; }
 p, pre { display: block; margin: 1px 1px .8em 1px;}
+::-webkit-scrollbar              { width: 16px; }
+::-webkit-scrollbar-button       { background: #444; color: black; }
+::-webkit-scrollbar-track        { background: black; }
+::-webkit-scrollbar-thumb        { background: #444; }
+::-webkit-scrollbar-corner       { background: black; }
+::-webkit-resizer                { background: #444; }
 /* layout system */
 .col-1-container, .col-2-container, .col-3-container, .col-4-container {
   height: 98.2vh;
@@ -162,11 +168,56 @@ div#context-menu ul li.context-menu-item:hover {
 }
 
 /* navigator */
-#navigator {
-  outline: 1px solid #444;
-  outline-offset: -2px;
-  height: 100%; 
+#Navigator {
+  height: 100%;
   background-color: #101717;
+}
+#Navigator_table {
+  margin: 0;
+  width: 97%;
+  height: 100%;
+  padding: 4px;
+  overflow-y: scroll;
+}
+.Navigator_header, .Navigator_item, .Navigator_Title, .Navigator_TopTitle {
+  font-family: Tahoma, sans-serif;
+  font-size: 11pt;
+  line-height: 105%;
+}
+.Navigator_header, .Navigator_item, .Navigator_Title {
+  padding-top: 2px; padding-bottom: 2px;
+}
+.Navigator_header {
+  margin: 0.4em 0 0.2em 0;
+  text-align: center;
+  font-weight: bold;
+  border-top: 1px solid #606060;
+  border-bottom: 1px solid #606060;
+}
+.Navigator_item {
+  padding-left: 0;
+  margin-top: 0.2em;
+}
+.Navigator_TopTitle {
+  padding-left: 0.2em;
+}
+.Navigator_Title {
+  padding-left: 2em;
+}
+.Navigator_Title, .Navigator_TopTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px dotted #606060;
+}
+.Navigator_TopTitle div, .Navigator_Title div,
+ .Navigator_TopTitle div input, .Navigator_Title div input {
+  width: 16vw;
+}
+.Navigator_TopTitle div input, .Navigator_Title div input {
+  background-color: #842;
+  border: 0;
+  color: #dcdcdc;
 }
 /* ckeditor */
 .cke_reset { color: #BEC0BE; background: black; }
@@ -175,6 +226,19 @@ div#context-menu ul li.context-menu-item:hover {
 #cke_noteEditor { flex-grow: 8; display: flex; }
 #cke_noteEditor div .cke_contents { flex-grow: 8; }
 #cke_noteEditor > div { width: 32vw; }
+
+/* other editors */
+input#mainTitle_editor {
+  margin: 1px 1px .5em 1px;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: .9em;
+  font-weight: bold;
+  width: 30vw;
+  background-color: #444;
+  border: 1px solid #842;
+  color: #dcdcdc !important;
+}
+
 /* #icon-container and related */
 div#deskicon-container {
   position: relative;

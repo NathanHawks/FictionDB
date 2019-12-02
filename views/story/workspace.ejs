@@ -6,17 +6,129 @@
     <br/>
   </div>
   <div class="mod-col-1 mod-main-content mod">
-    <h1><%= title %></h1>
+    <h1 id="mainTitle"><%= story.mainTitle.content %></h1>
+    <script>
+      function mainTitleKeydown_handler(event,ui) {
+        let story = null;
+        let storyString = null;
+        if (event.keyCode === 13) {
+          let newVal = event.target.value;
+          storyString = '<%- JSON.stringify(story).replace(/\\/g, '\\\\') %>';
+          console.log(storyString);
+          story = JSON.parse(storyString);
+          saveStoryTitle_helper(event,ui,null,'mainTitle',newVal,story);
+          $('#mainTitle').html(newVal);
+          $('#mainTitle').click(mainTitleClick_handler);
+          oldTitle = null;
+        } else if (event.keyCode === 27) {
+          try {
+            storyString = '<%- JSON.stringify(story).replace(/\\/g, '\\\\') %>';
+            story = JSON.parse(storyString);
+            $('#mainTitle').html(story.mainTitle.content);
+            $('#mainTitle').click(mainTitleClick_handler);
+          } catch (e) {console.log(e);}
+          oldTitle = null;
+        }
+      }
+      function mainTitleClick_handler(event,ui) {
+        $('#mainTitle').off('click');
+        let oldTitle = $('#mainTitle').html();
+        console.log(oldTitle);
+        $('#mainTitle').html(
+          `<input type='text' id='mainTitle_editor' value='${oldTitle}'>`
+        );
+        $('#mainTitle_editor').keydown(mainTitleKeydown_handler);
+        $('#mainTitle_editor').focus().select();
+      }
+      $('#mainTitle').click(mainTitleClick_handler);
+    </script>
     <pre>storyID: <%= storyID %></pre>
   </div>
   <div class="mod-col-1 mod" style="flex-grow: 8;">
-    <div id="navigator">
-      <p>Navigator:<br/>Characters, Events, Locations & Settings</p>
-      <pre>
-Characters: <%- characters.length %>
-Events: <%- events.length %>
-Settings: <%- settings.length %>
-      </pre>
+    <div id="Navigator">
+      <div id="Navigator_table">
+      <script>
+        let output = '';
+        let characters = JSON.parse(`<%- JSON.stringify(characters) %>`);
+        if (characters) {
+          output = "<div class='Navigator_header'>Characters</div>";
+          $('#Navigator_table').append(output);
+          characters.map((c) => {
+            let domID = `Character_${c.id}_`
+            let rn = (c.realName) ? c.realName.content : '';
+            let cn = (c.codeName) ? c.codeName.content : '';
+            output = `<div class='Navigator_item'>`
+              + `<div class='Navigator_TopTitle' id="${domID}_realName">Real Name: <div>${rn}</div></div>`
+              + `<div class='Navigator_Title' id="${domID}_codeName">Code Name: <div>${cn}</div></div>`
+              + `</div>`;
+            $('#Navigator_table').append(output);
+            let rName = 'realName';
+
+            $(`#${domID}_${rName}`).click((event,ui) => {
+              navigatorTitleClick_handler(event,ui,domID,rName,rn,c)
+            });
+
+            let codeNameContainer = $(`#${domID}_codeName`);
+            codeNameContainer.click((event,ui)=>{
+              navigatorTitleClick_handler(event,ui,domID,'codeName', cn, c);
+            });
+          });
+        }
+        let events = JSON.parse(`<%- JSON.stringify(events) %>`);
+        if (events) {
+          output = "<div class='Navigator_header'>Events</div>";
+          $('#Navigator_table').append(output);
+          events.map((e) => {
+            let domID = `Event_${e.id}`;
+            let at = (e.authorTitle) ? e.authorTitle.content : '';
+            let nt = (e.newsTitle) ? e.newsTitle.content : '';
+            let ct = (e.colloqTitle) ? e.colloqTitle.content : '';
+            output = `<div class='Navigator_item'>`
+              + `<div class='Navigator_TopTitle' id="${domID}_authorTitle">Author's Title: <div>${at}</div></div>`
+              + `<div class='Navigator_Title' id="${domID}_newsTitle">News Title: <div>${nt}</div></div>`
+              + `<div class='Navigator_Title' id="${domID}_colloqTitle">Colloq. Title: <div>${ct}</div></div>`
+              + `</div>`;
+            $('#Navigator_table').append(output);
+            $(`#${domID}_authorTitle`).click((event,ui)=>{
+              navigatorTitleClick_handler(event,ui,domID,'authorTitle', at, e);
+            });
+            $(`#${domID}_newsTitle`).click((event,ui)=>{
+              navigatorTitleClick_handler(event,ui,domID,'newsTitle', nt, e);
+            });
+            $(`#${domID}_colloqTitle`).click((event,ui)=>{
+              navigatorTitleClick_handler(event,ui,domID,'colloqTitle', ct, e);
+            });
+          });
+        }
+        let settings = JSON.parse(`<%- JSON.stringify(settings) %>`);
+        if (settings) {
+          output = "<div class='Navigator_header'>Settings</div>";
+          $('#Navigator_table').append(output);
+          settings.map((s) => {
+            let domID = `Setting_${s.id}`;
+            let at = (s.authorTitle) ? s.authorTitle.content : '';
+            let nt = (s.newsTitle) ? s.newsTitle.content : '';
+            let ct = (s.colloqTitle) ? s.colloqTitle.content : '';
+            output = `<div class='Navigator_item'>`
+              + `<div class='Navigator_TopTitle' id="${domID}_authorTitle">Author's Title: <div>${at}</div></div>`
+              + `<div class='Navigator_Title' id="${domID}_newsTitle">News Title: <div>${nt}</div></div>`
+              + `<div class='Navigator_Title' id="${domID}_colloqTitle">Colloq. Title: <div>${ct}</div></div>`
+              + `</div>`;
+            $('#Navigator_table').append(output);
+            $(`#${domID}_authorTitle`).click((event,ui)=>{
+              navigatorTitleClick_handler(event,ui,domID,'authorTitle', at, s);
+            });
+            $(`#${domID}_newsTitle`).click((event,ui)=>{
+              navigatorTitleClick_handler(event,ui,domID,'newsTitle', nt, s);
+            });
+            $(`#${domID}_colloqTitle`).click((event,ui)=>{
+              navigatorTitleClick_handler(event,ui,domID,'colloqTitle', ct, s);
+            });
+
+          });
+        }
+      </script>
+      </div>
     </div>
   </div>
 </div>
@@ -57,7 +169,7 @@ Settings: <%- settings.length %>
 </div>
 
 <script>
-  // a switch for saveStoryContent_helper (twas first writ for radio btn logic)
+  // a switch for saveStoryNote_helper (twas first writ for radio btn logic)
   var saveNoteWasClicked = false;
   try {
     var storyID = `<%= story.id %>`;
@@ -77,10 +189,12 @@ Settings: <%- settings.length %>
     $('#col-2-mainToolbar').controlgroup();
     var sumBtn = $('#editorType_summary');
     var elvBtn = $('#editorType_elevator');
-    $('input[type=radio][name=editorType]').change(saveStoryContent_helper);
+    $('input[type=radio][name=editorType]').change((event, ui)=>{
+      saveStoryNote_helper(event,ui);
+    });
     $('#editorSubmit').click((e,ui) => {
       saveNoteWasClicked = true;
-      saveStoryContent_helper(e,ui);
+      saveStoryNote_helper(e,ui);
     });
   } catch (e) { console.log(e); }
 </script>

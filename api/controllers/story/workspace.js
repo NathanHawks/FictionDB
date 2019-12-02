@@ -20,8 +20,7 @@ module.exports = {
 
   fn: async function ({storyID}) {
     var s = await Story.findOne({id: storyID})
-      .populate('summary').populate('elevatorPitch');
-    var t = await Title.findOne({id: s.mainTitle});
+      .populate('mainTitle').populate('summary').populate('elevatorPitch');
 
     // populate Navigator - characters
     var storyCharacters = await StoryCharacter.find({story: storyID});
@@ -39,7 +38,7 @@ module.exports = {
       settingDBIDs[settingDBIDs.length] = ss.setting;
     });
     var settings = await Setting.find({id: settingDBIDs})
-      .populate('authorTitle');
+      .populate('authorTitle').populate('newsTitle').populate('colloqTitle');
 
     // populate Navigator - locations
     // var storyLocations = await StoryLocation.find({story: storyID});
@@ -55,11 +54,11 @@ module.exports = {
     storyEvents.map((se) => {
       eventDBIDs[eventDBIDs.length] = se.event;
     });
-    var events = await Event.find({id: eventDBIDs});
+    var events = await Event.find({id: eventDBIDs})
+      .populate('authorTitle').populate('newsTitle').populate('colloqTitle');
     return {
       storyID: storyID,
       story: s,
-      title: t.content,
       characters: characters,
       settings: settings,
       events: events,
