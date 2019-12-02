@@ -49,6 +49,13 @@ p, pre { display: block; margin: 1px 1px .8em 1px;}
   display: block;
   margin: 4px 0 1.2em 0;
 }
+.mod-mainTitle {
+  overflow-y: scroll;
+  height: 14vh;
+}
+ h1#mainTitle {
+   height: auto;
+}
 .mod-main-content {
   background-color: #222;
   font-size: 1.1em;
@@ -169,15 +176,21 @@ div#context-menu ul li.context-menu-item:hover {
 
 /* navigator */
 #Navigator {
-  height: 100%;
+  height: 77vh;
+  width: 31vw;
   background-color: #101717;
+  max-height: 89vh;
+  position: absolute;
+  bottom: 16px;
+  padding-bottom: 0;
 }
 #Navigator_table {
+  overflow-y: scroll;
   margin: 0;
-  width: 97%;
+  width: 31vw;
   height: 100%;
   padding: 4px;
-  overflow-y: scroll;
+
 }
 .Navigator_header, .Navigator_item, .Navigator_Title, .Navigator_TopTitle {
   font-family: Tahoma, sans-serif;
