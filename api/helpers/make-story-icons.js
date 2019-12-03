@@ -11,7 +11,7 @@ module.exports = {
   fn: async function (inputs) {
     var output = '';
     try {
-      var stories = await Story.find({where:{}});
+      var stories = await Story.find({where:{trash: false}});
       while (stories === undefined) {}
       for (let x = 0; x < stories.length; x++) {
         let s = stories[x];

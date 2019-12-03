@@ -11,7 +11,7 @@ module.exports = {
   fn: async function (inputs) {
     var output = '';
     try {
-      var characters = await Character.find({where:{}});
+      var characters = await Character.find({where:{trash: false}});
       while (characters === undefined) {}
       for (let x = 0; x < characters.length; x++) {
         let c = characters[x];

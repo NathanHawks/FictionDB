@@ -36,6 +36,7 @@ module.exports.routes = {
   '/event/:eventID': { action: 'event/workspace', locals: {layout: null} },
   '/location/:locationID': { action: 'location/workspace', locals: {layout: null} },
   '/setting/:settingID': { action: 'setting/workspace', locals: {layout: null} },
+  'POST /common/send-to-trash': { action: 'common/send-to-trash', locals: {layout: null} },
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

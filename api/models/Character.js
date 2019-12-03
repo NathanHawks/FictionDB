@@ -3,6 +3,7 @@ module.exports = {
     realName: { model: 'Title', required: true },
     codeName: { model: 'Title' },
     traits: { model: 'Note' },
-    backstory: { model: 'Note' }
+    backstory: { model: 'Note' },
+    trash: { type: 'boolean' }
   }
 };

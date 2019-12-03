@@ -11,7 +11,7 @@ module.exports = {
   fn: async function (inputs) {
     var output = '';
     try {
-      var events = await Event.find({where:{}});
+      var events = await Event.find({where:{trash: false}});
       while (events === undefined) {}
       for (let x = 0; x < events.length; x++) {
         let r = events[x];

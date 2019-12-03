@@ -11,7 +11,7 @@ module.exports = {
   fn: async function (inputs) {
     var output = '';
     try {
-      var locations = await Location.find({where:{}});
+      var locations = await Location.find({where:{trash: false}});
       while (locations === undefined) {}
       for (let x = 0; x < locations.length; x++) {
         let l = locations[x];

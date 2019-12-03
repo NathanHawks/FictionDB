@@ -5,6 +5,7 @@ module.exports = {
     colloqTitle: { model: 'Title' },
     authorNote: { model: 'Note' },
     publicNote: { model: 'Note' },
-    locativeJSON: { model: 'Note' }
+    locativeJSON: { model: 'Note' },
+    trash: { type: 'boolean' }
   }
 };

@@ -101,8 +101,21 @@ p, pre { display: block; margin: 1px 1px .8em 1px;}
 a.ui-button, a:link.ui-button, a:visited.ui-button, .ui-button,
 a.btn.ui-button.ui-widget {
    /* jquery */
-  background: #444; color: #bdbdbd;
+  background: #444;
+  color: #bdbdbd;
   border-color: black;
+}
+div.mod div#Navigator div#Navigator_table h3 {
+  background-color: #202020;
+  color: #bdbdbd;
+}
+div.mod div#Navigator div#Navigator_table h3 span.ui-accordion-header-icon {
+  background-color: #202020;
+  color: #dcdcdc;
+  margin-right: 12px;
+}
+.ui-widget-content {
+  background-color: #202020;
 }
 .ui-button.ui-widget.ui-checkboxradio-radio-label.ui-controlgroup-item.ui-checkboxradio-label.ui-checkboxradio-checked,
 a.btn.ui-button:hover {
@@ -196,6 +209,7 @@ div#context-menu ul li.context-menu-item:hover {
   font-family: Tahoma, sans-serif;
   font-size: 11pt;
   line-height: 105%;
+  cursor: pointer;
 }
 .Navigator_header, .Navigator_item, .Navigator_Title {
   padding-top: 2px; padding-bottom: 2px;
@@ -207,12 +221,21 @@ div#context-menu ul li.context-menu-item:hover {
   border-top: 1px solid #606060;
   border-bottom: 1px solid #606060;
 }
-.Navigator_item {
-  padding-left: 0;
+.Navigator_item.ui-accordion-content, #Navigator #Navigator_table h3.ui-accordion-header,
+.ui-accordion .Navigator_item.ui-accordion-content {
+  padding-left: 0.2em;
+  padding-right: 0.2em;
   margin-top: 0.2em;
+  border: 1px solid black;
+}
+#Navigator #Navigator_table h3.ui-state-active {
+  border: 1px solid #223
+}
+.Navigator_item:hover {
+  background-color: #421;
 }
 .Navigator_TopTitle {
-  padding-left: 0.2em;
+  padding-left: 1em;
 }
 .Navigator_Title {
   padding-left: 2em;
@@ -227,10 +250,20 @@ div#context-menu ul li.context-menu-item:hover {
  .Navigator_TopTitle div input, .Navigator_Title div input {
   width: 16vw;
 }
+.Navigator_TopTitle div:hover, .Navigator_Title div:hover {
+  background-color: #f84;
+  color: black;
+}
 .Navigator_TopTitle div input, .Navigator_Title div input {
   background-color: #842;
   border: 0;
   color: #dcdcdc;
+}
+.Navigator_item.ui-accordion-content {
+  background-color: #101717;
+}
+.Navigator_item.ui-accordion-content.alt-list-color {
+  background-color: #252525;
 }
 /* ckeditor */
 .cke_reset { color: #BEC0BE; background: black; }

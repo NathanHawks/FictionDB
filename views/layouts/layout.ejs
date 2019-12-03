@@ -39,6 +39,10 @@ var hoverDelay = 2000;
 var addedCleaner = false;
 // we track this
 var mouseCurrentXY = {x: undefined, y: undefined};
+// which item triggered the event
+var itemRightClicked = null;
+// don't open the accordion for an item we're sorting
+var sorting = false;
 
 $(document).ready(function() {
 
@@ -139,6 +143,8 @@ async function makeIconsSelectable() {
 }
 async function makeIconsRightClickable() {
   $('.deskicon').contextmenu((event, ui) => {
+    itemRightClicked = event.currentTarget.id;
+    console.log(itemRightClicked);
     // console.log(`${event.currentTarget.id} was right-clicked`);
     var bodyH = window.innerHeight || document.body.clientHeight;
     var bodyW = window.innerWidth  || document.body.clientWidth;
@@ -159,7 +165,8 @@ async function makeIconsRightClickable() {
 async function makeDesktopCloseThings() {
   $("#deskicon-container").mousedown(()=>{
     // close context menu
-    $('#context-menu').css('display', 'none');
+    $('#context-menu').fadeOut(100);
+    itemRightClicked = null;
   })
 }
 async function captureMousePos() {
@@ -304,14 +311,21 @@ async function handleResponse_dragdrop(data) {
   pop.hide().fadeIn();
   setTimeout(()=>{pop.effect('drop', {direction: 'up'});}, 1400);
 }
-async function requestPage(url) {
-  $.ajax({url: url}).done(handleResponse_requestPage);
+async function requestPage(url, instant=false) {
+  let response = null;
+  if (instant) response = handleResponse_requestPage_instant;
+  else response = handleResponse_requestPage
+  $.ajax({url: url}).done(response);
 }
 function handleResponse_requestPage(data) {
   let home = $('#home-workspace');
   home.fadeOut(250);
   setTimeout(()=>{home.html(data)},249);
   home.fadeIn(250);
+}
+function handleResponse_requestPage_instant(data) {
+  let home = $('#home-workspace');
+  home.html(data);
 }
 async function saveStoryContent(storyID, contentType, assocID, content, fieldName) {
   $.ajax({ url: 'story/save-content', method: 'POST',
@@ -340,7 +354,36 @@ async function saveSettingContent(settingID, contentType, assocID, content, fiel
 function handleResponse_saveStoryContent(data) {
   console.log(data);
 }
-
+function trashItems() {
+  $('#context-menu').fadeOut(100);
+  let selected = [];
+  let items = [];
+  if (iconSelection.length) {
+    for (let x = 0; x < iconSelection.length; x++) {
+      selected[selected.length] = iconSelection.get(x).id;
+    }
+  }
+  let use_multiselect = (selected.indexOf(itemRightClicked) > -1)
+    ? true : false;
+  // assemble ajax data
+  if (use_multiselect) {
+    selected.map((i) => {
+      let [type,id] = i.split("_");
+      items[items.length] = {type: type, id: id};
+    });
+  } else {
+    let [type,id] = itemRightClicked.split("_");
+    items = [{type: type, id: id}];
+  }
+  let strung = JSON.stringify(items);
+  $.ajax({url: '/common/send-to-trash', method: 'POST',
+    data: {items: strung},
+    success: handleResponse_trashItems
+  });
+}
+function handleResponse_trashItems(data) {
+  requestPage('/home',true);
+}
     </script>
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/importer.css">

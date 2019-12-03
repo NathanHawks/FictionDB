@@ -11,7 +11,7 @@ module.exports = {
   fn: async function (inputs) {
     var output = '';
     try {
-      var settings = await Setting.find({where:{}});
+      var settings = await Setting.find({where:{trash: false}});
       while (settings === undefined) {}
       for (let x = 0; x < settings.length; x++) {
         let s = settings[x];
