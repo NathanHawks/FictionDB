@@ -48,8 +48,14 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 }
 .cke_inner
 {
-	display:block;background:#111;padding:0;-webkit-touch-callout:none;
-	height: 100%;
+	display:flex;
+	flex-direction: column;
+	background:#111;
+	padding:0;
+	-webkit-touch-callout:none;
+}
+#cke_noteEditor .cke_inner {
+	height: calc(96vh - 2px);
 }
 .cke_float
 {
@@ -73,7 +79,10 @@ For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
 }
 .cke_bottom
 {
-	padding:6px 8px 2px;position:relative;border-top:1px solid #444;background:black
+	padding:6px 8px 2px;position:relative;border-top:1px solid #444;background:black;
+	border-bottom-left-radius: 1.5vw;
+	border-bottom-right-radius: 1.5vw;
+
 }
 .cke_browser_ios .cke_contents
 {

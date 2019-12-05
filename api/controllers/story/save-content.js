@@ -39,7 +39,6 @@ module.exports = {
               id: assocID}).set({content: content}).fetch();
           break;
           case 'Title':
-            console.log('got here');
             n = await Title.update({
               id: assocID}).set({content: content}).fetch();
           break;
@@ -59,7 +58,6 @@ module.exports = {
         let q = {}; q[fieldName] = n.id;
         s = await Story.update({id: storyID}).set(q).fetch();
         while (s === undefined) {}
-        console.log(s);
       }
     } catch (e) { console.log(e); }
     return;

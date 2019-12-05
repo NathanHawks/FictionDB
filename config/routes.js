@@ -37,6 +37,7 @@ module.exports.routes = {
   '/location/:locationID': { action: 'location/workspace', locals: {layout: null} },
   '/setting/:settingID': { action: 'setting/workspace', locals: {layout: null} },
   'POST /common/send-to-trash': { action: 'common/send-to-trash', locals: {layout: null} },
+  'POST /common/save-sequence': { action: 'common/save-sequence', locals: {layout: null} },
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

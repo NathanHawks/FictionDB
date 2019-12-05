@@ -15,15 +15,13 @@ CKEDITOR.editorConfig = function( config ) {
 	config.toolbarGroups = [
 		{ name: 'editing',     groups: [ 'save', 'undo', 'find', 'selection' ] },
 		{ name: 'links' },
-		{ name: 'forms' },
-		{ name: 'tools', groups: [ 'others', 'tools'] },
 		"/",
 		{ name: 'paragraph',   groups: [  'indent', 'align', 'bidi' ] },
 		{ name: 'insert' },
 		'/',
-		{ name: 'basicstyles', groups: [ 'basicstyles', 'list', 'colors', 'blocks'] },
+		{ name: 'basicstyles', groups: ['cleanup', 'basicstyles', 'list', 'colors', 'blocks'] },
 		"/",
-		{ name: 'styles', groups: ['cleanup', 'styles'] },
+		{ name: 'styles', groups: ['styles'] },
 	];
 
 	// Remove some buttons provided by the standard plugins, which are

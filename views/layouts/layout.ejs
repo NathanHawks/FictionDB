@@ -54,6 +54,7 @@ $(document).ready(function() {
   makeIconsRightClickable();
   makeDesktopCloseThings();
   // captureMousePos();
+  $('*').disableSelection().not('input');
 });
 // UI =========================================================================
 async function makeIconsDraggable() {

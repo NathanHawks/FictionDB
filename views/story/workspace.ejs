@@ -16,32 +16,33 @@
           storyString = '<%- JSON.stringify(story).replace(/\\/g, '\\\\') %>';
           story = JSON.parse(storyString);
           saveStoryTitle_helper(event,ui,null,'mainTitle',newVal,story);
-          $('#mainTitle').html(newVal);
-          $('#mainTitle').click(mainTitleClick_handler);
+          $('h1#mainTitle').html(newVal);
+          $('h1#mainTitle').click(mainTitleClick_handler);
           oldTitle = null;
         } else if (event.keyCode === 27) {
           try {
             storyString = '<%- JSON.stringify(story).replace(/\\/g, '\\\\') %>';
             story = JSON.parse(storyString);
-            $('#mainTitle').html(story.mainTitle.content);
-            $('#mainTitle').click(mainTitleClick_handler);
+            $('h1#mainTitle').html(story.mainTitle.content);
+            $('h1#mainTitle').click(mainTitleClick_handler);
           } catch (e) {console.log(e);}
           oldTitle = null;
         }
       }
       function mainTitleClick_handler(event,ui) {
-        $('#mainTitle').off('click');
+        $('h1#mainTitle').off('click');
         let oldTitle = $('#mainTitle').html();
-        $('#mainTitle').html(
+        $('h1#mainTitle').html(
           `<input type='text' id='mainTitle_editor' value='${oldTitle}'>`
         );
         $('#mainTitle_editor').keydown(mainTitleKeydown_handler);
         $('#mainTitle_editor').focus().select();
       }
-      $('#mainTitle').click(mainTitleClick_handler);
+      $('h1#mainTitle').click(mainTitleClick_handler);
     </script>
   </div>
-  <div class="mod-col-1 mod" style="flex-grow: 8;">
+  <!-- properties window =================================================== -->
+  <div class="mod-col-1 mod">
     <div id="Navigator">
       <div id="Navigator_table">
       <script>
@@ -169,20 +170,25 @@
 </div>
 
 <div class="col-3-container">
+  <div class="mod-col-1 mod toolbar-top">&nbsp;
+  </div>
   <div class="mod-col-3 mod" style="height: 5vh;">
-    <p>Sequence of Events<br/>&amp;<br/>Event Properties</p>
+    <p>???</p>
   </div>
 </div>
 
 <div class="col-4-container">
+  <div class="mod-col-1 mod toolbar-top">&nbsp;
+  </div>
   <div class="mod-col-4 mod" style="height: 5vh;">
     <p>Generated Summary:<br/>
-      Sequence of Events w/ Character Counts & Location sequences
+      Sequence of Events ea. w/<br/> Characters & Locations
     </p>
   </div>
 </div>
 
 <script>
+  // Notes editor (ckeditor) ===================================================
   // a switch for saveStoryNote_helper (twas first writ for radio btn logic)
   var saveNoteWasClicked = false;
   try {
@@ -196,6 +202,7 @@
     var summaryID = `<%= (story.summary !== null)
       ? story.summary.id : -1  %>`;
     CKEDITOR.replace('noteEditor', {height: '66vh', width: '32vw'});
+    // setup toolbar
     $('.btn').button();
     $('input[name="editorType"]').checkboxradio();
     $('#col-2-editorType').controlgroup();
@@ -211,12 +218,14 @@
       saveStoryNote_helper(e,ui);
     });
   } catch (e) { console.log(e); }
-  // navigator = accordion
-  $( ".item_accordion" ).accordion({
+  // Properties window =========================================================
+  // two points are required to mix with .sortable in the way we want
+  $( ".item_accordion" ).accordion({ // each item must be its own accordion
     animate: 100,
     collapsible: true,
     header: 'h3',
     beforeActivate: (event,ui) => {
+      // prevent state-change caused by dragdrop click
       if (sorting) {
         event.preventDefault();
       }
@@ -227,15 +236,31 @@
       "ui-accordion-content": "Navigator_item"
     }, active: false
   });
+
   $(".Navigator_container").sortable({axis: 'y', handle: 'h3',
     revert: 200,
     start: (event,ui)=>{
+      // prevent accordion state-change during dragdrop
       sorting = true;
     },
     stop: (event,ui)=>{
       $(".item_accordion").accordion('refresh');
+      // prevent accordion state-change during dragdrop
       sorting = false;
     }
+  });
+  tmpType = 'Character';
+  $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
+    // get the character sortables as jquery objects
+    let sortables = $(`#Nav${tmpType}Container .item_accordion .Navigator_item .Navigator_TopTitle`);
+    let sorted = [];
+    for (let x = 0; x < sortables.length; x++) {
+      let domID = sortables.get(x).id;
+      let info = domID.split("_");
+      sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, storyID: storyID};
+    }
+    $.ajax({url: '/common/save-sequence', method: 'POST', data: {items: sorted}})
+      .done(handleResponse_saveStoryContent);
   });
 
 </script>

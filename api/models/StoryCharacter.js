@@ -2,8 +2,9 @@ module.exports = {
   attributes: {
     story: { model: 'Story' },
     character: { model: 'Character' },
-    importanceGroup: { type: 'string' },
+    group: { type: 'string' },
     outline: { model: 'Note' },
-    role: { model: 'Title' }
+    role: { model: 'Title' },
+    sequence: { type: 'number' }
   }
 };

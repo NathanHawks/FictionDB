@@ -55,12 +55,9 @@ module.exports = {
               roleLabel: fieldName, content: content}).fetch();
           break;
         }
-        while (n === undefined) {}
         let s = null;
         let q = {}; q[fieldName] = n.id;
         s = await Character.update({id: characterID}).set(q).fetch();
-        while (s === undefined) {}
-        console.log(s);
       }
     } catch (e) { console.log(e); }
     return;

@@ -47,11 +47,14 @@ p, pre { display: block; margin: 1px 1px .8em 1px;}
 }
 .mod-col-1, .mod-col-2 {
   display: block;
-  margin: 4px 0 1.2em 0;
+  margin: 4px 0 1vh 0;
 }
 .mod-mainTitle {
-  overflow-y: scroll;
-  height: 14vh;
+  overflow-y: auto;
+  height: 17vh;
+  padding: 0.6vh 0.8vw;
+  border-top-left-radius: 1.5%;
+  border-top-right-radius: 1.5%;
 }
  h1#mainTitle {
    height: auto;
@@ -59,8 +62,8 @@ p, pre { display: block; margin: 1px 1px .8em 1px;}
 .mod-main-content {
   background-color: #222;
   font-size: 1.1em;
-  padding: .3em;
-  margin: 0 .3em;
+  padding: 0;
+  margin: 0 0;
 }
 .col-3-container, .col-4-container {
   width: 18vw;
@@ -79,9 +82,9 @@ p, pre { display: block; margin: 1px 1px .8em 1px;}
 }
 .mod-col-3, .mod-col-4 {
   display: block;
-  margin: 4px 0 1.2em 0;
+  margin: 0 0 1vh 0;
 }
-.mod p, .mod p, .mod p, .mod p {
+.mod p {
   margin: 4px .5em;
   padding: 0;
   text-align: center;
@@ -89,11 +92,13 @@ p, pre { display: block; margin: 1px 1px .8em 1px;}
 /* system interface */
 .mod.toolbar-top {
   height: 3vh;
-  padding: 4px;
+  padding: 0.15vh 0.15vw;
   background-color: #404040;
+  margin: 0;
 }
 .ui-controlgroup { /* jquery */
   border-color: #101010;
+  border-width: 1px;
 }
 .ui-button.ui-widget.ui-checkboxradio-radio-label.ui-controlgroup-item.ui-checkboxradio-label,
 .ui-button.ui-widget,
@@ -104,7 +109,11 @@ a.btn.ui-button.ui-widget {
   background: #444;
   color: #bdbdbd;
   border-color: black;
+  border-width: 1px;
+  padding: 0.7vh 0.8vh;
+  font-size: 1.1vh;
 }
+
 div.mod div#Navigator div#Navigator_table h3 {
   background-color: #202020;
   color: #bdbdbd;
@@ -120,15 +129,23 @@ div.mod div#Navigator div#Navigator_table h3 span.ui-accordion-header-icon {
 .ui-button.ui-widget.ui-checkboxradio-radio-label.ui-controlgroup-item.ui-checkboxradio-label.ui-checkboxradio-checked,
 a.btn.ui-button:hover {
    /* jquery */
-  background: rgb(0,62,255); color: #dcdcdc;
+  background: #444; color: #dcdcdc;
 }
 span.ui-checkboxradio-icon.ui-icon.ui-icon-background.ui-icon-blank {
   background-color: black;
+  border: none;
+  box-shadow: none;
+  height: .7vw;
+  width: .7vw;
 }
 .ui-checkboxradio-radio-label.ui-state-active.ui-controlgroup-item.ui-checkboxradio-label
  > span.ui-checkboxradio-icon {
    background-color: #F84;
- }
+   border: none;
+   outline: none;
+   height: .8vw;
+   width: .8vw;
+}
 div#context-menu {
   background-color: #444;
   width: 250px;
@@ -189,19 +206,20 @@ div#context-menu ul li.context-menu-item:hover {
 
 /* navigator */
 #Navigator {
-  height: 77vh;
-  width: 31vw;
-  background-color: #101717;
-  max-height: 89vh;
+  height: 79vh;
+  width: 32vw;
+  background-color: #222;
   position: absolute;
-  bottom: 16px;
+  top: 20vh;
   padding-bottom: 0;
+  border-bottom-left-radius: 1.5vw;
+  border-bottom-right-radius: 1.5vw;
 }
 #Navigator_table {
-  overflow-y: scroll;
+  overflow-y: auto;
   margin: 0;
   width: 31vw;
-  height: 100%;
+  height: 78vh;
   padding: 4px;
 
 }
@@ -279,7 +297,7 @@ input#mainTitle_editor {
   font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
   font-size: .9em;
   font-weight: bold;
-  width: 30vw;
+  width: 28vw;
   background-color: #444;
   border: 1px solid #842;
   color: #dcdcdc !important;
