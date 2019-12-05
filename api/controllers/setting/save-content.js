@@ -28,8 +28,8 @@ module.exports = {
     }
   },
   fn: async function ({settingID, contentType, assocID, content, fieldName}) {
-    console.log(` settingID: ${settingID}\n contentType: ${contentType}\n`
-      +` assocID: ${assocID}\n content: ${content}\n fieldName: ${fieldName}`);
+    // console.log(` settingID: ${settingID}\n contentType: ${contentType}\n`
+    //   +` assocID: ${assocID}\n content: ${content}\n fieldName: ${fieldName}`);
     try {
       let n = null;
       if (assocID !== -1) {
@@ -39,7 +39,6 @@ module.exports = {
               id: assocID}).set({content: content}).fetch();
           break;
           case 'Title':
-            console.log('got here');
             n = await Title.update({
               id: assocID}).set({content: content}).fetch();
           break;
@@ -60,7 +59,6 @@ module.exports = {
         let q = {}; q[fieldName] = n.id;
         s = await Setting.update({id: settingID}).set(q).fetch();
         while (s === undefined) {}
-        console.log(s);
       }
     } catch (e) { console.log(e); }
     return;

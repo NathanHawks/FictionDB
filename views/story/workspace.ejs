@@ -61,7 +61,7 @@
             let domID = `Character_${c.id}_`
             let rn = (c.realName) ? c.realName.content : '';
             let cn = (c.codeName) ? c.codeName.content : '';
-            output = `<h3>${rn}</h3>`
+            output = `<h3><span class="${domID}_header">${rn}</span></h3>`
               + `<div class='Navigator_item ${colorStyle}'>`
               + `<div class='Navigator_TopTitle' id="${domID}_realName">Real Name: <div>${rn}</div></div>`
               + `<div class='Navigator_Title' id="${domID}_codeName">Code Name: <div>${cn}</div></div>`
@@ -92,7 +92,7 @@
             let at = (e.authorTitle) ? e.authorTitle.content : '';
             let nt = (e.newsTitle) ? e.newsTitle.content : '';
             let ct = (e.colloqTitle) ? e.colloqTitle.content : '';
-            output = `<h3>${at}</h3>`
+            output = `<h3><span class="${domID}_header">${at}</span></h3>`
               + `<div id="${domID}_item" class='Navigator_item ${colorStyle}'>`
               + `<div class='Navigator_TopTitle' id="${domID}_authorTitle">Author's Title: <div>${at}</div></div>`
               + `<div class='Navigator_Title' id="${domID}_newsTitle">News Title: <div>${nt}</div></div>`
@@ -123,7 +123,7 @@
             let at = (s.authorTitle) ? s.authorTitle.content : '';
             let nt = (s.newsTitle) ? s.newsTitle.content : '';
             let ct = (s.colloqTitle) ? s.colloqTitle.content : '';
-            output = `<h3>${at}</h3>`
+            output = `<h3><span class="${domID}_header">${at}</span></h3>`
               + `<div class='Navigator_item ${colorStyle}'>`
               + `<div class='Navigator_TopTitle' id="${domID}_authorTitle">Author's Title: <div>${at}</div></div>`
               + `<div class='Navigator_Title' id="${domID}_newsTitle">News Title: <div>${nt}</div></div>`

@@ -15,7 +15,6 @@ module.exports = {
   },
   fn: async function ({items}) {
     //items = JSON.parse(items);
-    console.log(JSON.stringify(items));
     for (let x = 0; x < items.length; x++) {
       let r = [];
       let f = [];
