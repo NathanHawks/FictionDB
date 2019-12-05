@@ -244,12 +244,14 @@ async function saveSettingTitle_helper(event,ui,domID,rName,value,parent) {
   saveSettingContent(parent.id, 'Title', titleID, newVal, rName );
 }
 async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
+  // sanitize value
+  rn = rn.replace(/"/g, '&quot;');
   // prep editors
   let rContainer = $(`#${domID}_${rName}`);
   let rBox = $(`#${domID}_${rName} div`);
   rContainer.off('click');
   rBox.html(
-    `<input id="${domID}_${rName}_editor" type='text' value='${rn}'>`
+    `<input id="${domID}_${rName}_editor" type='text' value="${rn}">`
   );
   let rEditor = $(`#${domID}_${rName}_editor`);
   rEditor.focus().select();
