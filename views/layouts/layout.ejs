@@ -145,8 +145,6 @@ async function makeIconsSelectable() {
 async function makeIconsRightClickable() {
   $('.deskicon').contextmenu((event, ui) => {
     itemRightClicked = event.currentTarget.id;
-    console.log(itemRightClicked);
-    // console.log(`${event.currentTarget.id} was right-clicked`);
     var bodyH = window.innerHeight || document.body.clientHeight;
     var bodyW = window.innerWidth  || document.body.clientWidth;
     let menu = $('#context-menu');
