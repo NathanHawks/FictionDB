@@ -223,6 +223,20 @@ async function saveStoryNote_helper(event,ui) {
     console.log('wait what?');
   }
 }
+async function navigatorExpandAll() {
+  let heads = $(".ui-accordion-header");
+  heads.each((index, el) => {
+    if ($(el).hasClass("ui-accordion-header-collapsed") === true)
+      $(el).trigger("click");
+  });
+}
+async function navigatorCollapseAll() {
+  let heads = $(".ui-accordion-header");
+  heads.each((index, el) => {
+    if ($(el).hasClass("ui-accordion-header-collapsed") === false)
+      $(el).trigger("click");
+  });
+}
 async function saveStoryTitle_helper(event,ui,domID,rName,value,parent) {
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
   let newVal = event.target.value;
@@ -234,7 +248,7 @@ async function saveCharacterTitle_helper(event,ui,domID,rName,value,parent) {
   saveCharacterContent(parent.id, 'Title', titleID, newVal, rName );
   if (rName === 'realName') {
     // update header
-    $(`.${domID}_header`).html(value)
+    $(`#${domID}_header`).html(value)
   }
 }
 async function saveEventTitle_helper(event,ui,domID,rName,value,parent) {
@@ -243,9 +257,8 @@ async function saveEventTitle_helper(event,ui,domID,rName,value,parent) {
   saveEventContent(parent.id, 'Title', titleID, newVal, rName );
   if (rName === 'authorTitle') {
     // update header
-    $(`.${domID}_header`).html(value)
+    $(`#${domID}_header`).html(value)
   }
-
 }
 async function saveSettingTitle_helper(event,ui,domID,rName,value,parent) {
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
@@ -253,9 +266,8 @@ async function saveSettingTitle_helper(event,ui,domID,rName,value,parent) {
   saveSettingContent(parent.id, 'Title', titleID, newVal, rName );
   if (rName === 'authorTitle') {
     // update header
-    $(`.${domID}_header`).html(value)
+    $(`#${domID}_header`).html(value)
   }
-
 }
 async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
   // sanitize value
