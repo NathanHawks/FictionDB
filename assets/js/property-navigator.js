@@ -1,4 +1,5 @@
-// Properties window =========================================================
+// Properties Navigator window =================================================
+
 // two points are required to mix with .sortable in the way we want
 $( '.item_accordion' ).accordion({ // each item must be its own accordion
   animate: 100,
@@ -29,6 +30,72 @@ $('.Navigator_container').sortable({axis: 'y', handle: 'h3',
     sorting = false;
   }
 });
+
+async function navigatorExpandAll() {
+  let heads = $(".ui-accordion-header");
+  heads.each((index, el) => {
+    if ($(el).hasClass("ui-accordion-header-collapsed") === true)
+      $(el).trigger("click");
+  });
+}
+
+async function navigatorCollapseAll() {
+  let heads = $(".ui-accordion-header");
+  heads.each((index, el) => {
+    if ($(el).hasClass("ui-accordion-header-collapsed") === false)
+      $(el).trigger("click");
+  });
+}
+
+async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
+  // sanitize value
+  rn = rn.replace(/"/g, '&quot;');
+  // prep editors
+  let rContainer = $(`#${domID}_${rName}`);
+  let rBox = $(`#${domID}_${rName} div`);
+  rContainer.off('click');
+  rBox.html(
+    `<input id="${domID}_${rName}_editor" type='text' value="${rn}">`
+  );
+  let rEditor = $(`#${domID}_${rName}_editor`);
+  rEditor.focus().select();
+  rEditor.keydown((event,ui) => {
+    if (event.keyCode === 13) {
+      let v = rEditor.val();
+      // save
+      switch (event.target.id.split("_")[0]) {
+        case 'Character':
+          saveCharacterTitle_helper(event,ui,domID,rName,v,parent);
+        break;
+        case 'Story':
+
+        break;
+        case 'Event':
+          saveEventTitle_helper(event,ui,domID,rName,v,parent);
+        break;
+        case 'Setting':
+          saveSettingTitle_helper(event,ui,domID,rName,v,parent);
+        break;
+
+      }
+      // convert back to display
+      rBox.html(v);
+      rContainer.click((event,ui) => {
+        navigatorTitleClick_handler(event,ui,domID,rName,v,parent);
+      });
+      // update page-internal data
+      if (parent[rName] === null) parent[rName] = {};
+      parent[rName].content = v;
+    } else if (event.keyCode === 27) {
+      // revert
+      let text = (parent[rName] !== null) ? parent[rName].content : '';
+      rBox.html(text);
+      rContainer.click((event,ui) => {
+        navigatorTitleClick_handler(event,ui,domID,rName,rn,parent);
+      });
+    }
+  });
+}
 
 function setupSort(tmpType) {
   $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {

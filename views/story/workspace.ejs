@@ -8,6 +8,7 @@
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
     <h1 id="mainTitle"><%= story.mainTitle.content %></h1>
     <script>
+      // NOTE: can't move this to a partial; the helper won't be defined there
       function mainTitleKeydown_handler(event,ui) {
         let story = null;
         let storyString = null;
@@ -58,6 +59,7 @@
 
       <script>
         // load navigator Title-editor click handlers
+        // NOTE: can't move this to a partial; the helper won't be defined there
         let characters = JSON.parse(`<%- JSON.stringify(characters) %>`);
         let events = JSON.parse(`<%- JSON.stringify(events) %>`);
         let settings = JSON.parse(`<%- JSON.stringify(settings) %>`);
@@ -80,7 +82,6 @@
             });
           });
         });
-
       </script>
       </div>
     </div>
@@ -140,23 +141,8 @@
       ? story.elevatorPitch.id : -1 %>`;
     var summaryID = `<%= (story.summary !== null)
       ? story.summary.id : -1  %>`;
-    CKEDITOR.replace('noteEditor', {height: '66vh', width: '32vw'});
-    // setup toolbar
-    $('.btn').button();
-    $('input[name="editorType"]').checkboxradio();
-    $('#col-2-editorType').controlgroup();
-    $('#mainToolbar').controlgroup();
-    $('#col-2-mainToolbar').controlgroup();
-    var sumBtn = $('#editorType_summary');
-    var elvBtn = $('#editorType_elevator');
-    $('input[type=radio][name=editorType]').change((event, ui)=>{
-      saveStoryNote_helper(event,ui);
-    });
-    $('#editorSubmit').click((e,ui) => {
-      saveNoteWasClicked = true;
-      saveStoryNote_helper(e,ui);
-    });
-  } catch (e) { console.log(e); }
+    } catch (e) { console.log(e); }
 </script>
 
 <script src="/js/property-navigator.js"></script>
+<script src="/js/ck-story.js"></script>

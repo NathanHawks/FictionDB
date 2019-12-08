@@ -2,412 +2,58 @@
 <html>
   <head>
     <title>Fiction DB</title>
-
     <!-- Viewport mobile tag for sensible mobile support -->
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-    <%/* If you want to discourage search engines from indexing this site, uncomment the following line: */%>
-    <%/* <meta name="robots" content="noindex"> */%>
-
+    <meta name="viewport"
+     content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="/js/ckeditor/ckeditor.js"></script>
     <script src="/js/jquery-ui/external/jquery/jquery.js"></script>
-
     <script>
-// startup ====================================================================
-// prevent ctrl-click from opening new windows
-$('*').click((event,ui)=>{
-  if (event.ctrlKey) {
-    event.stopImmediatePropagation();
-    return false;
-  }
-});
-// these icons are immune from being selected
-const launcherIcons = ['new-story','new-event','new-character','new-location','new-setting'];
-// store selected id's because jquery's logic thwarts mine otherwise
-var iconSelection = [];
-// state for hover-selecting
-var hoverOldXY = {x: undefined, y: undefined};
-// false when we don't want to do a hover action because we already did; redundant?
-var hoverClean = true;
-// when true we move on to waiting for exit
-var hoverDidAction = false;
-// set true once we are testing for stillness
-var hoverWaiting = false;
-// default delay for multiple hover-action setTimeout
-var hoverDelay = 2000;
-// hover mouseout handler
-var addedCleaner = false;
-// we track this
-var mouseCurrentXY = {x: undefined, y: undefined};
-// which item triggered the event
-var itemRightClicked = null;
-// don't open the accordion for an item we're sorting
-var sorting = false;
-
-$(document).ready(function() {
-
-  setTimeout(()=>{ $('#splash-container').fadeOut(500); }, 2600);
-  setTimeout(()=>{ $('#splash').effect('drop', {direction: 'up', duration: 600}); }, 2500);
-  makeIconsDraggable();
-  makeIconsDroppable();
-  makeIconsSelectable();
-  makeIconsRightClickable();
-  makeDesktopCloseThings();
-  // captureMousePos();
-  $('*').disableSelection().not('input');
-});
-// UI =========================================================================
-async function makeIconsDraggable() {
-  try { $(".deskicon").draggable({
-    helper: "clone", revert: true, containment: "parent",
-    start: (e, ui) => {
-      let multiSelect = [];
-      let els = $(".ui-draggable.ui-selected");
-      for (let x = 0; x < els.length; x++) {
-        if (multiSelect.indexOf(els.get(x).id) === -1)
-          multiSelect[multiSelect.length] = els.get(x).id;
-      }
-      let target = e.currentTarget;
-      // did we drag something outside of the multi-select?
-      if (multiSelect.indexOf(target.id) === -1) {
-        // ignore multi-selection
-        for (let x = 0; x < els.length; x++) {
-          els.get(x).classList.remove('ui-selected');
-        }
-        iconSelection = [];
-      } else {
-        // use multi-selection
-        $(".ui-draggable-dragging").get(0).classList.add('multi-drag');
-      }
-    }
-  });
-  } catch (e) { console.log(e); }
-}
-async function makeIconsDroppable() {
-  try {
-    $('.deskicon').droppable({
-      classes: {
-        'ui-droppable-hover': 'ui-droppable-hover'
-      },
-      drop: (event,ui) => {
-        iconSelection = $('.deskicon.ui-selected');
-        let dropTargetID = event.target.id;
-        let dragTargets = (iconSelection.length)
-          ? iconSelection
-          : ui.draggable;
-        let draggedIDs = [];
-        for (let x = 0; x < dragTargets.length; x++) {
-          if (dragTargets.get(x).id.length) {
-            draggedIDs[draggedIDs.length] = dragTargets.get(x).id;
+      // these icons are immune from being selected
+      const launcherIcons = ['new-story','new-event','new-character',
+        'new-location','new-setting'];
+      // store selected id's because jquery's logic thwarts mine otherwise
+      var iconSelection = [];
+      // we may track this
+      var mouseCurrentXY = {x: undefined, y: undefined};
+      // which item triggered the event
+      var itemRightClicked = null;
+      // don't open the accordion for an item we're sorting
+      var sorting = false;
+      // startup ===============================================================
+      $(document).ready(function() {
+        // prevent ctrl-click from opening new windows
+        $('*').click((event,ui)=>{
+          if (event.ctrlKey) {
+            event.stopImmediatePropagation();
+            return false;
           }
-        }
-        handleIconDrop(draggedIDs, dropTargetID);
-      }
-    });
-  } catch (e) { console.log(e); }
-}
-async function makeIconsSelectable() {
-  $('#deskicon-container').selectable({
-    tolerance: 'touch',
-    filter: '.deskicon',
-    start: (event, ui) => {
-      // store selected icons now bcz touching rubberband changes an item's class
-      iconSelection = $('.deskicon.ui-selected');
-    },
-    selecting: (event, ui) => {
-      // de-select already-selected items if ctrl is held down
-      let tgtID = ui.selecting.id;
-      // build an index of element IDs
-      let selectedArr = [];
-      if (event.ctrlKey) {
-        let selected = iconSelection;
-        for (let x = 0; x < selected.length; x++) {
-          selectedArr[selectedArr.length] = selected.get(x).id;
-        }
-      }
-      // abort selecting & deselect if ctrl-selecting an already selected element
-      // same if the item is a launcher
-      if ((event.ctrlKey && selectedArr.indexOf(tgtID)!==-1)
-        || launcherIcons.indexOf(tgtID)!==-1)
-      {
-        event.stopImmediatePropagation();
-        el = $(`#${tgtID}`).get(0);
-        el.classList.remove('ui-selected');
-        el.classList.remove('ui-selecting');
-      }
-    },
-    stop: (event,ui) => {
-      // store result
-      iconSelection = $('.deskicon.ui-selected');
-    }
-  });
-}
-async function makeIconsRightClickable() {
-  $('.deskicon').contextmenu((event, ui) => {
-    itemRightClicked = event.currentTarget.id;
-    var bodyH = window.innerHeight || document.body.clientHeight;
-    var bodyW = window.innerWidth  || document.body.clientWidth;
-    let menu = $('#context-menu');
-    menu.css('position', 'fixed');
-    menu.css('display', 'block');
-    var menuH = document.getElementById('context-menu').offsetHeight;
-    var menuW = document.getElementById('context-menu').offsetWidth;
-    var offsH = 0;
-    var offsW = 0;
-    if (event.clientY > bodyH/2) offsH = menuH;
-    if (event.clientX > bodyW/2) offsW = menuW;
-    menu.css('top', event.clientY-offsH);
-    menu.css('left', event.clientX-offsW);
-    // console.log(`menuH=${menuH};bodyH=${bodyH};offsH=${offsH};clientY=${event.clientY}`);
-  });
-}
-async function makeDesktopCloseThings() {
-  $("#deskicon-container").mousedown(()=>{
-    // close context menu
-    $('#context-menu').fadeOut(100);
-    itemRightClicked = null;
-  })
-}
-async function captureMousePos() {
-  document.onmousemove = (e) => {
-    let x = (window.Event) ? e.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
-    let y = (window.Event) ? e.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-    mouseCurrentXY = {x: x, y: y};
-  };
-}
-// helpers ====================================================================
-async function saveStoryNote_helper(event,ui) {
-  let inst = CKEDITOR.instances.noteEditor;
-  if (saveNoteWasClicked) {
-    if (elvBtn.is(':checked')) {
-      let newElevatorPitchContent = inst.getData();
-      if (newElevatorPitchContent !== elevatorPitchContent && newElevatorPitchContent !== '') {
-        saveStoryContent(storyID, 'Note', elevatorPitchID, newElevatorPitchContent, 'elevatorPitch');
-        elevatorPitchContent = newElevatorPitchContent;
-      }
-    } else if (sumBtn.is(':checked')) {
-      let newSummaryContent = inst.getData();
-      if (newSummaryContent !== summaryContent && newSummaryContent !== '') {
-        saveStoryContent(storyID, 'Note', summaryID, newSummaryContent, 'summary');
-        summaryContent = newSummaryContent;
-      }
-    }
-    saveNoteWasClicked = false;
-  }
-  else if (elvBtn.is(':checked')) {
-    let newSummaryContent = inst.getData();
-    inst.setData(elevatorPitchContent);
-    try {
-      inst.destroy();
-      CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
-    } catch (e) { }
-    if (newSummaryContent !== summaryContent && newSummaryContent !== '') {
-      saveStoryContent(storyID, 'Note', summaryID, newSummaryContent, 'summary');
-      summaryContent = newSummaryContent;
-    }
-  }
-  else if (sumBtn.is(':checked')) {
-    let newElevatorPitchContent = inst.getData();
-    inst.setData(summaryContent);
-    try {
-      inst.destroy();
-      CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
-    } catch (e) { }
-    if (newElevatorPitchContent !== elevatorPitchContent && newElevatorPitchContent !== '') {
-      saveStoryContent(storyID, 'Note', elevatorPitchID, newElevatorPitchContent, 'elevatorPitch');
-      elevatorPitchContent = newElevatorPitchContent;
-    }
-  } else {
-    console.log('wait what?');
-  }
-}
-async function navigatorExpandAll() {
-  let heads = $(".ui-accordion-header");
-  heads.each((index, el) => {
-    if ($(el).hasClass("ui-accordion-header-collapsed") === true)
-      $(el).trigger("click");
-  });
-}
-async function navigatorCollapseAll() {
-  let heads = $(".ui-accordion-header");
-  heads.each((index, el) => {
-    if ($(el).hasClass("ui-accordion-header-collapsed") === false)
-      $(el).trigger("click");
-  });
-}
-async function saveStoryTitle_helper(event,ui,domID,rName,value,parent) {
-  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
-  let newVal = event.target.value;
-  saveStoryContent(parent.id, 'Title', titleID, newVal, rName );
-}
-async function saveCharacterTitle_helper(event,ui,domID,rName,value,parent) {
-  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
-  let newVal = event.target.value;
-  saveCharacterContent(parent.id, 'Title', titleID, newVal, rName );
-  if (rName === 'realName') {
-    // update header
-    $(`#${domID}_header`).html(value)
-  }
-}
-async function saveEventTitle_helper(event,ui,domID,rName,value,parent) {
-  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
-  let newVal = event.target.value;
-  saveEventContent(parent.id, 'Title', titleID, newVal, rName );
-  if (rName === 'authorTitle') {
-    // update header
-    $(`#${domID}_header`).html(value)
-  }
-}
-async function saveSettingTitle_helper(event,ui,domID,rName,value,parent) {
-  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
-  let newVal = event.target.value;
-  saveSettingContent(parent.id, 'Title', titleID, newVal, rName );
-  if (rName === 'authorTitle') {
-    // update header
-    $(`#${domID}_header`).html(value)
-  }
-}
-async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
-  // sanitize value
-  rn = rn.replace(/"/g, '&quot;');
-  // prep editors
-  let rContainer = $(`#${domID}_${rName}`);
-  let rBox = $(`#${domID}_${rName} div`);
-  rContainer.off('click');
-  rBox.html(
-    `<input id="${domID}_${rName}_editor" type='text' value="${rn}">`
-  );
-  let rEditor = $(`#${domID}_${rName}_editor`);
-  rEditor.focus().select();
-  rEditor.keydown((event,ui) => {
-    if (event.keyCode === 13) {
-      let v = rEditor.val();
-      // save
-      switch (event.target.id.split("_")[0]) {
-        case 'Character':
-          saveCharacterTitle_helper(event,ui,domID,rName,v,parent);
-        break;
-        case 'Story':
-
-        break;
-        case 'Event':
-          saveEventTitle_helper(event,ui,domID,rName,v,parent);
-        break;
-        case 'Setting':
-          saveSettingTitle_helper(event,ui,domID,rName,v,parent);
-        break;
-
-      }
-      // convert back to display
-      rBox.html(v);
-      rContainer.click((event,ui) => {
-        navigatorTitleClick_handler(event,ui,domID,rName,v,parent);
+        });
+        setTimeout(()=>{ $('#splash-container').fadeOut(500); }, 2600);
+        setTimeout(()=>{ $('#splash').effect('drop',
+          {direction: 'up', duration: 600}); }, 2500
+        );
+        initDesktop();
+        // captureMousePos();
+        $('*').disableSelection().not('input');
       });
-      // update page-internal data
-      if (parent[rName] === null) parent[rName] = {};
-      parent[rName].content = v;
-    } else if (event.keyCode === 27) {
-      // revert
-      let text = (parent[rName] !== null) ? parent[rName].content : '';
-      rBox.html(text);
-      rContainer.click((event,ui) => {
-        navigatorTitleClick_handler(event,ui,domID,rName,rn,parent);
-      });
-    }
-  });
-}
-// ajax =======================================================================
-async function handleIconDrop(draggedIDs, dropTargetID) {
-  $.ajax({
-    url: '/dragdrop', method: 'POST',
-    data: {draggedIDs: draggedIDs, dropTargetID: dropTargetID },
-    success: (data) => { handleResponse_dragdrop(data); }
-  });
-}
-async function handleResponse_dragdrop(data) {
-  data = JSON.parse(data);
-  let tgt = $(`#${data.dropTargetID}`);
-  let pop = $('#item-toaster');
-  let xy = tgt.position();
-  let y = xy.top - 48;
-  let x = xy.left + 2;
-  pop.css({position: 'absolute', top: `${y}px`, left: `${x}px`});
-  pop.hide().fadeIn();
-  setTimeout(()=>{pop.effect('drop', {direction: 'up'});}, 1400);
-}
-async function requestPage(url, instant=false) {
-  let response = null;
-  if (instant) response = handleResponse_requestPage_instant;
-  else response = handleResponse_requestPage
-  $.ajax({url: url}).done(response);
-}
-function handleResponse_requestPage(data) {
-  let home = $('#home-workspace');
-  home.fadeOut(250);
-  setTimeout(()=>{home.html(data)},249);
-  home.fadeIn(250);
-}
-function handleResponse_requestPage_instant(data) {
-  let home = $('#home-workspace');
-  home.html(data);
-}
-async function saveStoryContent(storyID, contentType, assocID, content, fieldName) {
-  $.ajax({ url: 'story/save-content', method: 'POST',
-    data: {storyID:storyID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
-  });
-}
-async function saveCharacterContent(characterID, contentType, assocID, content, fieldName) {
-  $.ajax({ url: 'character/save-content', method: 'POST',
-    data: {characterID:characterID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
-  });
-}
-async function saveEventContent(eventID, contentType, assocID, content, fieldName) {
-  $.ajax({ url: 'event/save-content', method: 'POST',
-    data: {eventID:eventID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
-  });
-}
-async function saveSettingContent(settingID, contentType, assocID, content, fieldName) {
-  $.ajax({ url: 'setting/save-content', method: 'POST',
-    data: {settingID:settingID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
-  });
-}
-function handleResponse_saveStoryContent(data) {
-  console.log(data);
-}
-function trashItems() {
-  $('#context-menu').fadeOut(100);
-  let selected = [];
-  let items = [];
-  if (iconSelection.length) {
-    for (let x = 0; x < iconSelection.length; x++) {
-      selected[selected.length] = iconSelection.get(x).id;
-    }
-  }
-  let use_multiselect = (selected.indexOf(itemRightClicked) > -1)
-    ? true : false;
-  // assemble ajax data
-  if (use_multiselect) {
-    selected.map((i) => {
-      let [type,id] = i.split("_");
-      items[items.length] = {type: type, id: id};
-    });
-  } else {
-    let [type,id] = itemRightClicked.split("_");
-    items = [{type: type, id: id}];
-  }
-  let strung = JSON.stringify(items);
-  $.ajax({url: '/common/send-to-trash', method: 'POST',
-    data: {items: strung},
-    success: handleResponse_trashItems
-  });
-}
-function handleResponse_trashItems(data) {
-  requestPage('/home',true);
-}
+      // UI ====================================================================
+      async function captureMousePos() {
+        document.onmousemove = (e) => {
+          let x = (window.Event)
+            ? e.pageX
+            : event.clientX +
+              (document.documentElement.scrollLeft
+                ? document.documentElement.scrollLeft
+                : document.body.scrollLeft);
+          let y = (window.Event)
+            ? e.pageY
+            : event.clientY +
+              (document.documentElement.scrollTop
+                ? document.documentElement.scrollTop
+                : document.body.scrollTop);
+          mouseCurrentXY = {x: x, y: y};
+        };
+      }
     </script>
     <!--STYLES-->
     <link rel="stylesheet" href="/styles/importer.css">
@@ -415,18 +61,15 @@ function handleResponse_trashItems(data) {
     <link rel="stylesheet" href="/styles/startup.css">
     <!--STYLES END-->
   </head>
-
   <body>
     <%- body %>
-
     <!--TEMPLATES-->
     <!--TEMPLATES END-->
-
-
     <!--SCRIPTS-->
     <script src="/dependencies/sails.io.js"></script>
     <!--SCRIPTS END-->
   </body>
   <script src="/js/jquery-ui/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
+  <script src="/js/common.js"></script>
 </html>
