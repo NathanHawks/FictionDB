@@ -135,6 +135,17 @@ async function handleResponse_dragdrop(data) {
   pop.css({position: 'absolute', top: `${y}px`, left: `${x}px`});
   pop.hide().fadeIn();
   setTimeout(()=>{pop.effect('drop', {direction: 'up'});}, 1400);
+  // spin the chevron as it's rising and fading
+  var spin = 0;
+  let spinIt = function(pop, spin) {
+    pop.css('transform', `rotateY(${spin}deg)`);
+    spin = spin + 20;
+    return spin;
+  }
+  setTimeout(() => {
+    let interval = setInterval( () => {spin = spinIt(pop, spin)}, 20);
+    setTimeout(()=>{clearInterval(interval);}, 400);
+  }, 1400);
 }
 
 function trashItems() {

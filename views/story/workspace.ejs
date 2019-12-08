@@ -128,6 +128,25 @@
 </div>
 
 <script>
+  function setupSort(tmpType) {
+    $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
+      // get the character sortables as jquery objects
+      let sortables = $(`#Nav${tmpType}Container .item_accordion .Navigator_item .Navigator_TopTitle`);
+      let sorted = [];
+      for (let x = 0; x < sortables.length; x++) {
+        let domID = sortables.get(x).id;
+        let info = domID.split('_');
+        sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, storyID: storyID};
+      }
+      $.ajax({url: '/story/save-sequence', method: 'POST', data: {items: sorted}})
+        .done(handleResponse_saveStoryContent);
+    });
+  }
+  setupSort('Character');
+  setupSort('Event');
+  setupSort('Setting');
+
+
   // Notes editor (ckeditor) ===================================================
   // a switch for saveStoryNote_helper (twas first writ for radio btn logic)
   var saveNoteWasClicked = false;

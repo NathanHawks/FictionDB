@@ -18,8 +18,8 @@ module.exports = {
     }
   },
   fn: async function ({draggedIDs, dropTargetID}) {
-    console.log(draggedIDs);
-    console.log(dropTargetID);
+    // console.log(draggedIDs);
+    // console.log(dropTargetID);
 
     let [dropTargetType,dropTargetDBID] = dropTargetID.split('_');
     let typesArr = ['Story','Character','Event','Location','Setting'];
@@ -179,7 +179,7 @@ module.exports = {
         break;
       }
     });
-    console.log(`${validDrops.length} drops were valid`);
+    // console.log(`${validDrops.length} drops were valid`);
     return {response: 'OK', dropTargetID: dropTargetID};
   }
 };

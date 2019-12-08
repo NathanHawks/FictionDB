@@ -67,8 +67,11 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
         case 'Character':
           saveCharacterTitle_helper(event,ui,domID,rName,v,parent);
         break;
+        case 'Location':
+          saveLocationTitle_helper(event,ui,domID,rName,v,parent);
+        break;
         case 'Story':
-
+          saveStoryTitle_helper(event,ui,domID,rName,v,parent);
         break;
         case 'Event':
           saveEventTitle_helper(event,ui,domID,rName,v,parent);
@@ -96,21 +99,3 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
     }
   });
 }
-
-function setupSort(tmpType) {
-  $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
-    // get the character sortables as jquery objects
-    let sortables = $(`#Nav${tmpType}Container .item_accordion .Navigator_item .Navigator_TopTitle`);
-    let sorted = [];
-    for (let x = 0; x < sortables.length; x++) {
-      let domID = sortables.get(x).id;
-      let info = domID.split('_');
-      sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, storyID: storyID};
-    }
-    $.ajax({url: '/common/save-sequence', method: 'POST', data: {items: sorted}})
-      .done(handleResponse_saveStoryContent);
-  });
-}
-setupSort('Character');
-setupSort('Event');
-setupSort('Setting');

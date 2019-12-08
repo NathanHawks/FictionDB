@@ -30,6 +30,15 @@ async function saveSettingTitle_helper(event,ui,domID,rName,value,parent) {
     $(`#${domID}_header`).html(value)
   }
 }
+async function saveLocationTitle_helper(event,ui,domID,rName,value,parent) {
+  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
+  let newVal = event.target.value;
+  saveLocationContent(parent.id, 'Title', titleID, newVal, rName );
+  if (rName === 'authorTitle') {
+    // update header
+    $(`#${domID}_header`).html(value)
+  }
+}
 
 async function requestPage(url, instant=false) {
   let response = null;
@@ -65,6 +74,13 @@ async function saveEventContent(eventID, contentType, assocID, content, fieldNam
     success: handleResponse_saveStoryContent
   });
 }
+async function saveLocationContent(locationID, contentType, assocID, content, fieldName) {
+  $.ajax({ url: 'location/save-content', method: 'POST',
+    data: {locationID:locationID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
+    success: handleResponse_saveStoryContent
+  });
+}
+
 async function saveSettingContent(settingID, contentType, assocID, content, fieldName) {
   $.ajax({ url: 'setting/save-content', method: 'POST',
     data: {settingID:settingID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
