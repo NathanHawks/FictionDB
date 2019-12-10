@@ -1,3 +1,15 @@
+function getMainTitleFieldName(itemType) {
+  switch (itemType) {
+    case 'Character':
+      return 'realName';
+    case 'Story':
+      return 'mainTitle';
+    case 'Event':
+    case 'Location':
+    case 'Setting':
+      return 'authorTitle';
+  }
+}
 async function saveStoryTitle_helper(event,ui,domID,rName,value,parent) {
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
   let newVal = event.target.value;
@@ -56,28 +68,36 @@ function handleResponse_requestPage_instant(data) {
   let home = $('#home-workspace');
   home.html(data);
 }
-async function saveStoryContent(storyID, contentType, assocID, content, fieldName) {
+async function saveStoryContent(storyID, contentType, assocID, content,
+  fieldName, cb=handleResponse_saveStoryContent
+) {
   $.ajax({ url: 'story/save-content', method: 'POST',
     data: {storyID:storyID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
+    success: cb
   });
 }
-async function saveCharacterContent(characterID, contentType, assocID, content, fieldName) {
+async function saveCharacterContent(characterID, contentType, assocID, content,
+  fieldName, cb=handleResponse_saveStoryContent
+) {
   $.ajax({ url: 'character/save-content', method: 'POST',
     data: {characterID:characterID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
+    success: cb
   });
 }
-async function saveEventContent(eventID, contentType, assocID, content, fieldName) {
+async function saveEventContent(eventID, contentType, assocID, content,
+  fieldName, cb=handleResponse_saveStoryContent
+) {
   $.ajax({ url: 'event/save-content', method: 'POST',
     data: {eventID:eventID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
+    success: cb
   });
 }
-async function saveLocationContent(locationID, contentType, assocID, content, fieldName) {
+async function saveLocationContent(locationID, contentType, assocID, content,
+  fieldName, cb=handleResponse_saveStoryContent
+) {
   $.ajax({ url: 'location/save-content', method: 'POST',
     data: {locationID:locationID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
+    success: cb
   });
 }
 

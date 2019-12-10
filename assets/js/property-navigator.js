@@ -60,7 +60,10 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
   let rEditor = $(`#${domID}_${rName}_editor`);
   rEditor.focus().select();
   rEditor.keydown((event,ui) => {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 65 && event.ctrlKey) {
+      rEditor.focus().select();
+    }
+    else if (event.keyCode === 13) {
       let v = rEditor.val();
       // save
       switch (event.target.id.split("_")[0]) {

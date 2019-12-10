@@ -7,16 +7,15 @@
      content="width=device-width, initial-scale=1, maximum-scale=1">
     <script src="/js/ckeditor/ckeditor.js"></script>
     <script src="/js/jquery-ui/external/jquery/jquery.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/desktop.js"></script>
+
     <script>
       // these icons are immune from being selected
       const launcherIcons = ['new-story','new-event','new-character',
         'new-location','new-setting'];
-      // store selected id's because jquery's logic thwarts mine otherwise
-      var iconSelection = [];
       // we may track this
       var mouseCurrentXY = {x: undefined, y: undefined};
-      // which item triggered the event
-      var itemRightClicked = null;
       // don't open the accordion for an item we're sorting
       var sorting = false;
       // startup ===============================================================
@@ -71,5 +70,4 @@
   </body>
   <script src="/js/jquery-ui/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">
-  <script src="/js/common.js"></script>
 </html>

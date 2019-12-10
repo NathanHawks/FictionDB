@@ -1,3 +1,8 @@
+// store selected id's because jquery's logic thwarts mine otherwise
+var iconSelection = [];
+// which item triggered the event
+var itemRightClicked = null;
+
 async function initDesktop() {
   makeIconsDraggable();
   makeIconsDroppable();
@@ -93,6 +98,13 @@ async function makeIconsSelectable() {
 async function makeIconsRightClickable() {
   $('.deskicon').contextmenu((event, ui) => {
     itemRightClicked = event.currentTarget.id;
+    // show or hide certain parts of the context menu
+    //  based on how many icons are selected
+    if (getIconSelection().length === 1) {
+      $('.single-select-only').show();
+    } else {
+      $('.single-select-only').hide();
+    }
     var bodyH = window.innerHeight || document.body.clientHeight;
     var bodyW = window.innerWidth  || document.body.clientWidth;
     let menu = $('#context-menu');
@@ -148,8 +160,7 @@ async function handleResponse_dragdrop(data) {
   }, 1400);
 }
 
-function trashItems() {
-  $('#context-menu').fadeOut(100);
+function getIconSelection() {
   let selected = [];
   let items = [];
   if (iconSelection.length) {
@@ -165,10 +176,51 @@ function trashItems() {
       let [type,id] = i.split("_");
       items[items.length] = {type: type, id: id};
     });
-  } else {
+  } else if (itemRightClicked) {
     let [type,id] = itemRightClicked.split("_");
     items = [{type: type, id: id}];
+  } else { items = []; }
+  return items;
+}
+function launchRename() {
+  $('#context-menu').fadeOut(100);
+  setTimeout( () => {
+    let item = getIconSelection()[0];
+    if (item === null) return;
+    let fieldName = getMainTitleFieldName(item.type);
+    let icon = $(`#${item.type}_${item.id} a`);
+    let assocID = icon.attr('associd');
+    let oldName = icon.html();
+    let content = prompt(`Rename ${item.type}: Enter a new name for "${oldName}"`);
+    if (content !== null && content !== "" && content !== undefined) {
+      renameItem(item.id, item.type, fieldName, assocID, content);
+    }
+  }, 100);
+}
+function renameItem(itemID, itemType, fieldName, assocID, content) {
+  let contentType = 'Title';
+  let cb = (data) => { requestPage('/home', true); }
+  switch (itemType) {
+    case 'Story':
+      saveStoryContent(itemID, contentType, assocID, content, fieldName, cb);
+    break;
+    case 'Character':
+      saveCharacterContent(itemID, contentType, assocID, content, fieldName, cb);
+    break;
+    case 'Setting':
+      saveSettingContent(itemID, contentType, assocID, content, fieldName, cb);
+    break;
+    case 'Location':
+      saveLocationContent(itemID, contentType, assocID, content, fieldName, cb);
+    break;
+    case 'Event':
+      saveEventContent(itemID, contentType, assocID, content, fieldName, cb);
+    break;
   }
+}
+function trashItems() {
+  $('#context-menu').fadeOut(100);
+  let items = getIconSelection();
   let strung = JSON.stringify(items);
   $.ajax({url: '/common/send-to-trash', method: 'POST',
     data: {items: strung},

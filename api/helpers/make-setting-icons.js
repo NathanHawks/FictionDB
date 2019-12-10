@@ -19,7 +19,7 @@ module.exports = {
         let t = await Title.findOne({id: s.authorTitle});
         while (t===undefined) {}
         let title = t.content;
-        output += `<div id="Setting_${id}" class="deskicon setting-icon"><a onclick="requestPage('setting/${id}');" href="#">${title}</a></div>`;
+        output += `<div id="Setting_${id}" class="deskicon setting-icon"><a onclick="requestPage('setting/${id}');" associd="${t.id}" href="#">${title}</a></div>`;
       };
     } catch (e) { console.log(e); }
     return output;
