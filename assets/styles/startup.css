@@ -4,12 +4,13 @@ div#splash-container {
   top: 0px;
   left: 0px;
   display: flex;
-  width: 99.9vw;
-  height: 99.9vh;
+  width: 100vw;
+  height: 100vh;
   justify-content: center;
   align-items: center;
   background: black;
   z-index: 9001;
+  overflow: hidden;
 }
 div#splash {
   background: black url('/images/splash.png') no-repeat;
@@ -37,4 +38,10 @@ div#splash-logo {
 /* home-workspace */
 div#home-workspace {
   position: relative;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 97.9vw;
+  height: 96.2vh;
+  padding: 1vh 1vw;
 }

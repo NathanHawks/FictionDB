@@ -1,6 +1,7 @@
 module.exports = {
   attributes: {
     setting: { model: 'Setting' },
-    location: { model: 'Location' }
+    location: { model: 'Location' },
+    sequence: { type: 'number'},
   }
 };

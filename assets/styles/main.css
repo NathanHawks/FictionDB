@@ -314,15 +314,16 @@ div#deskicon-container {
   position: relative;
   padding-bottom: 16px;
   background: black;
-  width: 99.9vw;
-  height: 98.2vh;
+  width: 97.9vw;
+  min-height: 95.2vh;
+  height: auto;
   display: flex;
   flex-flow: row-reverse wrap-reverse;
   justify-content: flex-end;
   align-content: flex-start;
 }
 div.deskicon {
-  margin: 16px;
+  margin: 16px 16px 32px 16px;
   font-size: 8pt;
   height: 64px;
   width: 64px;

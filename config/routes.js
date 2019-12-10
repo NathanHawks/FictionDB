@@ -27,6 +27,7 @@ module.exports.routes = {
   'POST /character/save-content': { action: 'character/save-content' },
   'POST /event/save-content': { action: 'event/save-content' },
   'POST /setting/save-content': { action: 'setting/save-content' },
+  'POST /location/save-content': { action: 'location/save-content' },
   'GET /new-character': { action: 'common/new-character' },
   'GET /new-event': { action: 'common/new-event' },
   'GET /new-location': { action: 'common/new-location' },
@@ -37,7 +38,8 @@ module.exports.routes = {
   '/location/:locationID': { action: 'location/workspace' },
   '/setting/:settingID': { action: 'setting/workspace' },
   'POST /common/send-to-trash': { action: 'common/send-to-trash' },
-  'POST /common/save-sequence': { action: 'common/save-sequence' },
+  'POST /story/save-sequence': { action: 'story/save-sequence' },
+  'POST /setting/save-sequence': { action: 'setting/save-sequence' },
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
