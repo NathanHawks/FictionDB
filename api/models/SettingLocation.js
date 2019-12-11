@@ -4,25 +4,62 @@ module.exports = {
     location: { model: 'Location' },
     sequence: { type: 'number'},
   },
-  getLocations: async (settingID) => {
-    var settingLocations = await SettingLocation.find({
-      where: {setting: settingID}, sort: 'sequence ASC'
-    });
-    var locations = [];
-    // store the functions
-    var f = [];
-    for (x = 0; x < settingLocations.length; x++) {
-      let locID = settingLocations[x].location
-
-      f[x] = async (x, locID, locations) => {
-        locations[x] = await Location.findOne({id: locID})
-          .populate('authorTitle').populate('newsTitle').populate('colloqTitle');
-        return Promise.resolve(locations[x]);
-      }
-
-      locations[x] = await f[x](x, locID, locations);
+  getTitleFieldNames: (type) => {
+    switch (type) {
+      case 'setting':   return Setting.getTitleFieldNames();
+      case 'location':  return Location.getTitleFieldNames();
     }
-    return locations;
+  },
+  getTitleFieldRefs: (type) => {
+    switch (type) {
+      case 'setting':   return Setting.getTitleFieldRefs();
+      case 'location':  return Location.getTitleFieldRefs();
+    }
+  },
+  getSettings: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Setting;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'setting';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = SettingLocation;
+    // the field in thisRef to match linkedID against
+    var linkField = 'location';
+
+    q = {};
+    q[linkField] = linkedID;
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
+    );
+
+    return holder;
+
+  },
+  getLocations: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Location;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'location';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = SettingLocation;
+    // the field in thisRef to match linkedID against
+    var linkField = 'setting';
+
+    q = {};
+    q[linkField] = linkedID;
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
+    );
+
+    return holder;
   },
   linkRecords: async ({setting, location}) => {
     let q = {setting: setting, location: location};

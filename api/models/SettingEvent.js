@@ -4,25 +4,61 @@ module.exports = {
     event: { model: 'Event' },
     sequence: { type: 'number' },
   },
-  getEvents: async (settingID) => {
-    var settingEvents = await SettingEvent.find({
-      where: {setting: settingID}, sort: 'sequence ASC'
-    });
-    var events = [];
-    // store the functions
-    var f = [];
-    for (x = 0; x < settingEvents.length; x++) {
-      evntID = settingEvents[x].event;
-
-      f[x] = async (x,evntID,events) => {
-        events[x] = await Event.findOne({id: evntID})
-          .populate('authorTitle').populate('newsTitle').populate('colloqTitle');
-        return Promise.resolve(events[x]);
-      };
-
-      events[x] = await f[x](x, evntID, events);
+  getTitleFieldNames: (type) => {
+    switch (type) {
+      case 'setting': return Setting.getTitleFieldNames();
+      case 'event':   return Event.getTitleFieldNames();
     }
-    return events;
+  },
+  getTitleFieldRefs: (type) => {
+    switch (type) {
+      case 'setting': return Setting.getTitleFieldRefs();
+      case 'event':   return Event.getTitleFieldRefs();
+    }
+  },
+  getEvents: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Event;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'event';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = SettingEvent;
+    // the field in thisRef to match linkedID against
+    var linkField = 'setting';
+
+    q = {};
+    q[linkField] = linkedID;
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
+    );
+
+    return holder;
+  },
+  getSettings: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Setting;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'setting';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = SettingEvent;
+    // the field in thisRef to match linkedID against
+    var linkField = 'event';
+
+    q = {};
+    q[linkField] = linkedID;
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldNames(fieldName)
+    );
+
+    return holder;
   },
   linkRecords: async ({setting, event}) => {
     let q = {setting: setting, event: event};

@@ -63,10 +63,10 @@
       <script>
         // load navigator Title-editor click handlers
         // NOTE: can't move this to a partial; the helper won't be defined there
-        let settings = JSON.parse(`<%- JSON.stringify(settings) %>`);
-        let events = JSON.parse(`<%- JSON.stringify(events) %>`);
-        let locations = JSON.parse(`<%- JSON.stringify(locations) %>`);
-        let stories = JSON.parse(`<%- JSON.stringify(stories) %>`);
+        let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
+        let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
+        let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
+        let stories = JSON.parse(`<%- fixForJSON(JSON.stringify(stories)) %>`);
         let characters = [];
 
         let list = [

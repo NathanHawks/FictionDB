@@ -4,31 +4,39 @@ module.exports = {
     character: { model: 'Character' },
     sequence: {type: 'number'},
   },
-  getTitleFieldNames: () => {
-    return ['authorTitle', 'newsTitle', 'colloqTitle'];
-  },
-  getTitleFieldRefs: () => {
-    return [Title, Title, Title];
-  },
-  getCharacters: async (settingID) => {
-    var settingCharacters = await SettingCharacter.find({
-      where: {setting: settingID}, sort: 'sequence ASC'
-    });
-    var characters = [];
-    // store the functions or the promises will be broken
-    var f = [];
-    for (x = 0; x < settingCharacters.length; x++) {
-      let charID = settingCharacters[x].character;
-
-      f[x] = async (x, charID, characters) => {
-        characters[x] = await Character.findOne({id: charID})
-          .populate('realName').populate('codeName');
-        return Promise.resolve(characters[x]);
-      }
-
-      characters[x] = await f[x](x, charID, characters);
+  getTitleFieldNames: (type) => {
+    switch (type) {
+      case 'setting':     return Setting.getTitleFieldNames();
+      case 'character':   return Character.getTitleFieldNames();
     }
-    return characters;
+  },
+  getTitleFieldRefs: (type) => {
+    switch (type) {
+      case 'setting':     return Setting.getTitleFieldRefs();
+      case 'character':   return Character.getTitleFieldRefs();
+    }
+  },
+  getCharacters: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Character;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'character';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = SettingCharacter;
+    // the field in thisRef to match linkedID against
+    var linkField = 'setting';
+
+    q = {};
+    q[linkField] = linkedID
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
+    );
+
+    return holder;
   },
   getSettings: async (linkedID) => {
     // the model we're collecting and returning
@@ -47,7 +55,7 @@ module.exports = {
     });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;

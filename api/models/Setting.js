@@ -8,6 +8,12 @@ module.exports = {
     publicNote: { model: 'Note' },
     trash: { type: 'boolean' }
   },
+  getTitleFieldNames: () => {
+    return ['authorTitle', 'newsTitle', 'colloqTitle'];
+  },
+  getTitleFieldRefs: () => {
+    return [Title, Title, Title];
+  },
   get: async (settingID) => {
     return await Setting.findOne({id: settingID})
       .populate('authorTitle')

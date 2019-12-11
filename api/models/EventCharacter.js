@@ -15,11 +15,17 @@ module.exports = {
     }
     return r;
   },
-  getTitleFieldNames: () => {
-    return ['authorTitle', 'newsTitle', 'colloqTitle'];
+  getTitleFieldNames: (type) => {
+    switch (type) {
+      case 'event':     return Event.getTitleFieldNames();
+      case 'character': return Character.getTitleFieldNames();
+    }
   },
-  getTitleFieldRefs: () => {
-    return [Title, Title, Title];
+  getTitleFieldRefs: (type) => {
+    switch (type) {
+      case 'event':     return Event.getTitleFieldRefs();
+      case 'character': return Character.getTitleFieldRefs();
+    }
   },
   getEvents: async (linkedID) => {
     // the model we're collecting and returning
@@ -38,7 +44,7 @@ module.exports = {
     });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;

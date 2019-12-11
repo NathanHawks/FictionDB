@@ -6,6 +6,12 @@ module.exports = {
     backstory: { model: 'Note' },
     trash: { type: 'boolean' }
   },
+  getTitleFieldNames: () => {
+    return ['realName','codeName'];
+  },
+  getTitleFieldRefs: () => {
+    return [Title, Title];
+  },
   get: async (characterID) => {
     return await Character.findOne({id: characterID})
       .populate('realName')

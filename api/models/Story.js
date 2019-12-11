@@ -5,6 +5,12 @@ module.exports = {
     summary: { model: 'Note' },
     trash: { type: 'boolean' }
   },
+  getTitleFieldNames: () => {
+    return ['mainTitle'];
+  },
+  getTitleFieldRefs: () => {
+    return [Title];
+  },
   get: async (storyID) => {
     return await Story.findOne({id: storyID})
       .populate('mainTitle')

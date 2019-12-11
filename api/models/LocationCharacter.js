@@ -4,11 +4,17 @@ module.exports = {
     character: { model: 'Character' },
     sequence: { type: 'number' }
   },
-  getTitleFieldNames: () => {
-    return ['authorTitle', 'newsTitle', 'colloqTitle'];
+  getTitleFieldNames: (type) => {
+    switch (type) {
+      case 'location':   return Location.getTitleFieldNames();
+      case 'character':  return Character.getTitleFieldNames();
+    }
   },
-  getTitleFieldRefs: () => {
-    return [Title, Title, Title];
+  getTitleFieldRefs: (type) => {
+    switch (type) {
+      case 'location':   return Location.getTitleFieldRefs();
+      case 'character':  return Character.getTitleFieldRefs();
+    }
   },
   getCharacters: async (linkedID) => {
     // the model we're collecting and returning
@@ -21,13 +27,13 @@ module.exports = {
     var linkField = 'location';
 
     q = {};
-    q[linkField] = linkedID
+    q[linkField] = linkedID;
     var results = await thisRef.find({
       where: q, sort: 'sequence ASC'
     });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;
@@ -44,15 +50,15 @@ module.exports = {
     var linkField = 'character';
 
     q = {};
-    q[linkField] = linkedID
+    q[linkField] = linkedID;
     var results = await thisRef.find({
       where: q, sort: 'sequence ASC'
     });
 
-    var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
-    );
 
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
+    );
     return holder;
   },
   linkRecords: async ({location, character}) => {
