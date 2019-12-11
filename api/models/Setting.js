@@ -7,5 +7,13 @@ module.exports = {
     authorNote: { model: 'Note' },
     publicNote: { model: 'Note' },
     trash: { type: 'boolean' }
+  },
+  get: async (settingID) => {
+    return await Setting.findOne({id: settingID})
+      .populate('authorTitle')
+      .populate('newsTitle')
+      .populate('colloqTitle')
+      .populate('authorNote')
+      .populate('publicNote');
   }
 };

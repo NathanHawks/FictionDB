@@ -36,7 +36,7 @@ module.exports = {
       );
       let s = null;
       let q = {}; q[fieldName] = n.id;
-      s = await Character.update({id: characterID}).set(q).fetch();
+      s = await Setting.update({id: settingID}).set(q).fetch();
     } catch (e) { console.log(e); }
     return;
   }

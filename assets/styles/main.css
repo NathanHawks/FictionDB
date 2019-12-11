@@ -174,12 +174,11 @@ div#context-menu ul li.context-menu-item a:hover {
 div#context-menu ul li.context-menu-item:hover {
   background-color: #F84;
 }
+/* elsewhere called a chevron */
 #item-toaster {
   display: none;
   position: absolute;
-  text-align: center;
   padding: 12px;
-  margin-bottom: 6px;
   height: 32px;
   width: 64px;
 }
@@ -351,27 +350,27 @@ div.deskicon a {
   width: 64px;
   display: block;
 }
-div.deskicon.story-icon a {
+div.deskicon.story-icon {
   background-image: url('/images/story-icon.png');
   background-repeat: no-repeat;
 }
-div.deskicon.location-icon a {
+div.deskicon.location-icon {
   background-image: url('/images/location-icon.png');
   background-repeat: no-repeat;
 }
-div.deskicon.character-icon a {
+div.deskicon.character-icon {
   background-image: url('/images/character-icon.png');
   background-repeat: no-repeat;
 }
-div.deskicon.event-icon a {
+div.deskicon.event-icon {
   background-image: url('/images/event-icon.png');
   background-repeat: no-repeat;
 }
-div.deskicon.setting-icon a {
+div.deskicon.setting-icon {
   background-image: url('/images/setting-icon.png');
   background-repeat: no-repeat;
 }
-div.deskicon.new-icon {
+div.deskicon.new-icon a {
   background-image: url('/images/new-icon.png');
   background-repeat: no-repeat;
 }

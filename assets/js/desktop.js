@@ -143,7 +143,7 @@ async function handleResponse_dragdrop(data) {
   let pop = $('#item-toaster');
   let xy = tgt.position();
   let y = xy.top - 48;
-  let x = xy.left + 2;
+  let x = xy.left + 32 - 12; // half width of icon - padding of chevron
   pop.css({position: 'absolute', top: `${y}px`, left: `${x}px`});
   pop.hide().fadeIn();
   setTimeout(()=>{pop.effect('drop', {direction: 'up'});}, 1400);

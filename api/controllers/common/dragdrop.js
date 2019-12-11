@@ -37,21 +37,21 @@ module.exports = {
         case 'Story':
           switch (dragTargetType) {
             case 'Character':
-              r = StoryCharacter.create({
+              r = StoryCharacter.linkRecords({
                 story: dropTargetDBID, character: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Event':
-              r = StoryEvent.create({
+              r = StoryEvent.linkRecords({
                 story: dropTargetDBID, event: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Setting':
-              r = StorySetting.create({
+              r = StorySetting.linkRecords({
                 story: dropTargetDBID, setting: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Location':
@@ -67,27 +67,27 @@ module.exports = {
         case 'Character':
           switch (dragTargetType) {
             case 'Story':
-              r = StoryCharacter.create({
+              r = StoryCharacter.linkRecords({
                 character: dropTargetDBID, story: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Event':
-              r = EventCharacter.create({
+              r = EventCharacter.linkRecords({
                 character: dropTargetDBID, event: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Setting':
-              r = SettingCharacter.create({
+              r = SettingCharacter.linkRecords({
                 character: dropTargetDBID, setting: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Location':
-              r = LocationCharacter.create({
+              r = LocationCharacter.linkRecords({
                 character: dropTargetDBID, location: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
           }
@@ -95,27 +95,27 @@ module.exports = {
         case 'Event':
           switch (dragTargetType) {
             case 'Story':
-              r = StoryEvent.create({
+              r = StoryEvent.linkRecords({
                 event: dropTargetDBID, story: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Character':
-              r = EventCharacter.create({
+              r = EventCharacter.linkRecords({
                 event: dropTargetDBID, character: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Location':
-              r = EventLocation.create({
+              r = EventLocation.linkRecords({
                 event: dropTargetDBID, location: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Setting':
-              r = SettingEvent.create({
+              r = SettingEvent.linkRecords({
                 event: dropTargetDBID, setting: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
           }
@@ -130,21 +130,21 @@ module.exports = {
             // TODO via StorySetting <> SettingLocation
             break;
             case 'Character':
-              r = LocationCharacter.create({
+              r = LocationCharacter.linkRecords({
                 location: dropTargetDBID, character: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Event':
-              r = EventLocation.create({
+              r = EventLocation.linkRecords({
                 location: dropTargetDBID, event: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Setting':
-              r = SettingLocation.create({
+              r = SettingLocation.linkRecords({
                 location: dropTargetDBID, setting: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
           }
@@ -152,27 +152,27 @@ module.exports = {
         case 'Setting':
           switch (dragTargetType) {
             case 'Story':
-              r = StorySetting.create({
+              r = StorySetting.linkRecords({
                 setting: dropTargetDBID, story: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Character':
-              r = SettingCharacter.create({
+              r = SettingCharacter.linkRecords({
                 setting: dropTargetDBID, character:dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Event':
-              r = SettingEvent.create({
+              r = SettingEvent.linkRecords({
                 setting: dropTargetDBID, event: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
             case 'Location':
-              r = SettingLocation.create({
+              r = SettingLocation.linkRecords({
                 setting: dropTargetDBID, location: dragTargetDBID
-              }).fetch();
+              });
               r = Promise.resolve(r);
             break;
           }

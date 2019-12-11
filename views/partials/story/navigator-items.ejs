@@ -18,11 +18,12 @@ list.map((s) => { if (s) { %>
           altColor = !altColor;
           colorStyle = (altColor) ? 'alt-list-color' : '';
           let domID = `${s.m}_${c.id}_`;
+          let content = (c[s.t[0]] !== undefined) ? c[s.t[0]].content : '';
           %>
-          <h3><span id="<%= domID %>_header"><%= c[s.t[0]].content %></span></h3>
+          <h3><span id="<%= domID %>_header"><%=  c[s.t[0]].content %></span></h3>
           <div class='Navigator_item <%= colorStyle %>'>
             <div class='Navigator_TopTitle' id="<%= domID %>_<%= s.t[0] %>"><%= s.t[0] %>:
-              <div><%= c[s.t[0]].content %></div>
+              <div><%=  c[s.t[0]].content %></div>
             </div>
             <% for (let x = 1; x < s.t.length; x++) { %>
               <div class='Navigator_Title' id="<%= domID %>_<%= s.t[x] %>"><%= s.t[x] %>:
