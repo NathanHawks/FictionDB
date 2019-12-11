@@ -1,13 +1,8 @@
 <%
 let list = [
-  {v: characters,   h: 'Characters',  m: 'Character',
-    t: ['realName', 'codeName']},
-  {v: events,       h: 'Events',      m: 'Event',
-    t: ['authorTitle', 'newsTitle', 'colloqTitle']},
-  {v: settings,     h: 'Settings',    m: 'Setting',
-    t: ['authorTitle', 'newsTitle', 'colloqTitle']}
-
-
+  {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
+  {v: events,     h: 'Events',     m: 'Event',     t: Event.getTitleFieldNames()},
+  {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting.getTitleFieldNames()}
 
 
 ];
