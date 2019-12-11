@@ -7,7 +7,7 @@ module.exports = {
     role: { model: 'Title' },
     sequence: { type: 'number' }
   },
-  getTitleFieldNames: (type) => {
+  getTitleFieldNames: async (type) => {
     switch (type) {
       case 'story':
         return ['mainTitle'];
@@ -18,7 +18,7 @@ module.exports = {
 
     }
   },
-  getTitleFieldRefs: (type) => {
+  getTitleFieldRefs: async (type) => {
     switch (type) {
       case 'story':
         return [Title];
@@ -45,7 +45,7 @@ module.exports = {
     });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
+      await thisRef.getTitleFieldNames(fieldName), await thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;
@@ -67,7 +67,7 @@ module.exports = {
     });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
+      await thisRef.getTitleFieldNames(fieldName), await thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;

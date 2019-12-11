@@ -4,11 +4,21 @@ module.exports = {
     event: { model: 'Event' },
     sequence: { type: 'number' }
   },
-  getTitleFieldNames: () => {
-    return ['authorTitle','newsTitle','colloqTitle'];
+  getTitleFieldNames: async (type) => {
+    switch (type) {
+      case 'story':
+        return ['mainTitle'];
+      case 'event':
+        return ['authorTitle','newsTitle','colloqTitle'];
+    }
   },
-  getTitleFieldRefs: () => {
-    return [Title, Title, Title];
+  getTitleFieldRefs: async (type) => {
+    switch (type) {
+      case 'story':
+        return [Title];
+      case 'event':
+        return [Title, Title, Title];
+    }
   },
   getEvents: async (linkedID) => {
     // the model we're collecting and returning
@@ -27,7 +37,7 @@ module.exports = {
     });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
+      await thisRef.getTitleFieldNames(fieldName), await thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;
