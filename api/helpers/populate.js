@@ -53,9 +53,11 @@ module.exports = {
         }
         // try the function
         try {
-          holder[x][fieldName] = await f[x][y](
-            fieldRefs[y], holder[x][fieldName]
-          );
+          if (holder[x][fieldName]) {
+            holder[x][fieldName] = await f[x][y](
+              fieldRefs[y], holder[x][fieldName]
+            );
+          } else holder[x][fieldName] = undefined;
         }
         catch (e) { console.log(e); }
         // create empty object if no result

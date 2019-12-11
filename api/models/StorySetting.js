@@ -4,11 +4,43 @@ module.exports = {
     setting: { model: 'Setting' },
     sequence: { type: 'number' }
   },
-  getTitleFieldNames: () => {
-    return ['authorTitle','newsTitle','colloqTitle'];
+  getTitleFieldNames: (type) => {
+    switch (type) {
+      case 'setting':
+        return ['authorTitle','newsTitle','colloqTitle'];
+      case 'story':
+        return ['mainTitle'];
+    }
   },
-  getTitleFieldRefs: () => {
-    return [Title, Title, Title];
+  getTitleFieldRefs: (type) => {
+    switch (type) {
+      case 'setting':
+        return [Title, Title, Title];
+      case 'story':
+        return [Title];
+    }
+  },
+  getStories: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Story;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'story';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = StorySetting;
+    // the field in thisRef to match linkedID against
+    var linkField = 'setting';
+
+    q = {};
+    q[linkField] = linkedID
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
+    );
+
+    return holder;
   },
   getSettings: async (linkedID) => {
     // the model we're collecting and returning
@@ -27,7 +59,7 @@ module.exports = {
     });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;

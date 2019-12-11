@@ -49,7 +49,7 @@ async function navigatorCollapseAll() {
 
 async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
   // sanitize value
-  rn = rn.replace(/"/g, '&quot;');
+  rn = rn.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
   // prep editors
   let rContainer = $(`#${domID}_${rName}`);
   let rBox = $(`#${domID}_${rName} div`);
@@ -64,7 +64,7 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
       rEditor.focus().select();
     }
     else if (event.keyCode === 13) {
-      let v = rEditor.val();
+      let v = rEditor.val().replace(/"/g, '&quot;').replace(/'/g, '&apos;');
       // save
       switch (event.target.id.split("_")[0]) {
         case 'Character':

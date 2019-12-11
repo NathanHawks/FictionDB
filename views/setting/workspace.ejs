@@ -7,22 +7,27 @@
   </div>
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
     <h1 id="mainTitle"><%= setting.authorTitle.content %></h1>
+    <% function fixForJSON(val) {
+      return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
+    } %>
     <script>
       // NOTE: can't move this to a partial; the helper won't be defined there
       function authorTitleKeydown_handler(event,ui) {
         let setting = null;
         let settingString = null;
         if (event.keyCode === 13) {
-          let newVal = event.target.value;
-          settingString = '<%- JSON.stringify(setting).replace(/\\/g, '\\\\') %>';
-          setting = JSON.parse(settingString);
-          saveSettingTitle_helper(event,ui,null,'authorTitle',newVal,setting);
-          $('h1#mainTitle').html(newVal);
-          $('h1#mainTitle').click(mainTitleClick_handler);
+          try {
+            let newVal = event.target.value;
+            settingString = `<%- fixForJSON(JSON.stringify(setting)) %>`;
+            setting = JSON.parse(settingString);
+            saveSettingTitle_helper(event,ui,null,'authorTitle',newVal,setting);
+            $('h1#mainTitle').html(newVal);
+            $('h1#mainTitle').click(mainTitleClick_handler);
+          } catch (e) {console.log(e);}
           oldTitle = null;
         } else if (event.keyCode === 27) {
           try {
-            settingString = '<%- JSON.stringify(setting).replace(/\\/g, '\\\\') %>';
+            settingString = `<%- fixForJSON(JSON.stringify(setting)) %>`;
             setting = JSON.parse(settingString);
             $('h1#mainTitle').html(setting.authorTitle.content);
             $('h1#mainTitle').click(mainTitleClick_handler);
@@ -34,7 +39,7 @@
         $('h1#mainTitle').off('click');
         let oldTitle = $('#mainTitle').html();
         $('h1#mainTitle').html(
-          `<input type='text' id='mainTitle_editor' value='${oldTitle}'>`
+          `<input type='text' id='mainTitle_editor' value='${oldTitle.replace(/'/g, '&apos;')}'>`
         );
         $('#mainTitle_editor').keydown(authorTitleKeydown_handler);
         $('#mainTitle_editor').focus().select();

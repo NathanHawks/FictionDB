@@ -23,6 +23,7 @@ module.exports = {
     var characters = await SettingCharacter.getCharacters(settingID);
     var locations = await SettingLocation.getLocations(settingID);
     var events = await SettingEvent.getEvents(settingID);
+    var stories = await StorySetting.getStories(settingID);
 
     return {
       settingID: settingID,
@@ -30,6 +31,8 @@ module.exports = {
       characters: characters,
       locations: locations,
       events: events,
+      stories: stories,
+      settings: []
     };
   }
 };

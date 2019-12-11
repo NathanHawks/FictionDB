@@ -4,7 +4,8 @@ module.exports = {
     character: { model: 'Character' },
     role: { model: 'Title' },
     authorNote: { model: 'Note' },
-    publicNote: { model: 'Note' }
+    publicNote: { model: 'Note' },
+    sequence: { type: 'number' },
   },
   linkRecords: async ({event, character}) => {
     let q = {event: event, character: character};
@@ -14,5 +15,55 @@ module.exports = {
     }
     return r;
   },
+  getTitleFieldNames: () => {
+    return ['authorTitle', 'newsTitle', 'colloqTitle'];
+  },
+  getTitleFieldRefs: () => {
+    return [Title, Title, Title];
+  },
+  getEvents: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Event;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'event';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = EventCharacter;
+    // the field in thisRef to match linkedID against
+    var linkField = 'character';
 
+    q = {};
+    q[linkField] = linkedID
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
+    );
+
+    return holder;
+  },
+  getCharacters: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Character;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'character';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = EventCharacter;
+    // the field in thisRef to match linkedID against
+    var linkField = 'event';
+
+    q = {};
+    q[linkField] = linkedID
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
+    );
+
+    return holder;
+
+  }
 };

@@ -4,6 +4,12 @@ module.exports = {
     character: { model: 'Character' },
     sequence: {type: 'number'},
   },
+  getTitleFieldNames: () => {
+    return ['authorTitle', 'newsTitle', 'colloqTitle'];
+  },
+  getTitleFieldRefs: () => {
+    return [Title, Title, Title];
+  },
   getCharacters: async (settingID) => {
     var settingCharacters = await SettingCharacter.find({
       where: {setting: settingID}, sort: 'sequence ASC'
@@ -23,6 +29,29 @@ module.exports = {
       characters[x] = await f[x](x, charID, characters);
     }
     return characters;
+  },
+  getSettings: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Setting;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'setting';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = SettingCharacter;
+    // the field in thisRef to match linkedID against
+    var linkField = 'character';
+
+    q = {};
+    q[linkField] = linkedID
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      thisRef.getTitleFieldNames(), thisRef.getTitleFieldRefs()
+    );
+
+    return holder;
+
   },
   linkRecords: async ({setting, character}) => {
     let q = {setting: setting, character: character};

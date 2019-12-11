@@ -40,6 +40,8 @@ module.exports.routes = {
   'POST /common/send-to-trash': { action: 'common/send-to-trash' },
   'POST /story/save-sequence': { action: 'story/save-sequence' },
   'POST /setting/save-sequence': { action: 'setting/save-sequence' },
+  'POST /location/save-sequence': {action: 'location/save-sequence' },
+  'POST /character/save-sequence': {action: 'character/save-sequence' },
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

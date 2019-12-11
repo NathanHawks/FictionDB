@@ -1,0 +1,40 @@
+<%
+let list = [
+  {v: settings,   h: 'Settings',  m: 'Setting',
+  t: ['authorTitle', 'newsTitle', 'colloqTitle']},
+  {v: events,       h: 'Events',      m: 'Event',
+    t: ['authorTitle', 'newsTitle', 'colloqTitle']},
+  {v: locations,     h: 'Locations',    m: 'Location',
+    t: ['authorTitle', 'newsTitle', 'colloqTitle']},
+  {v: stories,     h: 'Stories',    m: 'Story',
+    t: ['mainTitle']},
+  {v: characters,  h: 'Characters', m: 'Character',
+    t: ['realName','codeName']},
+];
+list.map((s) => { if (s) { %>
+    <div class='Navigator_header'><%= s.h %></div>
+    <div id='Nav<%= s.m %>Container' class='Navigator_container'>
+      <% var altColor = false;
+      var colorStyle = '';
+      s.v.map((c) => { %>
+        <div class='item_accordion'>
+          <%
+          altColor = !altColor;
+          colorStyle = (altColor) ? 'alt-list-color' : '';
+          let domID = `${s.m}_${c.id}_`;
+          %>
+          <h3><span id="<%= domID %>_header"><%= c[s.t[0]].content %></span></h3>
+          <div class='Navigator_item <%= colorStyle %>'>
+            <div class='Navigator_TopTitle' id="<%= domID %>_<%= s.t[0] %>"><%= s.t[0] %>:
+              <div><%= c[s.t[0]].content %></div>
+            </div>
+            <% for (let x = 1; x < s.t.length; x++) { %>
+              <div class='Navigator_Title' id="<%= domID %>_<%= s.t[x] %>"><%= s.t[x] %>:
+                <div><%= (c[s.t[x]]) ? c[s.t[x]].content : '' %></div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+<% } }); %>

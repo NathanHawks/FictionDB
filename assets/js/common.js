@@ -1,3 +1,6 @@
+function fixForJSON(val) {
+  return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
+}
 function getMainTitleFieldName(itemType) {
   switch (itemType) {
     case 'Character':
@@ -14,6 +17,10 @@ async function saveStoryTitle_helper(event,ui,domID,rName,value,parent) {
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
   let newVal = event.target.value;
   saveStoryContent(parent.id, 'Title', titleID, newVal, rName );
+  if (rName === 'mainTitle') {
+    // update header
+    $(`#${domID}_header`).html(value)
+  }
 }
 async function saveCharacterTitle_helper(event,ui,domID,rName,value,parent) {
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
