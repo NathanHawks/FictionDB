@@ -7,7 +7,7 @@ let list = [
   {v: settings,     h: 'Settings',    m: 'Setting',
     t: ['authorTitle', 'newsTitle', 'colloqTitle']}
 ];
-list.map((s) => { if (s) { %>
+list.map((s) => { if (s.v.length) { %>
     <div class='Navigator_header'><%= s.h %></div>
     <div id='Nav<%= s.m %>Container' class='Navigator_container'>
       <% var altColor = false;
