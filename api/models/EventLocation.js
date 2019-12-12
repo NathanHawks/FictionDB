@@ -19,7 +19,6 @@ module.exports = {
     switch (type) {
       case 'event':    return Event.getTitleFieldRefs();
       case 'location': return Location.getTitleFieldRefs();
-
     }
   },
   getEvents: async (linkedID) => {

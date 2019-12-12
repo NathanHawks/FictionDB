@@ -18,6 +18,20 @@ module.exports = {
     }
   },
   fn: async function ({locationID}) {
-    return {locationID: locationID};
+    var s = await Location.get(locationID);
+    // populate Navigator
+    var characters = await LocationCharacter.getCharacters(locationID);
+    var events = await EventLocation.getEvents(locationID);
+    var settings = await SettingLocation.getSettings(locationID);
+
+    return {
+      locationID: locationID,
+      location: s,
+      characters: characters,
+      locations: [],
+      settings: settings,
+      stories: [],
+      events: events
+    }
   }
 };

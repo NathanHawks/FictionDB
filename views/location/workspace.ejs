@@ -1,5 +1,179 @@
-<h1>Yay it works</h1>
-<pre>locationID: <%= locationID %></pre>
-<a class='btn back-btn' href="#" onclick="requestPage('/home');">Back</a>
+<div class="col-1-container">
+  <div class="mod-col-1 mod toolbar-top">
+    <fieldset id="mainToolbar">
+      <a class='btn back-btn' href="#" onclick="requestPage('/home');">Back</a>
+    </fieldset>
+    <br/>
+  </div>
+  <div class="mod-col-1 mod-main-content mod mod-mainTitle">
+    <h1 id="mainTitle"><%= location.authorTitle.content %></h1>
+    <% function fixForJSON(val) {
+      return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
+    } %>
+    <script>
+      // NOTE: can't move this to a partial; the helper won't be defined there
+      function authorTitleKeydown_handler(event,ui) {
+        let location = null;
+        let locationString = null;
+        if (event.keyCode === 13) {
+          try {
+            let newVal = event.target.value;
+            locationString = `<%- fixForJSON(JSON.stringify(location)) %>`;
+            location = JSON.parse(locationString);
+            saveLocationTitle_helper(event,ui,null,'authorTitle',newVal,location);
+            $('h1#mainTitle').html(newVal);
+            $('h1#mainTitle').click(mainTitleClick_handler);
+          } catch (e) {console.log(e);}
+          oldTitle = null;
+        } else if (event.keyCode === 27) {
+          try {
+            locationString = `<%- fixForJSON(JSON.stringify(location)) %>`;
+            location = JSON.parse(locationString);
+            $('h1#mainTitle').html(location.authorTitle.content);
+            $('h1#mainTitle').click(mainTitleClick_handler);
+          } catch (e) {console.log(e);}
+          oldTitle = null;
+        } else if (event.keyCode === 65 && event.ctrlKey) {
+          $('#mainTitle_editor').focus().select();
+        }
+      }
+      function mainTitleClick_handler(event,ui) {
+        $('h1#mainTitle').off('click');
+        let oldTitle = $('#mainTitle').html();
+        $('h1#mainTitle').html(
+          `<input type='text' id='mainTitle_editor' value='${oldTitle.replace(/'/g, '&apos;')}'>`
+        );
+        $('#mainTitle_editor').keydown(authorTitleKeydown_handler);
+        $('#mainTitle_editor').focus().select();
+      }
+      $('h1#mainTitle').click(mainTitleClick_handler);
+    </script>
+  </div>
+  <!-- properties window =================================================== -->
+  <div class="mod-col-1 mod">
+    <div id="Navigator">
+      <div id="Navigator_toolbar">
+        <a href="#" onclick="navigatorExpandAll();"
+        id="navigatorExpandAllBtn" title="Expand All" alt="Expand All"><img
+        src="/images/expand-all-icon.png"/></a>
+        <a href="#" onclick="navigatorCollapseAll();"
+        id="navigatorCollapseAllBtn" title="Collapse All" alt="Collapse All"><img
+        src="/images/collapse-all-icon.png"/></a>
+      </div>
+      <div id="Navigator_table">
 
-<script> $('.btn').button();</script>
+      <%- partial('../partials/location/navigator-items'); %>
+
+      <script>
+        // load navigator Title-editor click handlers
+        // NOTE: can't move this to a partial; the helper won't be defined there
+        let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
+        let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
+        let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
+        let stories = JSON.parse(`<%- fixForJSON(JSON.stringify(stories)) %>`);
+        let list = [
+          {v: characters,   h: 'Characters',  m: 'Character',
+            t: ['realName', 'codeName']},
+          {v: settings,       h: 'Settings',      m: 'Setting',
+            t: ['authorTitle', 'newsTitle', 'colloqTitle']},
+          {v: locations,     h: 'Locations',    m: 'Location',
+            t: ['authorTitle', 'newsTitle', 'colloqTitle']},
+          {v: stories,      h: 'Stories',    m: 'Story',
+            t: ['mainTitle']}
+        ];
+        list.map((s) => {
+          s.v.map((c) => {
+            let domID = `${s.m}_${c.id}_`;
+            s.t.map((t) => {
+              $(`#${domID}_${t}`).click( (event,ui) => {
+                let content = (c[t]) ? c[t].content : '';
+                navigatorTitleClick_handler(event,ui,domID,t,content,c);
+              });
+            });
+          });
+        });
+      </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-2-container">
+  <div class="mod-col-2 mod toolbar-top" style="margin-bottom: 0px; height: ">
+    <form>
+      <fieldset id="col-2-editorType">
+        <label for="editorType_publicNote">Public Note</label>
+        <input type="radio" name="editorType" id="editorType_publicNote" checked="checked">
+        <label for="editorType_authorNote">Author Notes</label>
+        <input type="radio" name="editorType" id="editorType_authorNote">
+      </fieldset>
+      <fieldset id="col-2-mainToolbar">
+        <input class="btn" type="button" id="editorSubmit" value="Save">
+      </fieldset>
+    </form>
+    <br/>
+  </div>
+  <div class="mod-col-2 mod" style="flex-grow: 8; display: flex; margin-top: 0px;">
+    <textarea id="noteEditor"><%- (location.publicNote !== null)
+      ? location.publicNote.content : '' %></textarea>
+  </div>
+</div>
+
+<div class="col-3-container">
+  <div class="mod-col-1 mod toolbar-top">&nbsp;
+  </div>
+  <div class="mod-col-3 mod" style="height: 5vh;">
+    <p>???</p>
+  </div>
+</div>
+
+<div class="col-4-container">
+  <div class="mod-col-1 mod toolbar-top">&nbsp;
+  </div>
+  <div class="mod-col-4 mod" style="height: 5vh;">
+    <p>Generated Public Note:<br/>
+      Sequence of Locations ea. w/<br/> Characters & Locations
+    </p>
+  </div>
+</div>
+
+<script>
+  function setupSort(tmpType) {
+    $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
+      // get the character sortables as jquery objects
+      let sortables = $(`#Nav${tmpType}Container .item_accordion .Navigator_item .Navigator_TopTitle`);
+      let sorted = [];
+      for (let x = 0; x < sortables.length; x++) {
+        let domID = sortables.get(x).id;
+        let info = domID.split('_');
+        sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, locationID: locationID};
+      }
+      $.ajax({url: '/location/save-sequence', method: 'POST', data: {items: sorted}})
+        .done(handleResponse_saveStoryContent);
+    });
+  }
+  setupSort('Character');
+  setupSort('Setting');
+  setupSort('Location');
+  setupSort('Story');
+
+
+  // Notes editor (ckeditor) ===================================================
+  // a switch for saveLocationNote_helper (twas first writ for radio btn logic)
+  var saveNoteWasClicked = false;
+  try {
+    var locationID = `<%= location.id %>`;
+    var authorNoteContent = `<%- (location.authorNote !== null)
+      ? location.authorNote.content : '' %>`;
+    var publicNoteContent = `<%- (location.publicNote !== null)
+      ? location.publicNote.content : '' %>`;
+    var authorNoteID = `<%= (location.authorNote !== null)
+      ? location.authorNote.id : -1 %>`;
+    var publicNoteID = `<%= (location.publicNote !== null)
+      ? location.publicNote.id : -1  %>`;
+    } catch (e) { console.log(e); }
+
+</script>
+
+<script src="/js/property-navigator.js"></script>
+<script src="/js/ck-location.js"></script>

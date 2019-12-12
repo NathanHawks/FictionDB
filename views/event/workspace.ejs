@@ -33,6 +33,8 @@
             $('h1#mainTitle').click(mainTitleClick_handler);
           } catch (e) {console.log(e);}
           oldTitle = null;
+        } else if (event.keyCode === 65 && event.ctrlKey) {
+          $('#mainTitle_editor').focus().select();
         }
       }
       function mainTitleClick_handler(event,ui) {
@@ -170,6 +172,7 @@
     var publicNoteID = `<%= (event.publicNote !== null)
       ? event.publicNote.id : -1  %>`;
     } catch (e) { console.log(e); }
+
 </script>
 
 <script src="/js/property-navigator.js"></script>

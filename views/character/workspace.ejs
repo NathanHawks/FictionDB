@@ -31,6 +31,8 @@
             $('h1#mainTitle').click(mainTitleClick_handler);
           } catch (e) {console.log(e);}
           oldTitle = null;
+        } else if (event.keyCode === 65 && event.ctrlKey) {
+          $('#mainTitle_editor').focus().select();
         }
       }
       function mainTitleClick_handler(event,ui) {

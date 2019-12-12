@@ -1,13 +1,10 @@
 <%
 let list = [
   {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
-  {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting.getTitleFieldNames()},
-  {v: locations,  h: 'Locations',  m: 'Location',  t: Location.getTitleFieldNames()},
-  {v: stories,    h: 'Stories',    m: 'Story',     t: Story.getTitleFieldNames()},
-
+  {v: events,     h: 'Events',     m: 'Event',     t: Event.getTitleFieldNames()},
+  {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting. getTitleFieldNames()},
 
 ];
-
 list.map((s) => { if (s.v.length) { %>
     <div class='Navigator_header'><%= s.h %></div>
     <div id='Nav<%= s.m %>Container' class='Navigator_container'>
