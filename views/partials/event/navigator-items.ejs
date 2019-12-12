@@ -33,9 +33,6 @@ function setupClickHandlers() {
     });
   });
 }
-
-</script>
-<script>
 function unlinkRecords(event, subjectType, subjectID, objectType, objectID) {
   $.ajax({url: '/unlink', method: 'POST',
     data: {subjectType: subjectType, subjectID: subjectID, objectType: objectType, objectID: objectID}

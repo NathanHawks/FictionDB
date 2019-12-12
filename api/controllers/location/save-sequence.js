@@ -22,7 +22,7 @@ module.exports = {
         let id = item.id;
         let type = item.type;
         let seq = item.sequence;
-        let sID = item.locationID;
+        let sID = item.linkedID;
         switch (type) {
           case 'Character':
             r[x] = Promise.resolve(await LocationCharacter.update(

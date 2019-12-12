@@ -11,7 +11,36 @@ function fixForJSON(val) {
 }
 %>
 <script>
-var list = JSON.parse(`<%- fixForJSON(JSON.stringify(list)) %>`);
+
+// load navigator Title-editor click handlers
+// NOTE: can't move this to a partial; the helper won't be defined there
+let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
+let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
+let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
+let stories = JSON.parse(`<%- fixForJSON(JSON.stringify(stories)) %>`);
+function setupClickHandlers() {
+  var list = JSON.parse(`<%- fixForJSON(JSON.stringify(list)) %>`);
+  list.map((s) => {
+    s.v.map((c) => {
+      let domID = `${s.m}_${c.id}_`;
+      s.t.map((t) => {
+        $(`#${domID}_${t}`).click( (event,ui) => {
+          let content = (c[t]) ? c[t].content : '';
+          navigatorTitleClick_handler(event,ui,domID,t,content,c);
+        });
+      });
+    });
+  });
+}
+function unlinkRecords(event, subjectType, subjectID, objectType, objectID) {
+  $.ajax({url: '/unlink', method: 'POST',
+    data: {subjectType: subjectType, subjectID: subjectID, objectType: objectType, objectID: objectID}
+  }).done(unlinkRecords_handleResponse);
+  event.stopPropagation();
+}
+function unlinkRecords_handleResponse(data) {
+  reloadNavigator('location', <%= location.id %>);
+}
 </script>
 <%
 list.map((s) => { if (s.v.length) { %>
@@ -27,7 +56,11 @@ list.map((s) => { if (s.v.length) { %>
           let domID = `${s.m}_${c.id}_`;
           // don't do header for own properties
           if (location.id !== c.id || s.m !== 'Location') { %>
-            <h3><span id="<%= domID %>_header"><%= c[s.t[0]].content %></span></h3>
+            <h3><span id="<%= domID %>_header" class="nav-item-header-text"><%= c[s.t[0]].content %></span>
+              <a href="#" class="btn"
+                title="Unlink" alt="Unlink"
+                onclick="unlinkRecords(event, 'Location', <%= location.id %>, '<%= s.m %>', <%= c.id %>);">X</a>
+            </h3>
           <% } %>
           <div class='Navigator_item <%= colorStyle %>'>
             <% // don't show main title in own properties

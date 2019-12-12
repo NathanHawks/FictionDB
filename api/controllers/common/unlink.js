@@ -31,13 +31,13 @@ module.exports = {
       case 'Story':
         switch (objectType) {
           case 'Character':
-
+            model = StoryCharacter;
           break;
           case 'Event':
-
+            model = StoryEvent;
           break;
           case 'Setting':
-
+            model = SettingEvent;
           break;
           case 'Location':
             // get the story's setting, if it has one
@@ -52,32 +52,32 @@ module.exports = {
       case 'Character':
         switch (objectType) {
           case 'Story':
-
+            model = StoryCharacter;
           break;
           case 'Event':
-
+            model = EventCharacter;
           break;
           case 'Setting':
-
+            model = SettingCharacter;
           break;
           case 'Location':
-
+            model = LocationCharacter;
           break;
         }
       break;
       case 'Event':
         switch (objectType) {
           case 'Story':
-
+            model = StoryEvent;
           break;
           case 'Character':
             model = EventCharacter;
           break;
           case 'Location':
-
+            model = EventLocation;
           break;
           case 'Setting':
-
+            model = SettingEvent;
           break;
         }
       break;
@@ -91,29 +91,29 @@ module.exports = {
           // TODO via StorySetting <> SettingLocation
           break;
           case 'Character':
-
+            model = LocationCharacter
           break;
           case 'Event':
-
+            model = LocationEvent;
           break;
           case 'Setting':
-
+            model = SettingLocation;
           break;
         }
       break;
       case 'Setting':
         switch (objectType) {
           case 'Story':
-
+            model = StorySetting;
           break;
           case 'Character':
-
+            model = SettingCharacter;
           break;
           case 'Event':
-
+            model = SettingEvent;
           break;
           case 'Location':
-
+            model = SettingLocation;
           break;
         }
       break;

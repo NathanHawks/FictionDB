@@ -22,8 +22,13 @@ module.exports = {
         let id = item.id;
         let type = item.type;
         let seq = item.sequence;
-        let sID = item.settingID;
+        let sID = item.linkedID;
         switch (type) {
+          case 'Story':
+          r[x] = Promise.resolve(await StorySetting.update(
+            {story: id, setting: sID})
+            .set({sequence: seq}).fetch());
+          break;
           case 'Character':
             r[x] = Promise.resolve(await SettingCharacter.update(
               {character: id, setting: sID})

@@ -15,6 +15,8 @@
     } %>
     <script>
       var settingID = `<%= setting.id %>`;
+      var linkedID = settingID;
+      var linkedType = 'setting';
       // NOTE: can't move this to a partial; the helper won't be defined there
       function authorTitleKeydown_handler(event,ui) {
         let setting = null;
@@ -67,30 +69,10 @@
       <div id="Navigator_table">
 
       <%- partial('../partials/setting/navigator-items'); %>
-
-      <script>
-        // load navigator Title-editor click handlers
-        // NOTE: can't move this to a partial; the helper won't be defined there
-        let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
-        let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
-        let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
-
-        list.map((s) => {
-          s.v.map((c) => {
-            let domID = `${s.m}_${c.id}_`;
-            s.t.map((t) => {
-              if (s.m !== 'Setting' || Number(c.id) !== Number(settingID) || t !== 'authorTitle') {
-                $(`#${domID}_${t}`).click( (event,ui) => {
-                  let content = (c[t]) ? c[t].content : '';
-                  navigatorTitleClick_handler(event,ui,domID,t,content,c);
-                });
-              } else {
-                $(`#${domID}_${t}`).addClass('prop-main-title');
-              }
-            });
-          });
-        });
-      </script>
+      <script>setupAccordion();</script>
+      <script>setupSorts();</script>
+      <script>setupClickHandlers();</script>
+      
       </div>
     </div>
   </div>

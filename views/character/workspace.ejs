@@ -15,7 +15,8 @@
     } %>
     <script>
       var characterID = `<%= character.id %>`;
-
+      var linkedID = characterID;
+      var linkedType = 'character';
       // NOTE: can't move this to a partial; the helper won't be defined there
       function realNameKeydown_handler(event,ui) {
         let character = null;
@@ -66,31 +67,11 @@
       <div id="Navigator_table">
 
       <%- partial('../partials/character/navigator-items'); %>
+      <script>setupAccordion();</script>
+      <script>setupSorts();</script>
+      <script>setupClickHandlers();</script>
 
       <script>
-        // load navigator Title-editor click handlers
-        // NOTE: can't move this to a partial; the helper won't be defined there
-        let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
-        let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
-        let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
-        let stories = JSON.parse(`<%- fixForJSON(JSON.stringify(stories)) %>`);
-        let characters = [];
-
-        list.map((s) => {
-          s.v.map((c) => {
-            let domID = `${s.m}_${c.id}_`;
-            s.t.map((t) => {
-              if (s.m !== 'Character' || Number(c.id) !== Number(characterID) || t !== 'realName') {
-                $(`#${domID}_${t}`).click( (event,ui) => {
-                  let content = (c[t]) ? c[t].content : '';
-                  navigatorTitleClick_handler(event,ui,domID,t,content,c);
-                });
-              } else {
-                $(`#${domID}_${t}`).addClass('prop-main-title');
-              }
-            });
-          });
-        });
       </script>
       </div>
     </div>

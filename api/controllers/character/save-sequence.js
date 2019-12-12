@@ -22,7 +22,7 @@ module.exports = {
         let id = item.id;
         let type = item.type;
         let seq = item.sequence;
-        let sID = item.characterID;
+        let sID = item.linkedID;
         switch (type) {
           case 'Location':
             r[x] = Promise.resolve(await LocationCharacter.update(
@@ -37,6 +37,11 @@ module.exports = {
           case 'Setting':
             r[x] = Promise.resolve(await SettingCharacter.update({
               setting: id, character: sID})
+              .set({sequence: seq}).fetch());
+          break;
+          case 'Story':
+            r[x] = Promise.resolve(await StoryCharacter.update({
+              story: id, character: sID})
               .set({sequence: seq}).fetch());
           break;
         }
