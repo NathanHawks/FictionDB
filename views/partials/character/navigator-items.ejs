@@ -1,11 +1,16 @@
 <%
-let list = [
+var list = [
   {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting.getTitleFieldNames()},
   {v: events,     h: 'Events',     m: 'Event',     t: Event.getTitleFieldNames()},
   {v: locations,  h: 'Locations',  m: 'Location',  t: Location.getTitleFieldNames()},
   {v: stories,    h: 'Stories',    m: 'Story',     t: Story.getTitleFieldNames()},
   {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
 ];
+%>
+<script>
+var list = JSON.parse(fixForJSON(`<%- JSON.stringify(list) %>`));
+</script>
+<%
 list.map((s) => { if (s.v.length) { %>
     <div class='Navigator_header'><%= s.h %></div>
     <div id='Nav<%= s.m %>Container' class='Navigator_container'>

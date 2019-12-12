@@ -129,4 +129,3 @@ try {
 
 // Start server
 sails.lift(rc('sails'), tryLaunchingForSails );
-global.sails = sails;

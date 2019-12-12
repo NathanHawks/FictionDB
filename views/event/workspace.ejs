@@ -1,3 +1,6 @@
+<script src="/js/property-navigator.js"></script>
+<script src="/js/ck-event.js"></script>
+
 <div class="col-1-container">
   <div class="mod-col-1 mod toolbar-top">
     <fieldset id="mainToolbar">
@@ -71,16 +74,7 @@
         let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
         let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
         let stories = JSON.parse(`<%- fixForJSON(JSON.stringify(stories)) %>`);
-        let list = [
-          {v: characters,   h: 'Characters',  m: 'Character',
-            t: ['realName', 'codeName']},
-          {v: settings,       h: 'Settings',      m: 'Setting',
-            t: ['authorTitle', 'newsTitle', 'colloqTitle']},
-          {v: locations,     h: 'Locations',    m: 'Location',
-            t: ['authorTitle', 'newsTitle', 'colloqTitle']},
-          {v: stories,      h: 'Stories',    m: 'Story',
-            t: ['mainTitle']}
-        ];
+
         list.map((s) => {
           s.v.map((c) => {
             let domID = `${s.m}_${c.id}_`;
@@ -138,25 +132,10 @@
 </div>
 
 <script>
-  function setupSort(tmpType) {
-    $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
-      // get the character sortables as jquery objects
-      let sortables = $(`#Nav${tmpType}Container .item_accordion .Navigator_item .Navigator_TopTitle`);
-      let sorted = [];
-      for (let x = 0; x < sortables.length; x++) {
-        let domID = sortables.get(x).id;
-        let info = domID.split('_');
-        sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, eventID: eventID};
-      }
-      $.ajax({url: '/event/save-sequence', method: 'POST', data: {items: sorted}})
-        .done(handleResponse_saveStoryContent);
-    });
-  }
   setupSort('Character');
   setupSort('Setting');
   setupSort('Location');
   setupSort('Story');
-
 
   // Notes editor (ckeditor) ===================================================
   // a switch for saveEventNote_helper (twas first writ for radio btn logic)
@@ -174,6 +153,3 @@
     } catch (e) { console.log(e); }
 
 </script>
-
-<script src="/js/property-navigator.js"></script>
-<script src="/js/ck-event.js"></script>

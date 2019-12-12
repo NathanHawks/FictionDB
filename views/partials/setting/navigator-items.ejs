@@ -6,6 +6,11 @@ let list = [
 
 
 ];
+%>
+<script>
+var list = JSON.parse(fixForJSON(`<%- JSON.stringify(list) %>`));
+</script>
+<%
 list.map((s) => { if (s.v.length) { %>
     <div class='Navigator_header'><%= s.h %></div>
     <div id='Nav<%= s.m %>Container' class='Navigator_container'>

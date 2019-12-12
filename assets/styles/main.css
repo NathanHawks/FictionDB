@@ -310,12 +310,14 @@ input#mainTitle_editor {
 
 /* #icon-container and related */
 div#deskicon-container {
-  position: relative;
-  padding-bottom: 16px;
+  position: absolute;
+  top: 3vh;
+  left: 0;
   background: black;
-  width: 97.9vw;
-  min-height: 95.2vh;
-  height: auto;
+  padding-bottom: 2vh;
+  padding-right: 1vw;
+  width: 99vw;
+  height: 95vh;
   display: flex;
   flex-flow: row-reverse wrap-reverse;
   justify-content: flex-end;

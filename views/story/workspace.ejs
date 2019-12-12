@@ -1,3 +1,6 @@
+<script src="/js/property-navigator.js"></script>
+<script src="/js/ck-story.js"></script>
+
 <div class="col-1-container">
   <div class="mod-col-1 mod toolbar-top">
     <fieldset id="mainToolbar">
@@ -68,14 +71,7 @@
         let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
         let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
         let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
-        let list = [
-          {v: characters,   h: 'Characters',  m: 'Character',
-            t: ['realName', 'codeName']},
-          {v: events,       h: 'Events',      m: 'Event',
-            t: ['authorTitle', 'newsTitle', 'colloqTitle']},
-          {v: settings,     h: 'Settings',    m: 'Setting',
-            t: ['authorTitle', 'newsTitle', 'colloqTitle']}
-        ];
+
         list.map((s) => {
           s.v.map((c) => {
             let domID = `${s.m}_${c.id}_`;
@@ -133,24 +129,9 @@
 </div>
 
 <script>
-  function setupSort(tmpType) {
-    $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
-      // get the character sortables as jquery objects
-      let sortables = $(`#Nav${tmpType}Container .item_accordion .Navigator_item .Navigator_TopTitle`);
-      let sorted = [];
-      for (let x = 0; x < sortables.length; x++) {
-        let domID = sortables.get(x).id;
-        let info = domID.split('_');
-        sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, storyID: storyID};
-      }
-      $.ajax({url: '/story/save-sequence', method: 'POST', data: {items: sorted}})
-        .done(handleResponse_saveStoryContent);
-    });
-  }
   setupSort('Character');
   setupSort('Event');
   setupSort('Setting');
-
 
   // Notes editor (ckeditor) ===================================================
   // a switch for saveStoryNote_helper (twas first writ for radio btn logic)
@@ -167,6 +148,3 @@
       ? story.summary.id : -1  %>`;
     } catch (e) { console.log(e); }
 </script>
-
-<script src="/js/property-navigator.js"></script>
-<script src="/js/ck-story.js"></script>

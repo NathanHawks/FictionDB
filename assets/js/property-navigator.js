@@ -31,6 +31,21 @@ $('.Navigator_container').sortable({axis: 'y', handle: 'h3',
   }
 });
 
+function setupSort(tmpType) {
+  $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
+    // get the character sortables as jquery objects
+    let sortables = $(`#Nav${tmpType}Container .item_accordion .Navigator_item .Navigator_TopTitle`);
+    let sorted = [];
+    for (let x = 0; x < sortables.length; x++) {
+      let domID = sortables.get(x).id;
+      let info = domID.split('_');
+      sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, storyID: storyID};
+    }
+    $.ajax({url: '/story/save-sequence', method: 'POST', data: {items: sorted}})
+      .done(handleResponse_saveStoryContent);
+  });
+}
+
 async function navigatorExpandAll() {
   let heads = $(".ui-accordion-header");
   heads.each((index, el) => {
