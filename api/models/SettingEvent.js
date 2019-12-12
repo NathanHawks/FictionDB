@@ -55,7 +55,7 @@ module.exports = {
     });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldNames(fieldName)
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;

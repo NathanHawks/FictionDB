@@ -42,6 +42,7 @@ module.exports.routes = {
   'POST /setting/save-sequence': { action: 'setting/save-sequence' },
   'POST /location/save-sequence': {action: 'location/save-sequence' },
   'POST /character/save-sequence': {action: 'character/save-sequence' },
+  'POST /event/save-sequence': {action: 'event/save-sequence' },
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *

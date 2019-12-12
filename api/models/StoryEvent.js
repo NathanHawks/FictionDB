@@ -20,6 +20,28 @@ module.exports = {
         return [Title, Title, Title];
     }
   },
+  getStories: async (linkedID) => {
+    // the model we're collecting and returning
+    var classRef = Story;
+    // lowercase string of same; link table field name (fkey)
+    var fieldName = 'story';
+    // a reference to this model since we can't have nice things (this/self)
+    var thisRef = StoryEvent;
+    // the field in thisRef to match linkedID against
+    var linkField = 'event';
+
+    q = {};
+    q[linkField] = linkedID
+    var results = await thisRef.find({
+      where: q, sort: 'sequence ASC'
+    });
+
+    var holder = await sails.helpers.populate(results, fieldName, classRef,
+      await thisRef.getTitleFieldNames(fieldName), await thisRef.getTitleFieldRefs(fieldName)
+    );
+
+    return holder;
+  },
   getEvents: async (linkedID) => {
     // the model we're collecting and returning
     var classRef = Event;

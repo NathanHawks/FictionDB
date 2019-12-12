@@ -1,5 +1,6 @@
 module.exports = {
   attributes: {
+    event: { model: 'Event' },
     location: { model: 'Location' },
     sequence: { type: 'number' },
     authorTitle: { model: 'Title' },
@@ -10,18 +11,14 @@ module.exports = {
   },
   getTitleFieldNames: (type) => {
     switch (type) {
-      case 'event':
-        return Event.getTitleFieldNames();
-      case 'location':
-        return Location.getTitleFieldNames();
+      case 'event':    return Event.getTitleFieldNames();
+      case 'location': return Location.getTitleFieldNames();
     }
   },
   getTitleFieldRefs: (type) => {
     switch (type) {
-      case 'event':
-        return Event.getTitleFieldRefs();
-      case 'location':
-        return Location.getTitleFieldRefs();
+      case 'event':    return Event.getTitleFieldRefs();
+      case 'location': return Location.getTitleFieldRefs();
 
     }
   },
@@ -34,17 +31,13 @@ module.exports = {
     var thisRef = EventLocation;
     // the field in thisRef to match linkedID against
     var linkField = 'location';
-    let fNames = await thisRef.getTitleFieldNames(fieldName);
-    let fRefs = await thisRef.getTitleFieldRefs(fieldName);
 
     q = {};
     q[linkField] = linkedID;
-    var results = await thisRef.find({
-      where: q, sort: 'sequence ASC'
-    });
+    var results = await thisRef.find({ where: q, sort: 'sequence ASC' });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      Promise.resolve(fNames), Promise.resolve(fRefs)
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;
@@ -59,17 +52,13 @@ module.exports = {
     var thisRef = EventLocation;
     // the field in thisRef to match linkedID against
     var linkField = 'event';
-    let fNames = await thisRef.getTitleFieldNames(fieldName);
-    let fRefs = await thisRef.getTitleFieldRefs(fieldName);
 
     q = {};
     q[linkField] = linkedID;
-    var results = await thisRef.find({
-      where: q, sort: 'sequence ASC'
-    });
+    var results = await thisRef.find({ where: q, sort: 'sequence ASC' });
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
-      Promise.resolve(fNames), Promise.resolve(fRefs)
+      thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
     );
 
     return holder;
