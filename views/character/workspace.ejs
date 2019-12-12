@@ -14,6 +14,8 @@
       return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
     } %>
     <script>
+      var characterID = `<%= character.id %>`;
+
       // NOTE: can't move this to a partial; the helper won't be defined there
       function realNameKeydown_handler(event,ui) {
         let character = null;
@@ -78,10 +80,14 @@
           s.v.map((c) => {
             let domID = `${s.m}_${c.id}_`;
             s.t.map((t) => {
-              $(`#${domID}_${t}`).click( (event,ui) => {
-                let content = (c[t]) ? c[t].content : '';
-                navigatorTitleClick_handler(event,ui,domID,t,content,c);
-              });
+              if (s.m !== 'Character' || Number(c.id) !== Number(characterID) || t !== 'realName') {
+                $(`#${domID}_${t}`).click( (event,ui) => {
+                  let content = (c[t]) ? c[t].content : '';
+                  navigatorTitleClick_handler(event,ui,domID,t,content,c);
+                });
+              } else {
+                $(`#${domID}_${t}`).addClass('prop-main-title');
+              }
             });
           });
         });
@@ -140,7 +146,6 @@
   // a switch for saveSettingNote_helper (twas first writ for radio btn logic)
   var saveNoteWasClicked = false;
   try {
-    var characterID = `<%= character.id %>`;
     var traitsContent = `<%- (character.traits !== null)
       ? character.traits.content : '' %>`;
     var backstoryContent = `<%- (character.backstory !== null)

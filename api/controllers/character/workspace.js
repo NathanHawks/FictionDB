@@ -32,8 +32,8 @@ module.exports = {
       locations: locations,
       events: events,
       stories: stories,
-      characters: [],
-      
+      characters: [s],
+
     };
   }
 };

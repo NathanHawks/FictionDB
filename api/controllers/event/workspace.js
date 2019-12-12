@@ -32,7 +32,7 @@ module.exports = {
       locations: locations,
       settings: settings,
       stories: stories,
-      events: []
+      events: [s]
     }
   }
 };

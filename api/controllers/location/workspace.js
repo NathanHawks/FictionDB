@@ -28,7 +28,7 @@ module.exports = {
       locationID: locationID,
       location: s,
       characters: characters,
-      locations: [],
+      locations: [s],
       settings: settings,
       stories: [],
       events: events

@@ -25,7 +25,7 @@ module.exports = {
     var characters = await StoryCharacter.getCharacters(storyID);
     var settings = await StorySetting.getSettings(storyID);
     var events = await StoryEvent.getEvents(storyID);
-    
+
     // populate Navigator - locations
     // var storyLocations = await StoryLocation.find({story: storyID});
     // locationDBIDs = [];
@@ -43,7 +43,8 @@ module.exports = {
       settings: settings,
       events: events,
       // locations: locations,
-      settings: settings
+      settings: settings,
+      stories: [s]
     };
   }
 };

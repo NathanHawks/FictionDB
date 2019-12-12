@@ -1,5 +1,8 @@
 <script src="/js/property-navigator.js"></script>
 <script src="/js/ck-location.js"></script>
+<% function fixForJSON(val) {
+  return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
+} %>
 
 <div class="col-1-container">
   <div class="mod-col-1 mod toolbar-top">
@@ -10,10 +13,8 @@
   </div>
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
     <h1 id="mainTitle"><%= location.authorTitle.content %></h1>
-    <% function fixForJSON(val) {
-      return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
-    } %>
     <script>
+      var locationID = `<%= location.id %>`;
       // NOTE: can't move this to a partial; the helper won't be defined there
       function authorTitleKeydown_handler(event,ui) {
         let location = null;
@@ -79,10 +80,14 @@
           s.v.map((c) => {
             let domID = `${s.m}_${c.id}_`;
             s.t.map((t) => {
-              $(`#${domID}_${t}`).click( (event,ui) => {
-                let content = (c[t]) ? c[t].content : '';
-                navigatorTitleClick_handler(event,ui,domID,t,content,c);
-              });
+              if (s.m !== 'Location' || Number(c.id) !== Number(locationID) || t !== 'authorTitle') {
+                $(`#${domID}_${t}`).click( (event,ui) => {
+                  let content = (c[t]) ? c[t].content : '';
+                  navigatorTitleClick_handler(event,ui,domID,t,content,c);
+                });
+              } else {
+                $(`#${domID}_${t}`).addClass('prop-main-title');
+              }
             });
           });
         });
@@ -142,7 +147,6 @@
   // a switch for saveLocationNote_helper (twas first writ for radio btn logic)
   var saveNoteWasClicked = false;
   try {
-    var locationID = `<%= location.id %>`;
     var authorNoteContent = `<%- (location.authorNote !== null)
       ? location.authorNote.content : '' %>`;
     var publicNoteContent = `<%- (location.publicNote !== null)

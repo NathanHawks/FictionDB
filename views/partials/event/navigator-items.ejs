@@ -1,14 +1,18 @@
 <%
 let list = [
+  {v: events,     h: 'Properties', m: 'Event',     t: Event.getTitleFieldNames()},
   {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
   {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting.getTitleFieldNames()},
   {v: locations,  h: 'Locations',  m: 'Location',  t: Location.getTitleFieldNames()},
   {v: stories,    h: 'Stories',    m: 'Story',     t: Story.getTitleFieldNames()},
 
 ];
+function fixForJSON(val) {
+  return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
+}
 %>
 <script>
-var list = JSON.parse(fixForJSON(`<%- JSON.stringify(list) %>`));
+var list = JSON.parse(`<%- fixForJSON(JSON.stringify(list)) %>`);
 </script>
 <%
 list.map((s) => { if (s.v.length) { %>

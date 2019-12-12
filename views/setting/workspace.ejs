@@ -14,6 +14,7 @@
       return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
     } %>
     <script>
+      var settingID = `<%= setting.id %>`;
       // NOTE: can't move this to a partial; the helper won't be defined there
       function authorTitleKeydown_handler(event,ui) {
         let setting = null;
@@ -78,10 +79,14 @@
           s.v.map((c) => {
             let domID = `${s.m}_${c.id}_`;
             s.t.map((t) => {
-              $(`#${domID}_${t}`).click( (event,ui) => {
-                let content = (c[t]) ? c[t].content : '';
-                navigatorTitleClick_handler(event,ui,domID,t,content,c);
-              });
+              if (s.m !== 'Setting' || Number(c.id) !== Number(settingID) || t !== 'authorTitle') {
+                $(`#${domID}_${t}`).click( (event,ui) => {
+                  let content = (c[t]) ? c[t].content : '';
+                  navigatorTitleClick_handler(event,ui,domID,t,content,c);
+                });
+              } else {
+                $(`#${domID}_${t}`).addClass('prop-main-title');
+              }
             });
           });
         });
@@ -139,7 +144,6 @@
   // a switch for saveSettingNote_helper (twas first writ for radio btn logic)
   var saveNoteWasClicked = false;
   try {
-    var settingID = `<%= setting.id %>`;
     var authorNoteContent = `<%- (setting.authorNote !== null)
       ? setting.authorNote.content : '' %>`;
     var publicNoteContent = `<%- (setting.publicNote !== null)
