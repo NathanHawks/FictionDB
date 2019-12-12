@@ -25,12 +25,17 @@ list.map((s) => { if (s.v.length) { %>
           altColor = !altColor;
           colorStyle = (altColor) ? 'alt-list-color' : '';
           let domID = `${s.m}_${c.id}_`;
-          %>
-          <h3><span id="<%= domID %>_header"><%= c[s.t[0]].content %></span></h3>
+          // don't do header for own properties
+          if (location.id !== c.id || s.m !== 'Location') { %>
+            <h3><span id="<%= domID %>_header"><%= c[s.t[0]].content %></span></h3>
+          <% } %>
           <div class='Navigator_item <%= colorStyle %>'>
-            <div class='Navigator_TopTitle' id="<%= domID %>_<%= s.t[0] %>"><%= s.t[0] %>:
-              <div><%= c[s.t[0]].content %></div>
-            </div>
+            <% // don't show main title in own properties
+            if (location.id !== c.id || s.m !== 'Location') { %>
+              <div class='Navigator_TopTitle' id="<%= domID %>_<%= s.t[0] %>"><%= s.t[0] %>:
+                <div><%= c[s.t[0]].content %></div>
+              </div>
+            <% } %>
             <% for (let x = 1; x < s.t.length; x++) { %>
               <div class='Navigator_Title' id="<%= domID %>_<%= s.t[x] %>"><%= s.t[x] %>:
                 <div><%= (c[s.t[x]]) ? c[s.t[x]].content : '' %></div>

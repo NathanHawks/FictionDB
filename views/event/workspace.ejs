@@ -81,14 +81,10 @@
           s.v.map((c) => {
             let domID = `${s.m}_${c.id}_`;
             s.t.map((t) => {
-              if (s.m !== 'Event' || Number(c.id) !== Number(eventID) || t !== 'authorTitle') {
-                $(`#${domID}_${t}`).click( (event,ui) => {
-                  let content = (c[t]) ? c[t].content : '';
-                  navigatorTitleClick_handler(event,ui,domID,t,content,c);
-                });
-              } else {
-                $(`#${domID}_${t}`).addClass('prop-main-title');
-              }
+              $(`#${domID}_${t}`).click( (event,ui) => {
+                let content = (c[t]) ? c[t].content : '';
+                navigatorTitleClick_handler(event,ui,domID,t,content,c);
+              });
             });
           });
         });
