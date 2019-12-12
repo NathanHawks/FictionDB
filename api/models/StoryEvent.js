@@ -71,6 +71,9 @@ module.exports = {
       r = await StoryEvent.create(q).fetch();
     }
     return r;
-
+  },
+  unlinkRecords: async ({story, event}) => {
+    let q = {story: story, event: event};
+    let r = await StoryEvent.destroy(q);
   }
 };

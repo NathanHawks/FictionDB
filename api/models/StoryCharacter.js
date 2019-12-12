@@ -80,4 +80,8 @@ module.exports = {
     }
     return r;
   },
+  unlinkRecords: async ({story, character}) => {
+    let q = {story: story, character: character};
+    let r = await StoryCharacter.destroy(q);
+  }
 };

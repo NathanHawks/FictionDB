@@ -7,14 +7,6 @@ module.exports = {
     publicNote: { model: 'Note' },
     sequence: { type: 'number' },
   },
-  linkRecords: async ({event, character}) => {
-    let q = {event: event, character: character};
-    let r = await EventCharacter.findOne(q);
-    if (r === undefined) {
-      r = await EventCharacter.create(q).fetch();
-    }
-    return r;
-  },
   getTitleFieldNames: (type) => {
     switch (type) {
       case 'event':     return Event.getTitleFieldNames();
@@ -67,9 +59,19 @@ module.exports = {
 
     var holder = await sails.helpers.populate(results, fieldName, classRef,
       thisRef.getTitleFieldNames(fieldName), thisRef.getTitleFieldRefs(fieldName)
-    );
-
+    )
     return holder;
-
+  },
+  linkRecords: async ({event, character}) => {
+    let q = {event: event, character: character};
+    let r = await EventCharacter.findOne(q);
+    if (r === undefined) {
+      r = await EventCharacter.create(q).fetch();
+    }
+    return r;
+  },
+  unlinkRecords: async ({event, character}) => {
+    let q = {event: event, character: character};
+    let r = await EventCharacter.destroy(q);
   }
 };

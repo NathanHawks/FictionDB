@@ -1,36 +1,38 @@
 // Properties Navigator window =================================================
 
 // two points are required to mix with .sortable in the way we want
-$( '.item_accordion' ).accordion({ // each item must be its own accordion
-  animate: 100,
-  collapsible: true,
-  header: 'h3',
-  heightStyle: 'content',
-  beforeActivate: (event,ui) => {
-    // prevent state-change caused by dragdrop click
-    if (sorting) { event.preventDefault(); }
-  },
-  classes: {
-    'ui-accordion-header': 'Navigator_TopTitle',
-    'ui-accordion-header-collapsed': 'Navigator_TopTitle',
-    'ui-accordion-content': 'Navigator_item'
-  }, active: false
-});
 
-$('.Navigator_container').sortable({axis: 'y', handle: 'h3',
-  distance: 5,
-  revert: 200,
-  start: (event,ui)=>{
-    // prevent accordion state-change during dragdrop
-    sorting = true;
-  },
-  stop: (event,ui)=>{
-    $('.item_accordion').accordion('refresh');
-    // prevent accordion state-change during dragdrop
-    sorting = false;
-  }
-});
+function setupAccordion() {
+  $( '.item_accordion' ).accordion({ // each item must be its own accordion
+    animate: 100,
+    collapsible: true,
+    header: 'h3',
+    heightStyle: 'content',
+    beforeActivate: (event,ui) => {
+      // prevent state-change caused by dragdrop click
+      if (sorting) { event.preventDefault(); }
+    },
+    classes: {
+      'ui-accordion-header': 'Navigator_TopTitle',
+      'ui-accordion-header-collapsed': 'Navigator_TopTitle',
+      'ui-accordion-content': 'Navigator_item'
+    }, active: false
+  });
 
+  $('.Navigator_container').sortable({axis: 'y', handle: 'h3',
+    distance: 5,
+    revert: 200,
+    start: (event,ui)=>{
+      // prevent accordion state-change during dragdrop
+      sorting = true;
+    },
+    stop: (event,ui)=>{
+      $('.item_accordion').accordion('refresh');
+      // prevent accordion state-change during dragdrop
+      sorting = false;
+    }
+  });
+}
 function setupSort(tmpType) {
   $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
     // get the character sortables as jquery objects
@@ -39,9 +41,9 @@ function setupSort(tmpType) {
     for (let x = 0; x < sortables.length; x++) {
       let domID = sortables.get(x).id;
       let info = domID.split('_');
-      sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, storyID: storyID};
+      sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, linkedID: linkedID};
     }
-    $.ajax({url: '/story/save-sequence', method: 'POST', data: {items: sorted}})
+    $.ajax({url: `/${linkedType}/save-sequence`, method: 'POST', data: {items: sorted}})
       .done(handleResponse_saveStoryContent);
   });
 }
@@ -60,6 +62,26 @@ async function navigatorCollapseAll() {
     if ($(el).hasClass("ui-accordion-header-collapsed") === false)
       $(el).trigger("click");
   });
+}
+
+function reloadNavigator(type, id) {
+  $.ajax({url: `${type}_nav/${id}`, method: 'GET'})
+    .done(reloadNavigator_handleResponse);
+}
+function reloadNavigator_handleResponse(data) {
+  $('#Navigator_table').html(data);
+  setupAccordion();
+  setupSorts();
+  setupClickHandlers();
+  $('.btn').button();
+}
+
+function setupSorts() {
+  setupSort('Character');
+  setupSort('Setting');
+  setupSort('Location');
+  setupSort('Story');
+  setupSort('Event');
 }
 
 async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {

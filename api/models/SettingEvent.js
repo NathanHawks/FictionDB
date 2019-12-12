@@ -68,5 +68,8 @@ module.exports = {
     }
     return r;
   },
-
+  unlinkRecords: async ({setting, event}) => {
+    let q = {setting: setting, event: event};
+    let r = await SettingEvent.destroy(q);
+  }
 };

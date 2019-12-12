@@ -117,11 +117,25 @@ a.btn.ui-button.ui-widget {
 div.mod div#Navigator div#Navigator_table h3 {
   background-color: #404080;
   color: #bdbdbd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .2em;
 }
 div.mod div#Navigator div#Navigator_table h3 span.ui-accordion-header-icon {
   background-color: #202020;
   color: #dcdcdc;
   margin-right: 12px;
+  flex-grow: 0;
+}
+div.mod div#Navigator div#Navigator_table h3 span.nav-item-header-text {
+  flex-grow: 4;
+  min-width: calc(20vw - 28px);
+  display: inline-block;
+}
+div.mod div#Navigator div#Navigator_table h3 a.btn {
+  flex-grow: 0;
+  padding: .5vh .5vw;
 }
 .ui-widget-content {
   background-color: #202020;

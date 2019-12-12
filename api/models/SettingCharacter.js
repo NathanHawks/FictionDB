@@ -69,4 +69,8 @@ module.exports = {
     }
     return r;
   },
+  unlinkRecords: async ({setting, character}) => {
+    let q = {setting: setting, character: character};
+    let r = await SettingCharacter.destroy(q);
+  }
 };

@@ -72,5 +72,8 @@ module.exports = {
     }
     return r;
   },
-
+  unlinkRecords: async ({event, location}) => {
+    let q = {event: event, location: location};
+    let r = await EventLocation.destroy(q);
+  }
 };

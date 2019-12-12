@@ -69,5 +69,8 @@ module.exports = {
     }
     return r;
   },
-
+  unlinkRecords: async ({location, character}) => {
+    let q = {location: location, character: character};
+    let r = await LocationCharacter.destroy(q);
+  }
 };

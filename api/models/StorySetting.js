@@ -71,6 +71,9 @@ module.exports = {
       r = await StorySetting.create(q).fetch();
     }
     return r;
-
+  },
+  unlinkRecords: async ({story, setting}) => {
+    let q = {story: story, setting: setting};
+    let r = await StorySetting.destroy(q);
   }
 };
