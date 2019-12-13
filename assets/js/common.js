@@ -1,3 +1,6 @@
+// back button history
+var backBtnHistory = [];
+
 function fixForJSON(val) {
   return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
 }
@@ -59,12 +62,20 @@ async function saveLocationTitle_helper(event,ui,domID,rName,value,parent) {
   }
 }
 
-async function requestPage(url, instant=false) {
+async function requestPage(url, instant=false, backBtnUrl='/home') {
   let response = null;
+  if (backBtnUrl !== 'SKIP') backBtnHistory.unshift(backBtnUrl);
+  console.log(backBtnHistory);
   if (instant) response = handleResponse_requestPage_instant;
   else response = handleResponse_requestPage
   $.ajax({url: url}).done(response);
 }
+
+async function requestBackBtn() {
+  backBtnUrl = backBtnHistory.shift();
+  requestPage(backBtnUrl, false, 'SKIP');
+}
+
 function handleResponse_requestPage(data) {
   let home = $('#home-workspace');
   home.fadeOut(250);

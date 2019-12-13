@@ -12,7 +12,6 @@ function fixForJSON(val) {
 %>
 <script>
   // load navigator Title-editor click handlers
-  // NOTE: can't move this to a partial; the helper won't be defined there
   let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
   let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
   let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
@@ -40,6 +39,12 @@ function unlinkRecords(event, subjectType, subjectID, objectType, objectID) {
 function unlinkRecords_handleResponse(data) {
   reloadNavigator('setting', <%= setting.id %>);
 }
+function gotoRecord(event, modelName, id, backBtnUrl='/home') {
+  modelName = `${modelName}`.toLowerCase();
+  backBtnUrl = `${backBtnUrl}`.toLowerCase();
+  event.stopPropagation();
+  requestPage(`${modelName}/${id}`, false, backBtnUrl);
+}
 </script>
 <%
 list.map((s) => { if (s.v.length) { %>
@@ -59,6 +64,9 @@ list.map((s) => { if (s.v.length) { %>
               <a href="#" class="btn"
                 title="Unlink" alt="Unlink"
                 onclick="unlinkRecords(event, 'Setting', <%= setting.id %>, '<%= s.m %>', <%= c.id %>);">X</a>
+              <a href="#" class="btn"
+                title="Workspace" alt="Workspace"
+                onclick="gotoRecord(event, `<%= s.m %>`,<%= c.id %>,`${linkedType}/${linkedID}`)">&gt;&gt;</a>
             </h3>
           <% } %>
           <div class='Navigator_item <%= colorStyle %>'>
