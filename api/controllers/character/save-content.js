@@ -14,7 +14,7 @@ module.exports = {
     },
     content: {
       type: 'string',
-      required: true
+      required: false
     },
     fieldName: {
       type: 'string',
@@ -30,6 +30,7 @@ module.exports = {
   fn: async function ({characterID, contentType, assocID, content, fieldName}) {
     // console.log(` characterID: ${characterID}\n contentType: ${contentType}\n`
     //   +` assocID: ${assocID}\n content: ${content}\n fieldName: ${fieldName}`);
+    if (content === '') { content = ' '; }
     try {
       let n = await sails.helpers.saveContent(
         assocID, contentType, content, fieldName

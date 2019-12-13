@@ -14,7 +14,7 @@ module.exports = {
     },
     content: {
       type: 'string',
-      required: true
+      required: false
     },
     fieldName: {
       type: 'string',

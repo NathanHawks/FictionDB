@@ -1,3 +1,4 @@
+<script src="/js/workspace.js"></script>
 <script src="/js/property-navigator.js"></script>
 <script src="/js/ck-event.js"></script>
 
@@ -9,6 +10,7 @@
     <br/>
   </div>
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
+    <p class="main-title-intro">An event called</p>
     <h1 id="mainTitle"><%= event.authorTitle.content %></h1>
     <% function fixForJSON(val) {
       return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
@@ -29,6 +31,7 @@
             saveEventTitle_helper(event,ui,null,'authorTitle',newVal,ev);
             $('h1#mainTitle').html(newVal);
             $('h1#mainTitle').click(mainTitleClick_handler);
+            $('p.main-title-intro').click(mainTitleClick_handler);
           } catch (e) {console.log(e);}
           oldTitle = null;
         } else if (event.keyCode === 27) {
@@ -37,7 +40,8 @@
             ev = JSON.parse(evString);
             $('h1#mainTitle').html(ev.authorTitle.content);
             $('h1#mainTitle').click(mainTitleClick_handler);
-          } catch (e) {console.log(e);}
+            $('p.main-title-intro').click(mainTitleClick_handler);
+        } catch (e) {console.log(e);}
           oldTitle = null;
         } else if (event.keyCode === 65 && event.ctrlKey) {
           $('#mainTitle_editor').focus().select();
@@ -45,6 +49,8 @@
       }
       function mainTitleClick_handler(event,ui) {
         $('h1#mainTitle').off('click');
+        $('p.main-title-intro').off('click')
+          .click((e) => { $('input#mainTitle_editor').focus().select(); });
         let oldTitle = $('#mainTitle').html();
         $('h1#mainTitle').html(
           `<input type='text' id='mainTitle_editor' value='${oldTitle.replace(/'/g, '&apos;')}'>`
@@ -53,6 +59,7 @@
         $('#mainTitle_editor').focus().select();
       }
       $('h1#mainTitle').click(mainTitleClick_handler);
+      $('p.main-title-intro').click(mainTitleClick_handler);
     </script>
   </div>
   <!-- properties window =================================================== -->

@@ -1,3 +1,4 @@
+<script src="/js/workspace.js"></script>
 <script src="/js/property-navigator.js"></script>
 <script src="/js/ck-character.js"></script>
 
@@ -9,6 +10,7 @@
     <br/>
   </div>
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
+    <p class="main-title-intro">A character named</p>
     <h1 id="mainTitle"><%= character.realName.content %></h1>
     <% function fixForJSON(val) {
       return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
@@ -29,12 +31,14 @@
           $('h1#mainTitle').html(newVal);
           $('h1#mainTitle').click(mainTitleClick_handler);
           oldTitle = null;
+          $('p.main-title-intro').click(mainTitleClick_handler);
         } else if (event.keyCode === 27) {
           try {
             characterString = '<%- fixForJSON(JSON.stringify(character)) %>';
             character = JSON.parse(characterString);
             $('h1#mainTitle').html(character.realName.content);
             $('h1#mainTitle').click(mainTitleClick_handler);
+            $('p.main-title-intro').click(mainTitleClick_handler);
           } catch (e) {console.log(e);}
           oldTitle = null;
         } else if (event.keyCode === 65 && event.ctrlKey) {
@@ -43,6 +47,8 @@
       }
       function mainTitleClick_handler(event,ui) {
         $('h1#mainTitle').off('click');
+        $('p.main-title-intro').off('click')
+          .click((e) => { $('input#mainTitle_editor').focus().select(); });
         let oldTitle = $('#mainTitle').html();
         $('h1#mainTitle').html(
           `<input type='text' id='mainTitle_editor' value='${oldTitle.replace(/'/g, '&apos;')}'>`
@@ -51,6 +57,7 @@
         $('#mainTitle_editor').focus().select();
       }
       $('h1#mainTitle').click(mainTitleClick_handler);
+      $('p.main-title-intro').click(mainTitleClick_handler);
     </script>
   </div>
   <!-- properties window =================================================== -->

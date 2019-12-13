@@ -10,25 +10,31 @@ try {
   var elvBtn = $('#editorType_backstory');
   $('input[type=radio][name=editorType]').change((event, ui)=>{
     saveCharacterNote_helper(event,ui);
+    attachAutoSave();
   });
   $('#editorSubmit').click((e,ui) => {
     saveNoteWasClicked = true;
     saveCharacterNote_helper(e,ui);
   });
+  attachAutoSave();
+  indicateSaved();
 } catch (e) { console.log(e); }
 
 async function saveCharacterNote_helper(event,ui) {
+  disableSaveBtn();
+  autosaveCandidate = false;
+  clearInterval(autosaveInterval);
   let inst = CKEDITOR.instances.noteEditor;
   if (saveNoteWasClicked) {
     if (elvBtn.is(':checked')) {
       let newBackstoryContent = inst.getData();
-      if (newBackstoryContent !== backstoryContent && newBackstoryContent !== '') {
+      if (newBackstoryContent !== backstoryContent) {
         saveCharacterContent(characterID, 'Note', backstoryID, newBackstoryContent, 'backstory');
         backstoryContent = newBackstoryContent;
       }
     } else if (sumBtn.is(':checked')) {
       let newTraitsContent = inst.getData();
-      if (newTraitsContent !== traitsContent && newTraitsContent !== '') {
+      if (newTraitsContent !== traitsContent) {
         saveCharacterContent(characterID, 'Note', traitsID, newTraitsContent, 'traits');
         traitsContent = newTraitsContent;
       }
@@ -42,7 +48,7 @@ async function saveCharacterNote_helper(event,ui) {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newTraitsContent !== traitsContent && newTraitsContent !== '') {
+    if (newTraitsContent !== traitsContent) {
       saveCharacterContent(characterID, 'Note', traitsID, newTraitsContent, 'traits');
       traitsContent = newTraitsContent;
     }
@@ -54,11 +60,12 @@ async function saveCharacterNote_helper(event,ui) {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newBackstoryContent !== backstoryContent && newBackstoryContent !== '') {
+    if (newBackstoryContent !== backstoryContent) {
       saveCharacterContent(characterID, 'Note', backstoryID, newBackstoryContent, 'backstory');
       backstoryContent = newBackstoryContent;
     }
   } else {
     console.log('wait what?');
   }
+  indicateSaved();
 }

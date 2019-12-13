@@ -10,25 +10,31 @@ try {
   var elvBtn = $('#editorType_authorNote');
   $('input[type=radio][name=editorType]').change((event, ui)=>{
     saveLocationNote_helper(event,ui);
+    attachAutoSave();
   });
   $('#editorSubmit').click((e,ui) => {
     saveNoteWasClicked = true;
     saveLocationNote_helper(e,ui);
   });
+  attachAutoSave();
+  indicateSaved();
 } catch (e) { console.log(e); }
 
 async function saveLocationNote_helper(event,ui) {
+  disableSaveBtn();
+  autosaveCandidate = false;
+  clearInterval(autosaveInterval);
   let inst = CKEDITOR.instances.noteEditor;
   if (saveNoteWasClicked) {
     if (elvBtn.is(':checked')) {
       let newAuthorNoteContent = inst.getData();
-      if (newAuthorNoteContent !== authorNoteContent && newAuthorNoteContent !== '') {
+      if (newAuthorNoteContent !== authorNoteContent) {
         saveLocationContent(locationID, 'Note', authorNoteID, newAuthorNoteContent, 'authorNote');
         authorNoteContent = newAuthorNoteContent;
       }
     } else if (sumBtn.is(':checked')) {
       let newPublicNoteContent = inst.getData();
-      if (newPublicNoteContent !== publicNoteContent && newPublicNoteContent !== '') {
+      if (newPublicNoteContent !== publicNoteContent) {
         saveLocationContent(locationID, 'Note', publicNoteID, newPublicNoteContent, 'publicNote');
         publicNoteContent = newPublicNoteContent;
       }
@@ -42,7 +48,7 @@ async function saveLocationNote_helper(event,ui) {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newPublicNoteContent !== publicNoteContent && newPublicNoteContent !== '') {
+    if (newPublicNoteContent !== publicNoteContent) {
       saveLocationContent(locationID, 'Note', publicNoteID, newPublicNoteContent, 'publicNote');
       publicNoteContent = newPublicNoteContent;
     }
@@ -54,11 +60,12 @@ async function saveLocationNote_helper(event,ui) {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newAuthorNoteContent !== authorNoteContent && newAuthorNoteContent !== '') {
+    if (newAuthorNoteContent !== authorNoteContent) {
       saveLocationContent(locationID, 'Note', authorNoteID, newAuthorNoteContent, 'authorNote');
       authorNoteContent = newAuthorNoteContent;
     }
   } else {
     console.log('wait what?');
   }
+  indicateSaved();
 }

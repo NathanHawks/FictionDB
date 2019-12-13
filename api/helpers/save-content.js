@@ -12,7 +12,7 @@ module.exports = {
     },
     content: {
       type: 'string',
-      required: true
+      required: false
     },
     fieldName: {
       type: 'string',
@@ -27,6 +27,7 @@ module.exports = {
   },
   fn: async function ({assocID,contentType,content,fieldName}) {
     let n = null;
+    content = content.replace(/'/g, '&apos;').replace(/"/g, '&quot;');
     if (assocID !== -1) {
       switch (contentType) {
         case 'Note':

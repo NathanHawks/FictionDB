@@ -10,25 +10,31 @@ try {
   var elvBtn = $('#editorType_elevator');
   $('input[type=radio][name=editorType]').change((event, ui)=>{
     saveStoryNote_helper(event,ui);
+    attachAutoSave();
   });
   $('#editorSubmit').click((e,ui) => {
     saveNoteWasClicked = true;
     saveStoryNote_helper(e,ui);
   });
+  attachAutoSave();
+  indicateSaved();
 } catch (e) { console.log(e); }
 
 async function saveStoryNote_helper(event,ui) {
+  disableSaveBtn();
+  autosaveCandidate = false;
+  clearInterval(autosaveInterval);
   let inst = CKEDITOR.instances.noteEditor;
   if (saveNoteWasClicked) {
     if (elvBtn.is(':checked')) {
       let newElevatorPitchContent = inst.getData();
-      if (newElevatorPitchContent !== elevatorPitchContent && newElevatorPitchContent !== '') {
+      if (newElevatorPitchContent !== elevatorPitchContent) {
         saveStoryContent(storyID, 'Note', elevatorPitchID, newElevatorPitchContent, 'elevatorPitch');
         elevatorPitchContent = newElevatorPitchContent;
       }
     } else if (sumBtn.is(':checked')) {
       let newSummaryContent = inst.getData();
-      if (newSummaryContent !== summaryContent && newSummaryContent !== '') {
+      if (newSummaryContent !== summaryContent) {
         saveStoryContent(storyID, 'Note', summaryID, newSummaryContent, 'summary');
         summaryContent = newSummaryContent;
       }
@@ -42,7 +48,7 @@ async function saveStoryNote_helper(event,ui) {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newSummaryContent !== summaryContent && newSummaryContent !== '') {
+    if (newSummaryContent !== summaryContent) {
       saveStoryContent(storyID, 'Note', summaryID, newSummaryContent, 'summary');
       summaryContent = newSummaryContent;
     }
@@ -54,11 +60,12 @@ async function saveStoryNote_helper(event,ui) {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newElevatorPitchContent !== elevatorPitchContent && newElevatorPitchContent !== '') {
+    if (newElevatorPitchContent !== elevatorPitchContent) {
       saveStoryContent(storyID, 'Note', elevatorPitchID, newElevatorPitchContent, 'elevatorPitch');
       elevatorPitchContent = newElevatorPitchContent;
     }
   } else {
     console.log('wait what?');
   }
+  indicateSaved();
 }

@@ -56,8 +56,16 @@ p, pre { display: block; margin: 1px 1px .8em 1px;}
   border-top-left-radius: 1.5%;
   border-top-right-radius: 1.5%;
 }
- h1#mainTitle {
+h1#mainTitle {
    height: auto;
+   cursor: pointer;
+}
+.mod p.main-title-intro {
+  color: #666;
+  font-style: italic;
+  text-align: left;
+  font-size: .9em;
+  cursor: pointer;
 }
 .mod-main-content {
   background-color: #222;
@@ -113,7 +121,22 @@ a.btn.ui-button.ui-widget {
   padding: 0.7vh 0.8vh;
   font-size: 1.1vh;
 }
-
+.ui-button.ui-widget.ui-checkboxradio-radio-label.ui-controlgroup-item.ui-checkboxradio-label:disabled,
+.ui-button.ui-widget:disabled,
+.ui-state-default a:disabled, .ui-state-default a:link:disabled, .ui-state-default a:visited:disabled,
+a.ui-button:disabled, a:link.ui-button:disabled, a:visited.ui-button:disabled, .ui-button:disabled,
+a.btn.ui-button.ui-widget:disabled {
+  background-color: #303030;
+  color: #909090;
+  text-shadow: 1px 1px 2px black;
+}
+.ui-button.ui-widget.ui-checkboxradio-radio-label.ui-controlgroup-item.ui-checkboxradio-label:disabled:hover,
+.ui-button.ui-widget:disabled:hover,
+.ui-state-default a:disabled:hover, .ui-state-default a:link:disabled:hover, .ui-state-default a:visited:disabled:hover,
+a.ui-button:disabled:hover, a:link.ui-button:disabled:hover, a:visited.ui-button:disabled:hover, .ui-button:disabled:hover,
+a.btn.ui-button.ui-widget:disabled:hover {
+  border-color: black;
+}
 div.mod div#Navigator div#Navigator_table h3 {
   background-color: #404080;
   color: #bdbdbd;
