@@ -11,13 +11,13 @@ function fixForJSON(val) {
 }
 %>
 <script>
+// load navigator Title-editor click handlers
+let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
+let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
+let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
 
 function setupClickHandlers() {
   var list = JSON.parse(`<%- fixForJSON(JSON.stringify(list)) %>`);
-  // load navigator Title-editor click handlers
-  let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
-  let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
-  let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
 
   list.map((s) => {
     s.v.map((c) => {
@@ -39,12 +39,6 @@ function unlinkRecords(event, subjectType, subjectID, objectType, objectID) {
 }
 function unlinkRecords_handleResponse(data) {
   reloadNavigator('story', <%= story.id %>);
-}
-function gotoRecord(event, modelName, id, backBtnUrl='/home') {
-  modelName = `${modelName}`.toLowerCase();
-  backBtnUrl = `${backBtnUrl}`.toLowerCase();
-  event.stopPropagation();
-  requestPage(`${modelName}/${id}`, false, backBtnUrl);
 }
 </script>
 <%

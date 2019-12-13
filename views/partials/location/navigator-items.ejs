@@ -40,12 +40,6 @@ function unlinkRecords(event, subjectType, subjectID, objectType, objectID) {
 function unlinkRecords_handleResponse(data) {
   reloadNavigator('location', <%= location.id %>);
 }
-function gotoRecord(event, modelName, id, backBtnUrl='/home') {
-  modelName = `${modelName}`.toLowerCase();
-  backBtnUrl = `${backBtnUrl}`.toLowerCase();
-  event.stopPropagation();
-  requestPage(`${modelName}/${id}`, false, backBtnUrl);
-}
 </script>
 <%
 list.map((s) => { if (s.v.length) { %>

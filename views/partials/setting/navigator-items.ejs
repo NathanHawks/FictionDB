@@ -11,10 +11,10 @@ function fixForJSON(val) {
 }
 %>
 <script>
-  // load navigator Title-editor click handlers
-  let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
-  let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
-  let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
+// load navigator Title-editor click handlers
+let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
+let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
+let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
 
 function setupClickHandlers() {
   var list = JSON.parse(`<%- fixForJSON(JSON.stringify(list)) %>`);
@@ -38,12 +38,6 @@ function unlinkRecords(event, subjectType, subjectID, objectType, objectID) {
 }
 function unlinkRecords_handleResponse(data) {
   reloadNavigator('setting', <%= setting.id %>);
-}
-function gotoRecord(event, modelName, id, backBtnUrl='/home') {
-  modelName = `${modelName}`.toLowerCase();
-  backBtnUrl = `${backBtnUrl}`.toLowerCase();
-  event.stopPropagation();
-  requestPage(`${modelName}/${id}`, false, backBtnUrl);
 }
 </script>
 <%

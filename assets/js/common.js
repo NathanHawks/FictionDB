@@ -61,11 +61,16 @@ async function saveLocationTitle_helper(event,ui,domID,rName,value,parent) {
     $(`#${domID}_header`).html(value)
   }
 }
+function gotoRecord(event, modelName, id, backBtnUrl='/home') {
+  modelName = `${modelName}`.toLowerCase();
+  backBtnUrl = `${backBtnUrl}`.toLowerCase();
+  event.stopPropagation();
+  requestPage(`${modelName}/${id}`, false, backBtnUrl);
+}
 
 async function requestPage(url, instant=false, backBtnUrl='/home') {
   let response = null;
   if (backBtnUrl !== 'SKIP') backBtnHistory.unshift(backBtnUrl);
-  console.log(backBtnHistory);
   if (instant) response = handleResponse_requestPage_instant;
   else response = handleResponse_requestPage
   $.ajax({url: url}).done(response);
@@ -78,9 +83,9 @@ async function requestBackBtn() {
 
 function handleResponse_requestPage(data) {
   let home = $('#home-workspace');
-  home.fadeOut(250);
-  setTimeout(()=>{home.html(data)},249);
-  home.fadeIn(250);
+  home.fadeOut(125);
+  setTimeout(()=>{home.html(data)},124);
+  home.fadeIn(125);
 }
 function handleResponse_requestPage_instant(data) {
   let home = $('#home-workspace');
