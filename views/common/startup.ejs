@@ -1,16 +1,16 @@
 <div id="home-workspace">
   <div id="taskbar"></div>
-  <div id="deskicon-container">
+  <div id="deskicon-container" tabindex="1">
     <%- characterIcons %>
     <%- storyIcons %>
     <%- eventIcons %>
     <%- locationIcons %>
     <%- settingIcons %>
     <div id="new-character" class="deskicon new-icon character-icon"><a onclick="requestPage('new-character');" href="#">New Character</a></div>
+    <div id="new-story" class="deskicon new-icon story-icon"><a onclick="requestPage('new-story');" href="#">New Story</a></div>
     <div id="new-event" class="deskicon new-icon event-icon"><a onclick="requestPage('new-event');" href="#">New Event</a></div>
     <div id="new-location" class="deskicon new-icon location-icon"><a onclick="requestPage('new-location');" href="#">New Location</a></div>
     <div id="new-setting" class="deskicon new-icon setting-icon"><a onclick="requestPage('new-setting');" href="#">New Setting</a></div>
-    <div id="new-story" class="deskicon new-icon story-icon"><a onclick="requestPage('new-story');" href="#">New Story</a></div>
   </div>
 </div>
 <div id="splash-container">

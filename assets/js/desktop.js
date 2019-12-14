@@ -9,6 +9,12 @@ async function initDesktop() {
   makeIconsSelectable();
   makeIconsRightClickable();
   makeDesktopCloseThings();
+  // key handler requires the desktop be given focus
+  $('#deskicon-container')
+    .focus()
+    .keyup((event) => {
+      if (event.keyCode === 46) deleteKey_handler();
+    });
 }
 async function makeIconsDraggable() {
   try { $(".deskicon").draggable({
@@ -168,7 +174,8 @@ function getIconSelection() {
       selected[selected.length] = iconSelection.get(x).id;
     }
   }
-  let use_multiselect = (selected.indexOf(itemRightClicked) > -1)
+  let use_multiselect = (itemRightClicked === null
+    || selected.indexOf(itemRightClicked) > -1)
     ? true : false;
   // assemble ajax data
   if (use_multiselect) {
@@ -218,7 +225,18 @@ function renameItem(itemID, itemType, fieldName, assocID, content) {
     break;
   }
 }
-function trashItems() {
+
+async function deleteKey_handler() {
+  let items = getIconSelection();
+  if (items.length > 0) {
+    let strung = JSON.stringify(items);
+    $.ajax({url: '/common/send-to-trash', method: 'POST',
+      data: {items: strung},
+      success: handleResponse_trashItems
+    });
+  }
+}
+async function trashItems() {
   $('#context-menu').fadeOut(100);
   let items = getIconSelection();
   let strung = JSON.stringify(items);

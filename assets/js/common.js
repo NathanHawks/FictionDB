@@ -70,6 +70,8 @@ function gotoRecord(event, modelName, id, backBtnUrl='/home') {
 
 async function requestPage(url, instant=false, backBtnUrl='/home') {
   let response = null;
+  // reset some state vars
+  iconSelection = [];
   if (backBtnUrl !== 'SKIP') backBtnHistory.unshift(backBtnUrl);
   if (instant) response = handleResponse_requestPage_instant;
   else response = handleResponse_requestPage
