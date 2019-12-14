@@ -72,7 +72,15 @@
         <a href="#" onclick="navigatorCollapseAll();"
         id="navigatorCollapseAllBtn" title="Collapse All" alt="Collapse All"><img
         src="/images/collapse-all-icon.png"/></a>
-      </div>
+        <select id="newAttachItemMenu" title="Create &amp; Attach">
+          <option value="none" data-class="ui-icon-nullify">&nbsp;</option>
+          <option value="character" data-class="ui-icon-character">New Character</option>
+          <option value="event" data-class="ui-icon-event">New Event</option>
+          <option value="location" data-class="ui-icon-location">New Location</option>
+          <option value="setting" data-class="ui-icon-setting">New Setting</option>
+          <option value="story" data-class="ui-icon-story">New Story</option>
+        </select>
+    </div>
       <div id="Navigator_table">
 
       <%- partial('../partials/setting/navigator-items'); %>
@@ -125,6 +133,7 @@
 </div>
 
 <script>
+  makeNewAttachItemMenu();
   setupSort('Character');
   setupSort('Event');
   setupSort('Location');

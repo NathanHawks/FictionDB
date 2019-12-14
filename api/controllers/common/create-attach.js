@@ -22,12 +22,12 @@ module.exports = {
     }
   },
   fn: async function (inputs) {
-    let createType = sails.helpers.uppercaseFirst(inputs.createType);
-    let linkedType = inputs.linkedType;
+    let createType = await sails.helpers.uppercaseFirst(inputs.createType);
+    let linkedType = await sails.helpers.uppercaseFirst(inputs.linkedType);
     let linkedID = inputs.linkedID;
     let info = {};
     let createdID = -1;
-    let name = sails.helpers.getUntitledString();
+    let name = await sails.helpers.getUntitledString();
     switch (createType) {
       case 'Character':
         info = await sails.helpers.newCharacter(name);
@@ -52,6 +52,6 @@ module.exports = {
     }
     if (createdID > -1) {
       return await sails.helpers.linkRecords(createType, createdID, linkedType, linkedID);
-    } else return -1;
+    } else return;
   }
 };

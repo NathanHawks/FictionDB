@@ -4,9 +4,9 @@ var autosaveMinimumIdleMS = 2000;
 var autosaveCandidate = false; // flag is true when change has been detected
 var autosaveLastInput = null; // timestamp
 
-async function makeNewAttachItemMenu() {
+function makeNewAttachItemMenu() {
   $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
-   _renderItem: async function( ul, item ) {
+   _renderItem: function( ul, item ) {
      var li = $( "<li>" );
      var wrapper = $( "<div>", { text: item.label } );
      // add icon
@@ -20,16 +20,15 @@ async function makeNewAttachItemMenu() {
    }
  });
 
- $( "#newAttachItemMenu" )
-   .iconselectmenu()
-   .iconselectmenu( "menuWidget" )
-   .addClass( "ui-menu-icons customicons" )
-   .on('change', async (e, ui) => {
-     await newAttachItemMenu_changeHandler(e, ui);
-   });
+  $('#newAttachItemMenu').iconselectmenu({
+    change: (event, ui) => {
+      newAttachItemMenu_changeHandler();
+    }
+  });
+   //.iconselectmenu( "menuWidget" )
 }
 
-async function newAttachItemMenu_changeHandler(e, ui) {
+function newAttachItemMenu_changeHandler() {
   // first get the value...
   let newType = $('#newAttachItemMenu').val();
   // ...before resetting and redrawing the menu
@@ -42,10 +41,10 @@ async function newAttachItemMenu_changeHandler(e, ui) {
       linkedID: linkedID,
       createType: newType
     }
-  }).done((data)=> { newAttachItemMenu_responseHandler(data); });
+  }).done((data) => { newAttachItemMenu_responseHandler(data); });
 }
 
-async function newAttachItemMenu_responseHandler(data) {
+function newAttachItemMenu_responseHandler(data) {
   // refresh the navigator
   reloadNavigator(linkedType, linkedID);
   // pulse the new item

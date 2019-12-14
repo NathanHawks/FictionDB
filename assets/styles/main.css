@@ -294,7 +294,7 @@ div#context-menu ul li.context-menu-item:hover {
 #newAttachItemMenu-menu li.ui-menu-item div {
   padding-left: calc(32px + .5em);
 }
-.ui-selectmenu-menu .ui-menu.customicons .ui-menu-item .ui-icon {
+.ui-selectmenu-menu .ui-menu .ui-menu-item .ui-icon {
   height: 36px;
   width: 36px;
   top: 0.1em;
