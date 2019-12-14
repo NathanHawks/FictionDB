@@ -42,14 +42,13 @@ async function newAttachItemMenu_changeHandler(e, ui) {
       linkedID: linkedID,
       createType: newType
     }
-  }).done(newAttachItemMenu_responseHandler);
+  }).done((data)=> { newAttachItemMenu_responseHandler(data); });
 }
 
 async function newAttachItemMenu_responseHandler(data) {
   // refresh the navigator
   reloadNavigator(linkedType, linkedID);
   // pulse the new item
-
 }
 
 async function attachAutoSave() {
