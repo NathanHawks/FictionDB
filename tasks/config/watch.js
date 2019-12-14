@@ -18,7 +18,10 @@ module.exports = function(grunt) {
       files: [
         'assets/**/*',
         'tasks/pipeline.js',
-        '!**/node_modules/**'
+        '!**/node_modules/**',
+        '!assets/ckeditor/**',
+        '!assets/dependencies/**',
+        '!assets/jquery-ui/**'
       ],
 
       // When assets are changed:
