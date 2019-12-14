@@ -5,6 +5,10 @@ module.exports = {
     storyID: {
       type: 'number',
       required: true
+    },
+    backBtnUrl: {
+      type: 'string',
+      required: false
     }
   },
   exits: {
@@ -18,7 +22,9 @@ module.exports = {
     }
   },
 
-  fn: async function ({storyID}) {
+  fn: async function (inputs) {
+    var storyID = inputs.storyID;
+    var backBtnUrl = inputs.backBtnUrl;
     var s = await Story.get(storyID);
 
     // populate Navigator
@@ -44,7 +50,8 @@ module.exports = {
       events: events,
       // locations: locations,
       settings: settings,
-      stories: [s]
+      stories: [s],
+      backBtnUrl: backBtnUrl,
     };
   }
 };
