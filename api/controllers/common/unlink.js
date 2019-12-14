@@ -37,7 +37,7 @@ module.exports = {
             model = StoryEvent;
           break;
           case 'Setting':
-            model = SettingEvent;
+            model = StorySetting;
           break;
           case 'Location':
             // get the story's setting, if it has one
@@ -121,7 +121,6 @@ module.exports = {
     q = {}
     q[objectType.toLowerCase()] = objectID;
     q[subjectType.toLowerCase()] = subjectID;
-    console.log(q);
     await model.destroy(q);
     return;
   }
