@@ -48,6 +48,9 @@ div#home-workspace {
 }
 div#home-workspace div#taskbar {
   height: 3vh;
-  width: 100vh;
+  width: 100vw;
   background-color: #404040;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
