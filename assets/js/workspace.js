@@ -4,6 +4,54 @@ var autosaveMinimumIdleMS = 2000;
 var autosaveCandidate = false; // flag is true when change has been detected
 var autosaveLastInput = null; // timestamp
 
+async function makeNewAttachItemMenu() {
+  $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+   _renderItem: async function( ul, item ) {
+     var li = $( "<li>" );
+     var wrapper = $( "<div>", { text: item.label } );
+     // add icon
+     $( "<span>", {
+       style: item.element.attr( "data-style" ),
+       "class": "ui-icon " + item.element.attr( "data-class" )
+     })
+       .appendTo( wrapper );
+
+     return li.append( wrapper ).appendTo( ul );
+   }
+ });
+
+ $( "#newAttachItemMenu" )
+   .iconselectmenu()
+   .iconselectmenu( "menuWidget" )
+   .addClass( "ui-menu-icons customicons" )
+   .on('change', async (e, ui) => {
+     await newAttachItemMenu_changeHandler(e, ui);
+   });
+}
+
+async function newAttachItemMenu_changeHandler(e, ui) {
+  // first get the value...
+  let newType = $('#newAttachItemMenu').val();
+  // ...before resetting and redrawing the menu
+  $('#newAttachItemMenu').val('none').iconselectmenu('refresh');
+  // create and attach the item
+  $.ajax({
+    url: '/create-attach', method: 'POST',
+    data: {
+      linkedType: linkedType,
+      linkedID: linkedID,
+      createType: newType
+    }
+  }).done(newAttachItemMenu_responseHandler);
+}
+
+async function newAttachItemMenu_responseHandler(data) {
+  // refresh the navigator
+  reloadNavigator(linkedType, linkedID);
+  // pulse the new item
+
+}
+
 async function attachAutoSave() {
   let inst = CKEDITOR.instances.noteEditor;
   inst.on('contentDom', () => {

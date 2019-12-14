@@ -264,7 +264,61 @@ div#context-menu ul li.context-menu-item:hover {
   height: 22px;
   margin: 0;
   padding: 0;
+  display: flex;
+  align-items: center;
 }
+#newAttachItemMenu-button {
+  width: calc(32px + 1em);
+  height: 24px;
+  padding: 0;
+  background-color: #101010;
+  background-image: url('/images/new-attach-24.png');
+  background-position: .5em 0;
+  background-repeat: no-repeat;
+}
+#newAttachItemMenu-button:hover, #newAttachItemMenu-button:active {
+  background-color: #101010;
+}
+#newAttachItemMenu-menu {
+  height: calc(32px * 6);
+  background-color: #101010;
+}
+#newAttachItemMenu-menu li.ui-menu-item {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  background-color: #444;
+  margin: none;
+  padding: none;
+}
+#newAttachItemMenu-menu li.ui-menu-item div {
+  padding-left: calc(32px + .5em);
+}
+.ui-selectmenu-menu .ui-menu.customicons .ui-menu-item .ui-icon {
+  height: 36px;
+  width: 36px;
+  top: 0.1em;
+  background-color: #101010;
+}
+#newAttachItemMenu-menu li.ui-menu-item:first-child {
+  display: none;
+}
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-story {
+  background: url("/images/story-icon-32.png") 0 0 no-repeat;
+}
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-character {
+  background: url("/images/character-icon-32.png") 0 0 no-repeat;
+}
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-setting {
+  background: url("/images/setting-icon-32.png") 0 0 no-repeat;
+}
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-event {
+  background: url("/images/event-icon-32.png") 0 0 no-repeat;
+}
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-location {
+  background: url("/images/location-icon-32.png") 0 0 no-repeat;
+}
+
 .Navigator_header, .Navigator_item, .Navigator_Title, .Navigator_TopTitle {
   font-family: Tahoma, sans-serif;
   font-size: 11pt;

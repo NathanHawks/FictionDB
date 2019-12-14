@@ -11,10 +11,6 @@ module.exports = {
   },
   fn: async function (inputs) {
     let title = await sails.helpers.getUntitledString();
-    try {
-      var t = await Title.create({roleLabel:'authorTitle',content:title}).fetch();
-      var s = await Setting.create({ authorTitle: t.id }).fetch();
-      return { setting: s, title: t };
-    } catch (e) { console.log(e); }
+    return await sails.helpers.newSetting(title);
   }
 };
