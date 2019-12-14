@@ -46,7 +46,11 @@
 ################################################
 
 config/local.js
-
+.editorconfig
+.eslintignore
+.eslintrc
+.npmrc
+designDocuments
 
 ################################################
 # Dependencies
@@ -131,4 +135,3 @@ lib-cov
 *.log
 *.out
 *.pid
-
