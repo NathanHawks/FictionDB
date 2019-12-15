@@ -24,7 +24,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'location/save-content'
+      viewTemplatePath: 'common/json-ok'
     }
   },
   fn: async function ({locationID, contentType, assocID, content, fieldName}) {

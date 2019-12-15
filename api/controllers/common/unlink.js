@@ -22,7 +22,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'common/unlink'
+      viewTemplatePath: 'common/json-ok'
     }
   },
   fn: async function ({subjectType, subjectID, objectType, objectID}) {

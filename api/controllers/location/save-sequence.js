@@ -10,7 +10,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'location/save-sequence'
+      viewTemplatePath: 'common/json-ok'
     }
   },
   fn: async function ({items}) {

@@ -10,7 +10,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'common/send-to-trash'
+      viewTemplatePath: 'common/json-ok'
     }
   },
   fn: async function ({items}) {

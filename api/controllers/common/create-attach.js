@@ -18,7 +18,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'common/create-attach'
+      viewTemplatePath: 'common/json-ok'
     }
   },
   fn: async function (inputs) {
