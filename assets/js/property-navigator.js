@@ -98,15 +98,16 @@ function attachItemMenu_changeHandler() {
 }
 
 function attachItemMenu_iconsResponseHandler(data) {
+  $('#dialog span').html(`Attach Item`);
   let d = $('#dialog');
-  d.hide().html(data).fadeIn(250);
+  let dc = $('#dialogContent');
+  dc.html(data);
+  d.hide().fadeIn(250);
   // setTimeout(() => { $('#dialog').fadeOut(250); }, 3000);
 }
 
 function attachItemMenu_action(parseme) {
-  console.log(parseme);
   let [attachType,attachID] = parseme.split('/');
-  console.log(attachType);
   let at = uppercaseFirst(attachType);
   let lt = uppercaseFirst(linkedType);
   let dropTarget = `${lt}_${linkedID}`;
@@ -236,7 +237,10 @@ function reloadNavigator(type, id) {
     .done(reloadNavigator_handleResponse);
 }
 function reloadNavigator_handleResponse(data) {
+  autocompleteContent = [];
   $('#Navigator_table').html(data);
+  $('#Navigator_filter_input').autocomplete('destroy');
+  setupFilterField();
   setupAccordion();
   setupSorts();
   setupClickHandlers();

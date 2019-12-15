@@ -131,6 +131,7 @@ async function makeDesktopCloseThings() {
     // close context menu
     $('#context-menu').fadeOut(100);
     itemRightClicked = null;
+    if (closeAllPopups !== null) closeAllPopups();
   })
 }
 

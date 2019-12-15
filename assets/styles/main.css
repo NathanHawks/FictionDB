@@ -516,7 +516,7 @@ div.deskicon.ui-draggable-dragging.multi-drag a {
   box-shadow: -8px -8px #632;
 }
 div.deskicon a {
-  font-size: 9pt;
+  font-size: 11pt;
   margin: 0;
   position: absolute;
   padding: 64px 0 0 0;
@@ -584,12 +584,12 @@ div.dialogicon.ui-draggable-dragging.multi-drag a {
   box-shadow: -8px -8px #632;
 }
 div.dialogicon a {
-  font-size: 9pt;
+  font-size: 11pt;
   margin: 0;
   position: absolute;
-  padding: 0 0 0 36px;
+  padding: 0 16px 0 36px;
   height: 32px;
-  width: 64px;
+  width: 96px;
   display: block;
 }
 div.dialogicon.story-icon {

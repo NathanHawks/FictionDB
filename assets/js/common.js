@@ -2,7 +2,6 @@
 var backBtnHistory = [];
 
 function uppercaseFirst(s) {
-  console.log(s);
   return s.replace(/^[a-z]/,m=>m.toUpperCase());
 }
 
@@ -74,6 +73,7 @@ function gotoRecord(event, modelName, id, backBtnUrl='/home') {
 }
 
 async function requestPage(url, instant=false, backBtnUrl='/home') {
+  closeAllPopups();
   let response = null;
   // reset some state vars
   iconSelection = [];
@@ -100,7 +100,9 @@ function handleResponse_requestPage_instant(data) {
   home.html(data);
 }
 
-function requestIcons(type, cssClass='', clickHandlerName='', responseHandler=testIcons_responseHandler) {
+function requestIcons(type, cssClass='', clickHandlerName='',
+ responseHandler=testIcons_responseHandler
+) {
   $.ajax({url: `/icons`, method: 'POST',
     data: {type: type, cssClass: cssClass, clickHandler: clickHandlerName}
   }).done(responseHandler);
@@ -152,4 +154,9 @@ async function saveSettingContent(settingID, contentType, assocID, content, fiel
 }
 function handleResponse_saveStoryContent(data) {
   console.log(data);
+}
+
+
+async function closeAllPopups() {
+  $('#dialog').hide();
 }
