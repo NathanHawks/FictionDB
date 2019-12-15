@@ -1,8 +1,8 @@
 // Properties Navigator window =================================================
-
-// two points are required to mix with .sortable in the way we want
+var autocompleteContent = [];
 
 function setupAccordion() {
+  // two points are required to mix with .sortable in the way we want
   $( '.item_accordion' ).accordion({ // each item must be its own accordion
     animate: 100,
     collapsible: true,
@@ -62,6 +62,91 @@ async function navigatorCollapseAll() {
     if ($(el).hasClass("ui-accordion-header-collapsed") === false)
       $(el).trigger("click");
   });
+}
+
+function makeNewAttachItemMenu() {
+  $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+   _renderItem: function( ul, item ) {
+     var li = $( "<li>" );
+     var wrapper = $( "<div>", { text: item.label } );
+     // add icon
+     $( "<span>", {
+       style: item.element.attr( "data-style" ),
+       "class": "ui-icon " + item.element.attr( "data-class" )
+     })
+       .appendTo( wrapper );
+
+     return li.append( wrapper ).appendTo( ul );
+   }
+ });
+
+  $('#newAttachItemMenu').iconselectmenu({
+    change: (event, ui) => {
+      newAttachItemMenu_changeHandler();
+    }
+  });
+   //.iconselectmenu( "menuWidget" )
+}
+
+function newAttachItemMenu_changeHandler() {
+  // first get the value...
+  let newType = $('#newAttachItemMenu').val();
+  // ...before resetting and redrawing the menu
+  $('#newAttachItemMenu').val('none').iconselectmenu('refresh');
+  // create and attach the item
+  $.ajax({
+    url: '/create-attach', method: 'POST',
+    data: {
+      linkedType: linkedType,
+      linkedID: linkedID,
+      createType: newType
+    }
+  }).done((data) => { newAttachItemMenu_responseHandler(data); });
+}
+
+function setupFilterField() {
+  $('#Navigator_filter_input').autocomplete({
+    source: autocompleteContent
+  }).keydown((e) => {
+    if (e.keyCode === 65 && event.ctrlKey) {
+      $('#Navigator_filter_input').focus().select();
+    } else if (e.keyCode === 13) {
+      navFilterSubmit();
+    }
+  });
+}
+
+function navFilterSubmit() {
+  var filter = $('#Navigator_filter_input').val();
+  var bands = $('.item_accordion');
+  if (filter.length) {
+    // index of bands, heads and items will match
+    let heads = $('.item_accordion .ui-accordion-header');
+    let items = $('.item_accordion .Navigator_item');
+    // show all (in case we're going directly from one filter to another)
+    bands.each((index, item) => { $(item).show(); });
+    // hide non-matching items
+    items.each((index, item) => {
+      var matched = false;
+      let kids = $(item).children();
+      kids.each((index, kid) => {
+        let divs = $(kid).children('div');
+        divs.each((index, div) => {
+          let val = $(div).html();
+          if (val.toLowerCase().includes(filter.toLowerCase())) {
+            matched = true;
+          }
+        });
+      });
+      if (matched === false) {
+        $( bands.get(index) ).hide();
+      }
+    });
+
+  } else {
+    // show all items
+    bands.each( (index, item) => { $(item).show(); } );
+  }
 }
 
 function reloadNavigator(type, id) {

@@ -80,6 +80,7 @@
           <option value="setting" data-class="ui-icon-setting">New Setting</option>
           <option value="story" data-class="ui-icon-story">New Story</option>
         </select>
+        <input type='text' id='Navigator_filter_input'/><span id="Navigator_filter_hint" onclick="navFilterSubmit();">&nbsp;</span>
     </div>
       <div id="Navigator_table">
 
@@ -134,6 +135,7 @@
 
 <script>
   makeNewAttachItemMenu();
+  setupFilterField();
   setupSort('Character');
   setupSort('Event');
   setupSort('Location');

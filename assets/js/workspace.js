@@ -4,46 +4,6 @@ var autosaveMinimumIdleMS = 2000;
 var autosaveCandidate = false; // flag is true when change has been detected
 var autosaveLastInput = null; // timestamp
 
-function makeNewAttachItemMenu() {
-  $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
-   _renderItem: function( ul, item ) {
-     var li = $( "<li>" );
-     var wrapper = $( "<div>", { text: item.label } );
-     // add icon
-     $( "<span>", {
-       style: item.element.attr( "data-style" ),
-       "class": "ui-icon " + item.element.attr( "data-class" )
-     })
-       .appendTo( wrapper );
-
-     return li.append( wrapper ).appendTo( ul );
-   }
- });
-
-  $('#newAttachItemMenu').iconselectmenu({
-    change: (event, ui) => {
-      newAttachItemMenu_changeHandler();
-    }
-  });
-   //.iconselectmenu( "menuWidget" )
-}
-
-function newAttachItemMenu_changeHandler() {
-  // first get the value...
-  let newType = $('#newAttachItemMenu').val();
-  // ...before resetting and redrawing the menu
-  $('#newAttachItemMenu').val('none').iconselectmenu('refresh');
-  // create and attach the item
-  $.ajax({
-    url: '/create-attach', method: 'POST',
-    data: {
-      linkedType: linkedType,
-      linkedID: linkedID,
-      createType: newType
-    }
-  }).done((data) => { newAttachItemMenu_responseHandler(data); });
-}
-
 function newAttachItemMenu_responseHandler(data) {
   // refresh the navigator
   reloadNavigator(linkedType, linkedID);
