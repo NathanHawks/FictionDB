@@ -68,11 +68,25 @@ list.map((s) => { if (s.v.length) { %>
             if (setting.id !== c.id || s.m !== 'Setting') { %>
               <div class='Navigator_TopTitle' id="<%= domID %>_<%= s.t[0] %>"><%= s.t[0] %>:
                 <div><%= c[s.t[0]].content %></div>
+
+                <script>
+                // while we're here
+                autocompleteContent[autocompleteContent.length]
+                  = `<%- (c[s.t[0]]) ? c[s.t[0]].content : '' %>`;
+                </script>
+
               </div>
             <% } %>
             <% for (let x = 1; x < s.t.length; x++) { %>
               <div class='Navigator_Title' id="<%= domID %>_<%= s.t[x] %>"><%= s.t[x] %>:
                 <div><%= (c[s.t[x]]) ? c[s.t[x]].content : '' %></div>
+
+                <script>
+                // while we're here
+                autocompleteContent[autocompleteContent.length]
+                  = `<%- (c[s.t[x]]) ? c[s.t[x]].content : '' %>`;
+                </script>
+
               </div>
             <% } %>
           </div>
