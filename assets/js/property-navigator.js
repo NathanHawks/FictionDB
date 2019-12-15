@@ -117,7 +117,10 @@ function setupFilterField() {
 }
 
 function navFilterSubmit() {
+  // close menu, focus and select the field, get the value
+  $('#Navigator_filter_input').focus().select().autocomplete('close');
   var filter = $('#Navigator_filter_input').val();
+  // get the containers for the items
   var bands = $('.item_accordion');
   if (filter.length) {
     // index of bands, heads and items will match
@@ -147,6 +150,11 @@ function navFilterSubmit() {
     // show all items
     bands.each( (index, item) => { $(item).show(); } );
   }
+}
+
+function navFilterClear() {
+  $('#Navigator_filter_input').val('');
+  navFilterSubmit();
 }
 
 function reloadNavigator(type, id) {
