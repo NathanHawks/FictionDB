@@ -5,6 +5,10 @@ module.exports = {
     settingID: {
       type: 'number',
       required: true
+    },
+    navigatorOnly: {
+      type: 'boolean',
+      required: false
     }
   },
   exits: {
@@ -12,12 +16,17 @@ module.exports = {
       responseType: 'view',
       viewTemplatePath: 'setting/workspace'
     },
+    navigatorOnly: {
+      responseType: 'view',
+      viewTemplatePath: 'partials/common/navigator-items'
+    },
     notFound: {
       description: 'Couldn\'t find that settingId.',
       responseType: 'notFound'
     }
   },
-  fn: async function ({settingID}) {
+  fn: async function (inputs) {
+    var settingID = inputs.settingID;
     var s = await Setting.get(settingID);
     var linkedID = s.id;
   // populate Navigator
@@ -26,7 +35,7 @@ module.exports = {
     var events = await SettingEvent.getEvents(settingID);
     var stories = await StorySetting.getStories(settingID);
 
-    return {
+    var locals = {
       settingID: settingID,
       setting: s,
       characters: characters,
@@ -38,5 +47,9 @@ module.exports = {
       ucfirstType: 'Setting',
       linkedID: linkedID,
     };
+    if (inputs.navigatorOnly === true) {
+      throw { navigatorOnly: locals};
+    }
+    else return locals;
   }
 };

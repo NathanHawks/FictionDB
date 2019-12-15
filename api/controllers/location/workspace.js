@@ -5,6 +5,10 @@ module.exports = {
     locationID: {
       type: 'number',
       required: true
+    },
+    navigatorOnly: {
+      type: 'boolean',
+      required: false
     }
   },
   exits: {
@@ -12,12 +16,17 @@ module.exports = {
       responseType: 'view',
       viewTemplatePath: 'location/workspace'
     },
+    navigatorOnly: {
+      responseType: 'view',
+      viewTemplatePath: 'partials/common/navigator-items'
+    },
     notFound: {
       description: 'Couldn\'t find that locationId.',
       responseType: 'notFound'
     }
   },
-  fn: async function ({locationID}) {
+  fn: async function (inputs) {
+    var locationID = inputs.locationID;
     var s = await Location.get(locationID);
     var linkedID = s.id;
     // populate Navigator
@@ -25,7 +34,7 @@ module.exports = {
     var events = await EventLocation.getEvents(locationID);
     var settings = await SettingLocation.getSettings(locationID);
 
-    return {
+    var locals = {
       locationID: locationID,
       location: s,
       characters: characters,
@@ -37,5 +46,9 @@ module.exports = {
       ucfirstType: 'Location',
       linkedID: linkedID,
     }
+    if (inputs.navigatorOnly === true) {
+      throw { navigatorOnly: locals};
+    }
+    else return locals;
   }
 };

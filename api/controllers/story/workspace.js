@@ -5,6 +5,10 @@ module.exports = {
     storyID: {
       type: 'number',
       required: true
+    },
+    navigatorOnly: {
+      type: 'boolean',
+      required: false
     }
   },
   exits: {
@@ -12,13 +16,18 @@ module.exports = {
       responseType: 'view',
       viewTemplatePath: 'story/workspace'
     },
+    navigatorOnly: {
+      responseType: 'view',
+      viewTemplatePath: 'partials/common/navigator-items'
+    },
     notFound: {
       description: 'Couldn\'t find that storyId.',
       responseType: 'notFound'
     }
   },
 
-  fn: async function ({storyID}) {
+  fn: async function (inputs) {
+    var storyID = inputs.storyID;
     var s = await Story.get(storyID);
     var linkedID = s.id;
     // populate Navigator
@@ -36,7 +45,7 @@ module.exports = {
 
     // populate Navigator - events
 
-    return {
+    var locals = {
       storyID: storyID,
       story: s,
       characters: characters,
@@ -49,5 +58,9 @@ module.exports = {
       ucfirstType: 'Story',
       linkedID: linkedID,
     };
+    if (inputs.navigatorOnly === true) {
+      throw { navigatorOnly: locals};
+    }
+    else return locals;
   }
 };

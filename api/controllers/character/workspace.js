@@ -5,6 +5,10 @@ module.exports = {
     characterID: {
       type: 'number',
       required: true
+    },
+    navigatorOnly: {
+      type: 'boolean',
+      required: false
     }
   },
   exits: {
@@ -12,12 +16,17 @@ module.exports = {
       responseType: 'view',
       viewTemplatePath: 'character/workspace'
     },
+    navigatorOnly: {
+      responseType: 'view',
+      viewTemplatePath: 'partials/common/navigator-items'
+    },
     notFound: {
       description: 'Couldn\'t find that characterId.',
       responseType: 'notFound'
     }
   },
-  fn: async function ({characterID}) {
+  fn: async function (inputs) {
+    var characterID = inputs.characterID;
     var s = await Character.get(characterID);
     var linkedID = s.id;
     // populate Navigator
@@ -25,7 +34,7 @@ module.exports = {
     var locations = await LocationCharacter.getLocations(characterID);
     var events = await EventCharacter.getEvents(characterID);
     var stories = await StoryCharacter.getStories(characterID);
-    return {
+    var locals = {
       characterID: characterID,
       character: s,
       settings: settings,
@@ -37,5 +46,9 @@ module.exports = {
       ucfirstType: 'Character',
       linkedID: linkedID,
     };
+    if (inputs.navigatorOnly === true) {
+      throw { navigatorOnly: locals};
+    }
+    else return locals;
   }
 };

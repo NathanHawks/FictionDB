@@ -233,7 +233,7 @@ function navFilterClear() {
 }
 
 function reloadNavigator(type, id) {
-  $.ajax({url: `${type}_nav/${id}`, method: 'GET'})
+  $.ajax({url: `${type}/${id}`, method: 'POST', data: {navigatorOnly: true}})
     .done(reloadNavigator_handleResponse);
 }
 function reloadNavigator_handleResponse(data) {

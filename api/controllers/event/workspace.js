@@ -5,6 +5,10 @@ module.exports = {
     eventID: {
       type: 'number',
       required: true
+    },
+    navigatorOnly: {
+      type: 'boolean',
+      required: false
     }
   },
   exits: {
@@ -12,12 +16,17 @@ module.exports = {
       responseType: 'view',
       viewTemplatePath: 'event/workspace'
     },
+    navigatorOnly: {
+      responseType: 'view',
+      viewTemplatePath: 'partials/common/navigator-items'
+    },
     notFound: {
       description: 'Couldn\'t find that eventId.',
       responseType: 'notFound'
     }
   },
-  fn: async function ({eventID}) {
+  fn: async function (inputs) {
+    var eventID = inputs.eventID;
     var s = await Event.get(eventID);
     var linkedID = s.id;
     // populate Navigator
@@ -26,7 +35,7 @@ module.exports = {
     var settings = await SettingEvent.getSettings(eventID);
     var stories = await StoryEvent.getStories(eventID);
 
-    return {
+    var locals = {
       eventID: eventID,
       event: s,
       characters: characters,
@@ -38,5 +47,9 @@ module.exports = {
       ucfirstType: 'Event',
       linkedID: linkedID,
     }
+    if (inputs.navigatorOnly === true) {
+      throw { navigatorOnly: locals};
+    }
+    else return locals;
   }
 };

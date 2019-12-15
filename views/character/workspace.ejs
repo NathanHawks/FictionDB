@@ -1,3 +1,7 @@
+<% function fixForJSON(val) {
+  return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
+}
+%>
 <script src="/js/workspace.js"></script>
 <script src="/js/property-navigator.js"></script>
 <script src="/js/ck-character.js"></script>
@@ -12,10 +16,8 @@
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
     <p class="main-title-intro">A character named</p>
     <h1 id="mainTitle"><%- character.realName.content %></h1>
-    <% function fixForJSON(val) {
-      return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
-    } %>
     <script>
+
       var characterID = `<%= character.id %>`;
       var linkedID = <%- linkedID %>;
       var linkedType = `<%- linkedType %>`;
@@ -136,10 +138,7 @@
   makeAttachItemMenu();
   makeNewAttachItemMenu();
   setupFilterField();
-  setupSort('Setting');
-  setupSort('Event');
-  setupSort('Location');
-  setupSort('Story');
+  setupSorts();
 
   // Notes editor (ckeditor) ===================================================
   // a switch for saveSettingNote_helper (twas first writ for radio btn logic)
