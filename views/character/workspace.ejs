@@ -11,7 +11,7 @@
   </div>
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
     <p class="main-title-intro">A character named</p>
-    <h1 id="mainTitle"><%= character.realName.content %></h1>
+    <h1 id="mainTitle"><%- character.realName.content %></h1>
     <% function fixForJSON(val) {
       return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
     } %>
@@ -70,14 +70,10 @@
         <a href="#" onclick="navigatorCollapseAll();"
         id="navigatorCollapseAllBtn" title="Collapse All" alt="Collapse All"><img
         src="/images/collapse-all-icon.png"/></a>
-        <select id="newAttachItemMenu" title="Create &amp; Attach">
-          <option value="none" data-class="ui-icon-nullify">&nbsp;</option>
-          <option value="character" data-class="ui-icon-character">New Character</option>
-          <option value="event" data-class="ui-icon-event">New Event</option>
-          <option value="location" data-class="ui-icon-location">New Location</option>
-          <option value="setting" data-class="ui-icon-setting">New Setting</option>
-          <option value="story" data-class="ui-icon-story">New Story</option>
-        </select>
+
+        <%- partial('../partials/common/attach-menu') %>
+        <%- partial('../partials/common/new-attach-menu') %>
+
         <span class="flexspacer">&nbsp;</span>
         <input type='text' id='Navigator_filter_input' value="(filter)"/><span
          id="Navigator_filter_hint" onclick="navFilterSubmit();">&nbsp;</span><span
@@ -137,6 +133,7 @@
 </div>
 
 <script>
+  makeAttachItemMenu();
   makeNewAttachItemMenu();
   setupFilterField();
   setupSort('Setting');

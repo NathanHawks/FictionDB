@@ -24,6 +24,7 @@ module.exports.routes = {
   'POST /dragdrop': { action: 'common/dragdrop' },
   'POST /create-attach': { action: 'common/create-attach' },
   'POST /unlink': { action: 'common/unlink' },
+  'POST /icons': {action: 'common/icons' },
   'GET /new-story': { action: 'common/new-story' },
   'GET /new-character': { action: 'common/new-character' },
   'GET /new-event': { action: 'common/new-event' },

@@ -2,6 +2,14 @@ module.exports = {
   friendlyName: 'Make story icons',
   description: '',
   inputs: {
+    cssClass: {
+      type: 'string',
+      required: false
+    },
+    clickHandler: {
+      type: 'string',
+      required: false
+    }
   },
   exits: {
     success: {
@@ -19,7 +27,12 @@ module.exports = {
         let t = await Title.findOne({id: s.mainTitle});
         while (t===undefined) {}
         let title = t.content;
-        output += `<div id="Story_${id}" class="deskicon story-icon"><a onclick="requestPage('story/${id}');" associd="${t.id}" href="#">${title}</a></div>`;
+        let cssClass = (inputs.cssClass) ? inputs.cssClass : 'deskicon'
+        let clickHandler = (inputs.clickHandler)
+          ? inputs.clickHandler : 'requestPage';
+        output += `<div id="Story_${id}" class="${cssClass} story-icon">`
+        + `<a onclick="${clickHandler}('story/${id}');" associd="${t.id}" `
+        + ` href="#">${title}</a></div>`;
       };
     } catch (e) { console.log(e); }
     return output;

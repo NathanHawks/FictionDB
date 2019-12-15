@@ -11,7 +11,6 @@ function fixForJSON(val) {
 }
 %>
 <script>
-
 // load navigator Title-editor click handlers
 let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
 let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);

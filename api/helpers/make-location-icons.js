@@ -2,6 +2,14 @@ module.exports = {
   friendlyName: 'Make location icons',
   description: '',
   inputs: {
+    cssClass: {
+      type: 'string',
+      required: false
+    },
+    clickHandler: {
+      type: 'string',
+      required: false
+    }
   },
   exits: {
     success: {
@@ -19,7 +27,12 @@ module.exports = {
         let t = await Title.findOne({id: l.authorTitle});
         while (t===undefined) {}
         let title = t.content;
-        output += `<div id="Location_${id}" class="deskicon location-icon"><a onclick="requestPage('location/${id}');" associd="${t.id}" href="#">${title}</a></div>`;
+        let cssClass = (inputs.cssClass) ? inputs.cssClass : 'deskicon'
+        let clickHandler = (inputs.clickHandler)
+          ? inputs.clickHandler : 'requestPage';
+        output += `<div id="Location_${id}" class="${cssClass} location-icon">`
+        + `<a onclick="${clickHandler}('location/${id}');" associd="${t.id}" `
+        + ` href="#">${title}</a></div>`;
       };
     } catch (e) { console.log(e); }
     return output;

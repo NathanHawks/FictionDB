@@ -2,6 +2,14 @@ module.exports = {
   friendlyName: 'Make event icons',
   description: '',
   inputs: {
+    cssClass: {
+      type: 'string',
+      required: false
+    },
+    clickHandler: {
+      type: 'string',
+      required: false
+    }
   },
   exits: {
     success: {
@@ -19,7 +27,12 @@ module.exports = {
         let t = await Title.findOne({id: r.authorTitle});
         while (t===undefined) {}
         let title = t.content;
-        output += `<div id="Event_${id}" class="deskicon event-icon"><a onclick="requestPage('event/${id}');" associd="${t.id}" href="#">${title}</a></div>`;
+        let cssClass = (inputs.cssClass) ? inputs.cssClass : 'deskicon'
+        let clickHandler = (inputs.clickHandler)
+          ? inputs.clickHandler : 'requestPage';
+        output += `<div id="Event_${id}" class="${cssClass} event-icon">`
+        + `<a onclick="${clickHandler}('event/${id}');" associd="${t.id}" `
+        + ` href="#">${title}</a></div>`;
       };
     } catch (e) { console.log(e); }
     return output;

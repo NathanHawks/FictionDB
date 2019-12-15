@@ -4,12 +4,6 @@ var autosaveMinimumIdleMS = 2000;
 var autosaveCandidate = false; // flag is true when change has been detected
 var autosaveLastInput = null; // timestamp
 
-function newAttachItemMenu_responseHandler(data) {
-  // refresh the navigator
-  reloadNavigator(linkedType, linkedID);
-  // pulse the new item
-}
-
 async function attachAutoSave() {
   let inst = CKEDITOR.instances.noteEditor;
   inst.on('contentDom', () => {

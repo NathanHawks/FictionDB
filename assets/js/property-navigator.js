@@ -64,6 +64,66 @@ async function navigatorCollapseAll() {
   });
 }
 
+function makeAttachItemMenu() {
+  $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+   _renderItem: function( ul, item ) {
+     var li = $( "<li>" );
+     var wrapper = $( "<div>", { text: item.label } );
+     // add icon
+     $( "<span>", {
+       style: item.element.attr( "data-style" ),
+       "class": "ui-icon " + item.element.attr( "data-class" )
+     })
+       .appendTo( wrapper );
+
+     return li.append( wrapper ).appendTo( ul );
+   }
+ });
+
+  $('#attachItemMenu').iconselectmenu({
+    change: (event, ui) => {
+      attachItemMenu_changeHandler();
+    }
+  });
+   //.iconselectmenu( "menuWidget" )
+}
+
+function attachItemMenu_changeHandler() {
+  // first get the value...
+  let type = $('#attachItemMenu').val();
+  // ...before resetting and redrawing the menu
+  $('#attachItemMenu').val('none').iconselectmenu('refresh');
+
+  requestIcons(type, 'dialogicon', 'attachItemMenu_action', attachItemMenu_iconsResponseHandler);
+}
+
+function attachItemMenu_iconsResponseHandler(data) {
+  let d = $('#dialog');
+  d.hide().html(data).fadeIn(250);
+  // setTimeout(() => { $('#dialog').fadeOut(250); }, 3000);
+}
+
+function attachItemMenu_action(parseme) {
+  console.log(parseme);
+  let [attachType,attachID] = parseme.split('/');
+  console.log(attachType);
+  let at = uppercaseFirst(attachType);
+  let lt = uppercaseFirst(linkedType);
+  let dropTarget = `${lt}_${linkedID}`;
+  let draggedIDs = [`${at}_${attachID}`];
+  $.ajax({
+    url: '/dragdrop', method: 'POST',
+    data: { draggedIDs: draggedIDs, dropTargetID: dropTarget }
+  }).done(attachItemMenu_responseHandler);
+}
+
+function attachItemMenu_responseHandler(data) {
+  $('#dialog').fadeOut(250);
+  reloadNavigator(linkedType, linkedID);
+  // pulse the new item
+}
+
+
 function makeNewAttachItemMenu() {
   $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
    _renderItem: function( ul, item ) {
@@ -102,6 +162,12 @@ function newAttachItemMenu_changeHandler() {
       createType: newType
     }
   }).done((data) => { newAttachItemMenu_responseHandler(data); });
+}
+
+function newAttachItemMenu_responseHandler(data) {
+  // refresh the navigator
+  reloadNavigator(linkedType, linkedID);
+  // pulse the new item
 }
 
 function setupFilterField() {
@@ -203,6 +269,14 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
     }
     else if (event.keyCode === 13) {
       let v = rEditor.val().replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+      // update autocomplete
+      let oldText = (parent[rName] !== null) ? parent[rName].content : '';
+      if (oldText) {
+        let oldACndx = autocompleteContent.indexOf(oldText);
+        autocompleteContent[oldACndx] = v;
+      } else {
+        autocompleteContent[autocompleteContent.length] = v;
+      }
       // save
       switch (event.target.id.split("_")[0]) {
         case 'Character':

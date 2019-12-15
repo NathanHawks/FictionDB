@@ -239,6 +239,18 @@ div#context-menu ul li.context-menu-item:hover {
   background: #040;
   transform: skew(0deg, -12deg);
 }
+#dialog {
+  display: none;
+  height: 80vh;
+  width: 80vw;
+  position: absolute;
+  left: 10vw;
+  top: 10vh;
+  background-color: #202020;
+  outline: 2px solid #404040;
+  outline-offset: -6px;
+  padding: 12px;
+}
 
 /* navigator */
 #Navigator {
@@ -269,6 +281,19 @@ div#context-menu ul li.context-menu-item:hover {
   align-items: center;
   background-color: black;
 }
+
+
+#attachItemMenu-button {
+  width: calc(32px + 1em);
+  height: 24px;
+  padding: 0;
+  background-color: #101010;
+  background-image: url('/images/attach-24.png');
+  background-position: .5em 0;
+  background-repeat: no-repeat;
+}
+
+
 #newAttachItemMenu-button {
   width: calc(32px + 1em);
   height: 24px;
@@ -278,14 +303,16 @@ div#context-menu ul li.context-menu-item:hover {
   background-position: .5em 0;
   background-repeat: no-repeat;
 }
-#newAttachItemMenu-button:hover, #newAttachItemMenu-button:active {
+#newAttachItemMenu-button:hover, #newAttachItemMenu-button:active,
+#attachItemMenu-button:hover, #attachItemMenu-button:active {
   background-color: #101010;
 }
-#newAttachItemMenu-menu {
+#newAttachItemMenu-menu, #attachItemMenu-menu {
   height: calc(32px * 6);
   background-color: #101010;
 }
-#newAttachItemMenu-menu li.ui-menu-item {
+#newAttachItemMenu-menu li.ui-menu-item,
+#attachItemMenu-menu li.ui-menu-item {
   height: 36px;
   display: flex;
   align-items: center;
@@ -293,7 +320,8 @@ div#context-menu ul li.context-menu-item:hover {
   margin: none;
   padding: none;
 }
-#newAttachItemMenu-menu li.ui-menu-item div {
+#newAttachItemMenu-menu li.ui-menu-item div,
+#attachItemMenu-menu li.ui-menu-item div {
   padding-left: calc(32px + .5em);
 }
 .ui-selectmenu-menu .ui-menu .ui-menu-item .ui-icon {
@@ -302,22 +330,28 @@ div#context-menu ul li.context-menu-item:hover {
   top: 0.1em;
   background-color: #101010;
 }
-#newAttachItemMenu-menu li.ui-menu-item:first-child {
+#newAttachItemMenu-menu li.ui-menu-item:first-child,
+#attachItemMenu-menu li.ui-menu-item:first-child {
   display: none;
 }
-#newAttachItemMenu-menu li.ui-menu-item .ui-icon-story {
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-story,
+#attachItemMenu-menu li.ui-menu-item .ui-icon-story {
   background: url("/images/story-icon-32.png") 0 0 no-repeat;
 }
-#newAttachItemMenu-menu li.ui-menu-item .ui-icon-character {
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-character,
+#attachItemMenu-menu li.ui-menu-item .ui-icon-character {
   background: url("/images/character-icon-32.png") 0 0 no-repeat;
 }
-#newAttachItemMenu-menu li.ui-menu-item .ui-icon-setting {
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-setting,
+#attachItemMenu-menu li.ui-menu-item .ui-icon-setting {
   background: url("/images/setting-icon-32.png") 0 0 no-repeat;
 }
-#newAttachItemMenu-menu li.ui-menu-item .ui-icon-event {
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-event,
+#attachItemMenu-menu li.ui-menu-item .ui-icon-event {
   background: url("/images/event-icon-32.png") 0 0 no-repeat;
 }
-#newAttachItemMenu-menu li.ui-menu-item .ui-icon-location {
+#newAttachItemMenu-menu li.ui-menu-item .ui-icon-location,
+#attachItemMenu-menu li.ui-menu-item .ui-icon-location {
   background: url("/images/location-icon-32.png") 0 0 no-repeat;
 }
 .flexspacer {
@@ -515,5 +549,73 @@ div.deskicon.new-icon a {
   background-repeat: no-repeat;
 }
 div.deskicon:hover, div.deskicon.ui-droppable-hover {
+  background-color: #f84;
+}
+/* dialog icons */
+div#dialogicon-container {
+  position: relative;
+  padding-bottom: 2vh;
+  padding-right: 1vw;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row-reverse wrap-reverse;
+  justify-content: flex-end;
+  align-content: flex-start;
+}
+div.dialogicon {
+  margin: 16px 100px 16px 16px;
+  font-size: 8pt;
+  height: 32px;
+  width: 32px;
+  background: #323232;
+  text-align: center;
+}
+div.dialogicon.ui-selecting {
+  background: #F84;
+}
+div.dialogicon.ui-selected {
+  background: #842;
+}
+div.dialogicon.ui-draggable-dragging.multi-drag {
+  box-shadow: 8px 8px #632;
+}
+div.dialogicon.ui-draggable-dragging.multi-drag a {
+  box-shadow: -8px -8px #632;
+}
+div.dialogicon a {
+  font-size: 9pt;
+  margin: 0;
+  position: absolute;
+  padding: 0 0 0 36px;
+  height: 32px;
+  width: 64px;
+  display: block;
+}
+div.dialogicon.story-icon {
+  background-image: url('/images/story-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.dialogicon.location-icon {
+  background-image: url('/images/location-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.dialogicon.character-icon {
+  background-image: url('/images/character-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.dialogicon.event-icon {
+  background-image: url('/images/event-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.dialogicon.setting-icon {
+  background-image: url('/images/setting-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.dialogicon.new-icon a {
+  background-image: url('/images/new-icon.png');
+  background-repeat: no-repeat;
+}
+div.dialogicon:hover, div.dialogicon.ui-droppable-hover {
   background-color: #f84;
 }

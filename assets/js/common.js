@@ -1,6 +1,11 @@
 // back button history
 var backBtnHistory = [];
 
+function uppercaseFirst(s) {
+  console.log(s);
+  return s.replace(/^[a-z]/,m=>m.toUpperCase());
+}
+
 function fixForJSON(val) {
   return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
 }
@@ -94,6 +99,18 @@ function handleResponse_requestPage_instant(data) {
   let home = $('#home-workspace');
   home.html(data);
 }
+
+function requestIcons(type, cssClass='', clickHandlerName='', responseHandler=testIcons_responseHandler) {
+  $.ajax({url: `/icons`, method: 'POST',
+    data: {type: type, cssClass: cssClass, clickHandler: clickHandlerName}
+  }).done(responseHandler);
+}
+function testIcons_responseHandler(data) {
+  let d = $('#dialog');
+  d.hide().html(data).fadeIn(250);
+  setTimeout(() => { $('#dialog').fadeOut(250); }, 3000);
+}
+
 async function saveStoryContent(storyID, contentType, assocID, content,
   fieldName, cb=handleResponse_saveStoryContent
 ) {
