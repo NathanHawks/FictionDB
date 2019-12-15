@@ -113,6 +113,14 @@ function setupFilterField() {
     } else if (e.keyCode === 13) {
       navFilterSubmit();
     }
+  }).focus((e) => {
+    if ($('#Navigator_filter_input').val() === '(filter)') {
+      $('#Navigator_filter_input').val('').css('color', '#bdbdbd');
+    }
+  }).blur((e) => {
+    if ($('#Navigator_filter_input').val() === '') {
+      $('#Navigator_filter_input').val('(filter)').css('color', '#606060');
+    }
   });
 }
 

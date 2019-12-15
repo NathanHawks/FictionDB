@@ -320,13 +320,18 @@ div#context-menu ul li.context-menu-item:hover {
 #newAttachItemMenu-menu li.ui-menu-item .ui-icon-location {
   background: url("/images/location-icon-32.png") 0 0 no-repeat;
 }
+.flexspacer {
+  flex-grow: 8;
+  display: block;
+}
 #Navigator_filter_input {
   background-color: black;
-  color: #bdbdbd;
+  color: #606060;
   width: 10vw;
   height: 24px;
   border: 1px solid #606060;
   padding-right: 54px;
+  padding-left: 4px;
 }
 #Navigator_filter_hint {
   background-image: url('/images/search-24.png');
