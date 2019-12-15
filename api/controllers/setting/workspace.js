@@ -19,7 +19,8 @@ module.exports = {
   },
   fn: async function ({settingID}) {
     var s = await Setting.get(settingID);
-    // populate Navigator
+    var linkedID = s.id;
+  // populate Navigator
     var characters = await SettingCharacter.getCharacters(settingID);
     var locations = await SettingLocation.getLocations(settingID);
     var events = await SettingEvent.getEvents(settingID);
@@ -32,7 +33,10 @@ module.exports = {
       locations: locations,
       events: events,
       stories: stories,
-      settings: [s]
+      settings: [s],
+      linkedType: 'setting',
+      ucfirstType: 'Setting',
+      linkedID: linkedID,
     };
   }
 };

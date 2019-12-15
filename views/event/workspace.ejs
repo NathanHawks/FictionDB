@@ -17,8 +17,8 @@
     } %>
     <script>
       var eventID = `<%= event.id %>`;
-      var linkedID = eventID;
-      var linkedType = 'event';
+      var linkedID = <%- linkedID %>;
+      var linkedType = `<%- linkedType %>`;
       // NOTE: can't move this to a partial; the helper won't be defined there
       function authorTitleKeydown_handler(event,ui) {
         let ev = null; // well that was almost a fine mess
@@ -83,7 +83,7 @@
       </div>
       <div id="Navigator_table">
 
-      <%- partial('../partials/event/navigator-items'); %>
+      <%- partial('../partials/common/navigator-items'); %>
 
       </div>
     </div>

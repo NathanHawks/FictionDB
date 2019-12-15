@@ -20,7 +20,7 @@ module.exports = {
 
   fn: async function ({storyID}) {
     var s = await Story.get(storyID);
-
+    var linkedID = s.id;
     // populate Navigator
     var characters = await StoryCharacter.getCharacters(storyID);
     var settings = await StorySetting.getSettings(storyID);
@@ -42,9 +42,12 @@ module.exports = {
       characters: characters,
       settings: settings,
       events: events,
+      locations: [], ///////////////////////////////
       // locations: locations,
-      settings: settings,
-      stories: [s]
+      stories: [s],
+      linkedType: 'story',
+      ucfirstType: 'Story',
+      linkedID: linkedID,
     };
   }
 };

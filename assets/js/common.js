@@ -93,7 +93,7 @@ function handleResponse_requestPage(data) {
   let home = $('#home-workspace');
   home.fadeOut(125);
   setTimeout(()=>{home.html(data)},124);
-  home.fadeIn(125);
+  home.fadeIn(200);
 }
 function handleResponse_requestPage_instant(data) {
   let home = $('#home-workspace');

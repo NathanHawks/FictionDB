@@ -17,8 +17,8 @@
     } %>
     <script>
       var storyID = `<%= story.id %>`;
-      var linkedID = storyID;
-      var linkedType = 'story';
+      var linkedID = <%- linkedID %>;
+      var linkedType = `<%- linkedType %>`;
       // NOTE: can't move this to a partial; the helper won't be defined there
       function mainTitleKeydown_handler(event,ui) {
         let story = null;
@@ -81,7 +81,7 @@
       </div>
       <div id="Navigator_table">
 
-      <%- partial('../partials/story/navigator-items'); %>
+      <%- partial('../partials/common/navigator-items'); %>
       <script>setupAccordion();</script>
       <script>setupSorts();</script>
       <script>setupClickHandlers();</script>

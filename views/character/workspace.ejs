@@ -17,8 +17,8 @@
     } %>
     <script>
       var characterID = `<%= character.id %>`;
-      var linkedID = characterID;
-      var linkedType = 'character';
+      var linkedID = <%- linkedID %>;
+      var linkedType = `<%- linkedType %>`;
       // NOTE: can't move this to a partial; the helper won't be defined there
       function realNameKeydown_handler(event,ui) {
         let character = null;
@@ -81,7 +81,7 @@
       </div>
       <div id="Navigator_table">
 
-      <%- partial('../partials/character/navigator-items'); %>
+      <%- partial('../partials/common/navigator-items'); %>
       <script>setupAccordion();</script>
       <script>setupSorts();</script>
       <script>setupClickHandlers();</script>
