@@ -12,6 +12,7 @@ module.exports = {
   getTitleFieldRefs: () => {
     return [Title, Title];
   },
+  getNoteFieldNames: () => { return ['traits', 'backstory']; },
   get: async (characterID) => {
     return await Character.findOne({id: characterID})
       .populate('realName')

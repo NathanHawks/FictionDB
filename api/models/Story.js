@@ -11,6 +11,7 @@ module.exports = {
   getTitleFieldRefs: () => {
     return [Title];
   },
+  getNoteFieldNames: () => { return ['elevatorPitch','summary']; },
   get: async (storyID) => {
     return await Story.findOne({id: storyID})
       .populate('mainTitle')

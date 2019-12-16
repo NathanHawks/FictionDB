@@ -14,6 +14,7 @@ module.exports = {
   getTitleFieldRefs: () => {
     return [Title, Title, Title];
   },
+  getNoteFieldNames: () => { return ['authorNote', 'publicNote']; },
   get: async (locationID) => {
     return await Location.findOne({id: locationID})
       .populate('authorTitle')

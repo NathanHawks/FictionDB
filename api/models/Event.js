@@ -13,6 +13,7 @@ module.exports = {
   getTitleFieldRefs: () => {
     return [Title, Title, Title];
   },
+  getNoteFieldNames: () => { return ['authorNote', 'publicNote']; },
   get: async (eventID) => {
     return await Event.findOne({id: eventID})
       .populate('authorTitle')
