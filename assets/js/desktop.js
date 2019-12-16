@@ -195,7 +195,7 @@ function launchRename() {
   setTimeout( async () => {
     let item = getIconSelection()[0];
     if (item === null) return;
-    let fieldName = getMainTitleFieldName(item.type);
+    let fieldName = getMainTitleFieldName(item.type.toLowerCase());
     let icon = $(`#${item.type}_${item.id} a`);
     let assocID = icon.attr('associd');
     let oldName = icon.html();

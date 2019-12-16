@@ -16,19 +16,8 @@ function fixForJSON(val) {
   return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
 }
 function getMainTitleFieldName(itemType) {
-  switch (itemType) {
-    case 'Character':
-      return 'realName';
-    case 'Story':
-      return 'mainTitle';
-    case 'Event':
-    case 'Location':
-    case 'Setting':
-      return 'authorTitle';
-  }
+  return mainTitleFieldNames[itemType];
 }
-
-
 
 async function saveAssocTitle_helper(event,ui,domID,rName,value,parent,parentType) {
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
@@ -57,12 +46,10 @@ function handleResponse_saveAssocContent(data) {
   console.log(data);
 }
 
-
-
 function gotoRecord(event, modelName, id, backBtnUrl='/home') {
   modelName = `${modelName}`.toLowerCase();
   backBtnUrl = `${backBtnUrl}`.toLowerCase();
-  event.stopPropagation();
+  event.stopPropagation();  // stop jquery from hearing the click
   requestPage(`${modelName}/${id}`, false, backBtnUrl);
 }
 
