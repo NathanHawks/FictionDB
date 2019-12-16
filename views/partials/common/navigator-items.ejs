@@ -30,7 +30,7 @@ switch (linkedType) {
   break;
   case 'setting':
     list = [
-      {v: settings,   h: 'Properties', m: 'Setting', t: Setting.getTitleFieldNames()},
+      {v: settings,   h: 'Properties', m: 'Setting',   t: Setting.getTitleFieldNames()},
       {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
       {v: events,     h: 'Events',     m: 'Event',     t: Event.getTitleFieldNames()},
       {v: locations,  h: 'Locations',  m: 'Location',  t: Location.getTitleFieldNames()},
@@ -51,8 +51,19 @@ switch (linkedType) {
 function fixForJSON(val) {
   return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
 }
+function fixForDisplay(val) {
+  return val.replace(/&apos;/g, "'").replace(/\\\\/g, '\\');
+}
+function splitCamelCase(s) {
+  return s.replace(/([A-Z][a-z]|[A-Z]+(?=[A-Z]|$))/g, " $1")
+  .replace(/./, m => m.toUpperCase())
+  .trim();
+}
 %>
 <script>
+  function fixForDisplay(val) {
+    return val.replace(/&apos;/g, "'").replace(/\\\\/g, '\\');
+  }
 // load navigator Title-editor click handlers
 let settings = JSON.parse(`<%- fixForJSON(JSON.stringify(settings)) %>`);
 let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
@@ -74,7 +85,7 @@ function setupClickHandlers() {
 
         ) {
           $(`#${domID}_${t}`).click( (event,ui) => {
-            let content = (c[t]) ? c[t].content : '';
+            let content = (c[t]) ? fixForDisplay(c[t].content) : '';
             navigatorTitleClick_handler(event,ui,domID,t,content,c,linkedType);
           });
         } else {
@@ -116,7 +127,7 @@ list.map((s) => { if (s.v.length) { %>
 
             <h3>
               <span id="<%= domID %>_header" class="nav-item-header-text">
-                <%= c[s.t[0]].content %>
+                <%= fixForDisplay(c[s.t[0]].content) %>
               </span>
               <a href="#" class="btn"
                 title="Unlink" alt="Unlink"
@@ -132,25 +143,26 @@ list.map((s) => { if (s.v.length) { %>
               || s.m !== ucfirstType
             ) { %>
               <div class='Navigator_TopTitle' id="<%= domID %>_<%= s.t[0] %>">
-                <%= s.t[0] %>:
-                <div><%= c[s.t[0]].content %></div>
+                <%= splitCamelCase(s.t[0]) %>:
+                <div><%= fixForDisplay(c[s.t[0]].content) %></div>
 
                 <script>
                 // while we're here
                 autocompleteContent[autocompleteContent.length]
-                  = `<%- (c[s.t[0]]) ? c[s.t[0]].content : '' %>`;
+                  = `<%- (c[s.t[0]]) ? fixForDisplay(c[s.t[0]].content) : '' %>`;
                 </script>
 
               </div>
             <% } %>
             <% for (let x = 1; x < s.t.length; x++) { %>
-              <div class='Navigator_Title' id="<%= domID %>_<%= s.t[x] %>"><%= s.t[x] %>:
-                <div><%= (c[s.t[x]]) ? c[s.t[x]].content : '' %></div>
+              <div class='Navigator_Title' id="<%= domID %>_<%= s.t[x] %>">
+                <%= splitCamelCase(s.t[x]) %>:
+                <div><%= (c[s.t[x]]) ? fixForDisplay(c[s.t[x]].content) : '' %></div>
 
                 <script>
                 // while we're here
                 autocompleteContent[autocompleteContent.length]
-                  = `<%- (c[s.t[x]]) ? c[s.t[x]].content : '' %>`;
+                  = `<%- (c[s.t[x]]) ? fixForDisplay(c[s.t[x]].content) : '' %>`;
                 </script>
 
               </div>

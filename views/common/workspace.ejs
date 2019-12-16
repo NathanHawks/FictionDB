@@ -1,6 +1,11 @@
 <% function fixForJSON(val) {
   return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
 }
+function splitCamelCase(s) {
+  return s.replace(/([A-Z][a-z]|[A-Z]+(?=[A-Z]|$))/g, " $1")
+  .replace(/./, m => m.toUpperCase())
+  .trim();
+}
 %>
 <script src="/js/workspace.js"></script>
 <script src="/js/property-navigator.js"></script>
@@ -21,7 +26,7 @@
     <br/>
   </div>
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
-    <% var article = (['a','e','i','o','u'].indexOf(linkedType.substring(0)) > -1)
+    <% var article = (['a','e','i','o','u'].indexOf(linkedType.substring(0, 1)) > -1)
     ? 'An' : 'A'; %>
     <p class="main-title-intro"><%= article %> <%= linkedType %> named</p>
     <h1 id="mainTitle"><%- linkedItem[titleNames[0]].content %></h1>
@@ -97,7 +102,7 @@
       <fieldset id="col-2-editorType">
         <% for (let x = 0; x < noteNames.length; x++) {
           let name = noteNames[x]; %>
-          <label for="editorType_<%= name %>"><%= name %></label>
+          <label for="editorType_<%= name %>"><%= splitCamelCase(name) %></label>
           <input type="radio" name="editorType" id="editorType_<%= name %>"
             <%= (x === 0) ? 'checked="checked"' : '0' %>>
         <% } %>
