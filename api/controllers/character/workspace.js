@@ -33,17 +33,17 @@ module.exports = {
     var noteNames = Character.getNoteFieldNames();
     // populate Navigator
     var settings = await SettingCharacter.getSettings(characterID);
-    var locations = await LocationCharacter.getLocations(characterID);
     var events = await EventCharacter.getEvents(characterID);
+    var locations = await LocationCharacter.getLocations(characterID);
     var stories = await StoryCharacter.getStories(characterID);
     var locals = {
       characterID: characterID,
       linkedItem: s,
-      settings: settings,
-      locations: locations,
-      events: events,
-      stories: stories,
       characters: [s],
+      events: events,
+      locations: locations,
+      settings: settings,
+      stories: stories,
       linkedType: 'character',
       ucfirstType: 'Character',
       linkedID: linkedID,

@@ -36,15 +36,14 @@ module.exports = {
     var locations = await EventLocation.getLocations(eventID);
     var settings = await SettingEvent.getSettings(eventID);
     var stories = await StoryEvent.getStories(eventID);
-
     var locals = {
       eventID: eventID,
       linkedItem: s,
       characters: characters,
+      events: [s],
       locations: locations,
       settings: settings,
       stories: stories,
-      events: [s],
       linkedType: 'event',
       ucfirstType: 'Event',
       linkedID: linkedID,
