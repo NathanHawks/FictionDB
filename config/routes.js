@@ -31,13 +31,6 @@ module.exports.routes = {
   'GET /new-location': { action: 'common/new-location' },
   'GET /new-setting': { action: 'common/new-setting' },
   'POST /save-content': { action: 'common/save-content' },
-
-  'POST /story/save-content': { action: 'story/save-content' },
-  'POST /character/save-content': { action: 'character/save-content' },
-  'POST /event/save-content': { action: 'event/save-content' },
-  'POST /setting/save-content': { action: 'setting/save-content' },
-  'POST /location/save-content': { action: 'location/save-content' },
-
   '/story/:storyID': { action: 'story/workspace' },
   '/character/:characterID': { action: 'character/workspace' },
   '/event/:eventID': { action: 'event/workspace' },

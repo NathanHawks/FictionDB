@@ -15,9 +15,15 @@ module.exports = {
     var eventIcons = await sails.helpers.makeEventIcons();
     var locationIcons = await sails.helpers.makeLocationIcons();
     var settingIcons = await sails.helpers.makeSettingIcons();
-    return {storyIcons: storyIcons, characterIcons: characterIcons,
-      eventIcons: eventIcons, locationIcons: locationIcons,
-      settingIcons: settingIcons
+    var mainTitleFieldNames = await sails.helpers.getMainTitleFieldNames();
+
+    return {
+      storyIcons: storyIcons,
+      characterIcons: characterIcons,
+      eventIcons: eventIcons,
+      locationIcons: locationIcons,
+      settingIcons: settingIcons,
+      mainTitleFieldNames: mainTitleFieldNames,
     };
   }
 };

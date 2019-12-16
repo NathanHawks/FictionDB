@@ -37,7 +37,8 @@ module.exports = {
     //   +` assocID: ${assocID}\n content: ${content}\n fieldName: ${fieldName}`);
     if (content === '') { content = ' '; }
     var modelRef = null;
-    switch (linkedType) {
+    var lowerType = linkedType.toLowerCase();
+    switch (lowerType) {
       case 'character':   modelRef = Character; break;
       case 'event':       modelRef = Event;     break;
       case 'location':    modelRef = Location;  break;

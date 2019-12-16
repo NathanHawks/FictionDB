@@ -44,7 +44,7 @@ function setupSort(tmpType) {
       sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, linkedID: linkedID};
     }
     $.ajax({url: `/${linkedType}/save-sequence`, method: 'POST', data: {items: sorted}})
-      .done(handleResponse_saveStoryContent);
+      .done(handleResponse_saveAssocContent);
   });
 }
 
@@ -286,7 +286,7 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent,linked
       // convert back to display
       rBox.html(v);
       rContainer.click((event,ui) => {
-        navigatorTitleClick_handler(event,ui,domID,rName,v,parent,linkedID);
+        navigatorTitleClick_handler(event,ui,domID,rName,v,parent,linkedType);
       });
       // update page-internal data
       if (parent[rName] === null) parent[rName] = {};
@@ -296,7 +296,7 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent,linked
       let text = (parent[rName] !== null) ? parent[rName].content : '';
       rBox.html(text);
       rContainer.click((event,ui) => {
-        navigatorTitleClick_handler(event,ui,domID,rName,rn,parent,linkedID);
+        navigatorTitleClick_handler(event,ui,domID,rName,rn,parent,linkedType);
       });
     }
   });

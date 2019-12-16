@@ -5,6 +5,13 @@ function uppercaseFirst(s) {
   return s.replace(/^[a-z]/,m=>m.toUpperCase());
 }
 
+function splitCamelCase(s) {
+  return s.replace(/([A-Z][a-z]|[A-Z]+(?=[A-Z]|$))/g, " $1")
+  .replace(/./, m => m.toUpperCase())
+  .trim()
+  ;
+}
+
 function fixForJSON(val) {
   return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
 }
@@ -27,7 +34,10 @@ async function saveAssocTitle_helper(event,ui,domID,rName,value,parent,parentTyp
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
   let newVal = event.target.value;
   saveAssocContent(parent.id, parentType, 'Title', titleID, newVal, rName );
-  if (rName === titleNames[0]) {
+  let [assocType,junk] = domID.split("_");
+  assocType = assocType.toLowerCase();
+  // update header if we've changed the object's first title field
+  if (rName === mainTitleFieldNames[assocType]) {
     // update header
     $(`#${domID}_header`).html(value)
   }
@@ -36,6 +46,7 @@ async function saveAssocTitle_helper(event,ui,domID,rName,value,parent,parentTyp
 async function saveAssocContent(linkedID, linkedType, contentType, assocID, content,
   fieldName, cb=handleResponse_saveAssocContent
 ) {
+  if (!assocID) assocID = -1;
   $.ajax({ url: 'save-content', method: 'POST',
     data: {linkedID:linkedID, linkedType:linkedType, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
     success: cb
@@ -75,8 +86,10 @@ async function requestBackBtn() {
 function handleResponse_requestPage(data) {
   let home = $('#home-workspace');
   home.fadeOut(125);
-  setTimeout(()=>{home.html(data)},124);
-  home.fadeIn(200);
+  setTimeout(async()=>{
+    home.html(data)
+    setTimeout(async() => {home.fadeIn(200)}, 250);
+  },124);
 }
 function handleResponse_requestPage_instant(data) {
   let home = $('#home-workspace');

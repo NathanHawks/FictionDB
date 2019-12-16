@@ -191,8 +191,8 @@ function getIconSelection() {
   return items;
 }
 function launchRename() {
-  $('#context-menu').fadeOut(100);
-  setTimeout( () => {
+  $('#context-menu').fadeOut(95);
+  setTimeout( async () => {
     let item = getIconSelection()[0];
     if (item === null) return;
     let fieldName = getMainTitleFieldName(item.type);
@@ -208,23 +208,7 @@ function launchRename() {
 function renameItem(itemID, itemType, fieldName, assocID, content) {
   let contentType = 'Title';
   let cb = (data) => { requestPage('/home', true); }
-  switch (itemType) {
-    case 'Story':
-      saveStoryContent(itemID, contentType, assocID, content, fieldName, cb);
-    break;
-    case 'Character':
-      saveCharacterContent(itemID, contentType, assocID, content, fieldName, cb);
-    break;
-    case 'Setting':
-      saveSettingContent(itemID, contentType, assocID, content, fieldName, cb);
-    break;
-    case 'Location':
-      saveLocationContent(itemID, contentType, assocID, content, fieldName, cb);
-    break;
-    case 'Event':
-      saveEventContent(itemID, contentType, assocID, content, fieldName, cb);
-    break;
-  }
+  saveAssocContent(itemID, itemType, contentType, assocID, content, fieldName, cb);
 }
 
 async function deleteKey_handler() {
