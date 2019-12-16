@@ -7,7 +7,7 @@ try {
   $('#mainToolbar').controlgroup();
   $('#col-2-mainToolbar').controlgroup();
   var sumBtn = $('#editorType_summary');
-  var elvBtn = $('#editorType_elevator');
+  var elvBtn = $('#editorType_elevatorPitch');
   $('input[type=radio][name=editorType]').change((event, ui)=>{
     saveStoryNote_helper(event,ui);
     attachAutoSave();
@@ -29,13 +29,13 @@ async function saveStoryNote_helper(event,ui) {
     if (elvBtn.is(':checked')) {
       let newElevatorPitchContent = inst.getData();
       if (newElevatorPitchContent !== assocNotes.elevatorPitch.content) {
-        saveAssocContent(storyID, linkedType, 'Note', assocNotes.elevatorPitch.id, newElevatorPitchContent, 'elevatorPitch');
+        saveAssocContent(linkedID, linkedType, 'Note', assocNotes.elevatorPitch.id, newElevatorPitchContent, 'elevatorPitch');
         assocNotes.elevatorPitch.content = newElevatorPitchContent;
       }
     } else if (sumBtn.is(':checked')) {
       let newSummaryContent = inst.getData();
       if (newSummaryContent !== assocNotes.summary.content) {
-        saveAssocContent(storyID, linkedType, 'Note', assocNotes.summary.id, newSummaryContent, 'summary');
+        saveAssocContent(linkedID, linkedType, 'Note', assocNotes.summary.id, newSummaryContent, 'summary');
         assocNotes.summary.content = newSummaryContent;
       }
     }
@@ -49,7 +49,7 @@ async function saveStoryNote_helper(event,ui) {
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
     if (newSummaryContent !== assocNotes.summary.content) {
-      saveAssocContent(storyID, linkedType, 'Note', assocNotes.summary.id, newSummaryContent, 'summary');
+      saveAssocContent(linkedID, linkedType, 'Note', assocNotes.summary.id, newSummaryContent, 'summary');
       assocNotes.summary.content = newSummaryContent;
     }
   }
@@ -61,7 +61,7 @@ async function saveStoryNote_helper(event,ui) {
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
     if (newElevatorPitchContent !== assocNotes.elevatorPitch.content) {
-      saveAssocContent(storyID, linkedType, 'Note', assocNotes.elevatorPitch.id, newElevatorPitchContent, 'elevatorPitch');
+      saveAssocContent(linkedID, linkedType, 'Note', assocNotes.elevatorPitch.id, newElevatorPitchContent, 'elevatorPitch');
       assocNotes.elevatorPitch.content = newElevatorPitchContent;
     }
   } else {

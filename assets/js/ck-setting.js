@@ -29,13 +29,13 @@ async function saveSettingNote_helper(event,ui) {
     if (elvBtn.is(':checked')) {
       let newAuthorNoteContent = inst.getData();
       if (newAuthorNoteContent !== assocNotes.authorNote.content) {
-        saveAssocContent(settingID, linkedType, 'Note', assocNotes.authorNote.id, newAuthorNoteContent, 'authorNote');
+        saveAssocContent(linkedID, linkedType, 'Note', assocNotes.authorNote.id, newAuthorNoteContent, 'authorNote');
         assocNotes.authorNote.content = newAuthorNoteContent;
       }
     } else if (sumBtn.is(':checked')) {
       let newPublicNoteContent = inst.getData();
       if (newPublicNoteContent !== assocNotes.publicNote.content) {
-        saveAssocContent(settingID, linkedType, 'Note', assocNotes.publicNote.id, newPublicNoteContent, 'publicNote');
+        saveAssocContent(linkedID, linkedType, 'Note', assocNotes.publicNote.id, newPublicNoteContent, 'publicNote');
         assocNotes.publicNote.content = newPublicNoteContent;
       }
     }
@@ -49,7 +49,7 @@ async function saveSettingNote_helper(event,ui) {
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
     if (newPublicNoteContent !== assocNotes.publicNote.content) {
-      saveAssocContent(settingID, linkedType, 'Note', assocNotes.publicNote.id, newPublicNoteContent, 'publicNote');
+      saveAssocContent(linkedID, linkedType, 'Note', assocNotes.publicNote.id, newPublicNoteContent, 'publicNote');
       assocNotes.publicNote.content = newPublicNoteContent;
     }
   }
@@ -61,7 +61,7 @@ async function saveSettingNote_helper(event,ui) {
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
     if (newAuthorNoteContent !== assocNotes.authorNote.content) {
-      saveAssocContent(settingID, linkedType, 'Note', assocNotes.authorNote.id, newAuthorNoteContent, 'authorNote');
+      saveAssocContent(linkedID, linkedType, 'Note', assocNotes.authorNote.id, newAuthorNoteContent, 'authorNote');
       assocNotes.authorNote.content = newAuthorNoteContent;
     }
   } else {

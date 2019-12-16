@@ -29,7 +29,7 @@ async function saveEventNote_helper(event,ui) {
     if (elvBtn.is(':checked')) {
       let newAuthorNoteContent = inst.getData();
       if (newAuthorNoteContent !== assocNotes.authorNote.content) {
-        saveAssocContent(eventID, linkedType, 'Note', assocNotes.authorNote.id,
+        saveAssocContent(linkedID, linkedType, 'Note', assocNotes.authorNote.id,
           newAuthorNoteContent, 'authorNote'
         );
         assocNotes.authorNote.content = newAuthorNoteContent;
@@ -37,7 +37,7 @@ async function saveEventNote_helper(event,ui) {
     } else if (sumBtn.is(':checked')) {
       let newPublicNoteContent = inst.getData();
       if (newPublicNoteContent !== assocNotes.publicNote.content) {
-        saveAssocContent(eventID, linkedType, 'Note', assocNotes.publicNote.id,
+        saveAssocContent(linkedID, linkedType, 'Note', assocNotes.publicNote.id,
           newPublicNoteContent, 'publicNote'
         );
         assocNotes.publicNote.content = newPublicNoteContent;
@@ -53,7 +53,7 @@ async function saveEventNote_helper(event,ui) {
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
     if (newPublicNoteContent !== assocNotes.publicNote.content) {
-      saveAssocContent(eventID, linkedType, 'Note', assocNotes.publicNote.id,
+      saveAssocContent(linkedID, linkedType, 'Note', assocNotes.publicNote.id,
         newPublicNoteContent, 'publicNote'
       );
       assocNotes.publicNote.content = newPublicNoteContent;
@@ -67,7 +67,7 @@ async function saveEventNote_helper(event,ui) {
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
     if (newAuthorNoteContent !== assocNotes.authorNote.content) {
-      saveAssocContent(eventID, linkedType, 'Note', assocNotes.authorNote.id,
+      saveAssocContent(linkedID, linkedType, 'Note', assocNotes.authorNote.id,
         newAuthorNoteContent, 'authorNote'
       );
       assocNotes.authorNote.content = newAuthorNoteContent;
