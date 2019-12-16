@@ -23,12 +23,14 @@ async function saveAssocTitle_helper(event,ui,domID,rName,value,parent,parentTyp
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
   let newVal = event.target.value;
   saveAssocContent(parent.id, parentType, 'Title', titleID, newVal, rName );
-  let [assocType,junk] = domID.split("_");
-  assocType = assocType.toLowerCase();
-  // update header if we've changed the object's first title field
-  if (rName === mainTitleFieldNames[assocType]) {
-    // update header
-    $(`#${domID}_header`).html(value)
+  // domID option serves as a request to update an accordion header if needed
+  if (domID) {
+    let [assocType,junk] = domID.split("_");
+    assocType = assocType.toLowerCase();
+    // update header if we've changed the object's first title field
+    if (rName === mainTitleFieldNames[assocType]) {
+      $(`#${domID}_header`).html(value)
+    }
   }
 }
 

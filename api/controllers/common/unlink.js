@@ -94,7 +94,7 @@ module.exports = {
             model = LocationCharacter
           break;
           case 'Event':
-            model = LocationEvent;
+            model = EventLocation;
           break;
           case 'Setting':
             model = SettingLocation;
