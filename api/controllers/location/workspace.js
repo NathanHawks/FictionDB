@@ -14,7 +14,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'location/workspace'
+      viewTemplatePath: 'common/workspace'
     },
     navigatorOnly: {
       responseType: 'view',
@@ -28,6 +28,8 @@ module.exports = {
   fn: async function (inputs) {
     var locationID = inputs.locationID;
     var s = await Location.get(locationID);
+    var titleNames = Location.getTitleFieldNames();
+    var noteNames = Location.getNoteFieldNames();
     var linkedID = s.id;
     // populate Navigator
     var characters = await LocationCharacter.getCharacters(locationID);
@@ -36,7 +38,7 @@ module.exports = {
 
     var locals = {
       locationID: locationID,
-      location: s,
+      linkedItem: s,
       characters: characters,
       locations: [s],
       settings: settings,
@@ -45,6 +47,8 @@ module.exports = {
       linkedType: 'location',
       ucfirstType: 'Location',
       linkedID: linkedID,
+      titleNames: titleNames,
+      noteNames: noteNames,
     }
     if (inputs.navigatorOnly === true) {
       throw { navigatorOnly: locals};

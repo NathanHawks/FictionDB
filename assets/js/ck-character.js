@@ -28,41 +28,41 @@ async function saveCharacterNote_helper(event,ui) {
   if (saveNoteWasClicked) {
     if (elvBtn.is(':checked')) {
       let newBackstoryContent = inst.getData();
-      if (newBackstoryContent !== backstoryContent) {
-        saveCharacterContent(characterID, 'Note', backstoryID, newBackstoryContent, 'backstory');
-        backstoryContent = newBackstoryContent;
+      if (newBackstoryContent !== assocNotes.backstory.content) {
+        saveAssocContent(linkedID, linkedType, 'Note', assocNotes.backstory.id, newBackstoryContent, 'backstory');
+        assocNotes.backstory.content = newBackstoryContent;
       }
     } else if (sumBtn.is(':checked')) {
       let newTraitsContent = inst.getData();
-      if (newTraitsContent !== traitsContent) {
-        saveCharacterContent(characterID, 'Note', traitsID, newTraitsContent, 'traits');
-        traitsContent = newTraitsContent;
+      if (newTraitsContent !== assocNotes.traits.content) {
+        saveAssocContent(linkedID, linkedType, 'Note', assocNotes.traits.id, newTraitsContent, 'traits');
+        assocNotes.traits.content = newTraitsContent;
       }
     }
     saveNoteWasClicked = false;
   }
   else if (elvBtn.is(':checked')) {
     let newTraitsContent = inst.getData();
-    inst.setData(backstoryContent);
+    inst.setData(assocNotes.backstory.content);
     try {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newTraitsContent !== traitsContent) {
-      saveCharacterContent(characterID, 'Note', traitsID, newTraitsContent, 'traits');
-      traitsContent = newTraitsContent;
+    if (newTraitsContent !== assocNotes.traits.content) {
+      saveAssocContent(linkedID, linkedType, 'Note', assocNotes.traits.id, newTraitsContent, 'traits');
+      assocNotes.traits.content = newTraitsContent;
     }
   }
   else if (sumBtn.is(':checked')) {
     let newBackstoryContent = inst.getData();
-    inst.setData(traitsContent);
+    inst.setData(assocNotes.traits.content);
     try {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newBackstoryContent !== backstoryContent) {
-      saveCharacterContent(characterID, 'Note', backstoryID, newBackstoryContent, 'backstory');
-      backstoryContent = newBackstoryContent;
+    if (newBackstoryContent !== assocNotes.backstory.content) {
+      saveAssocContent(linkedID, linkedType, 'Note', assocNotes.backstory.id, newBackstoryContent, 'backstory');
+      assocNotes.backstory.content = newBackstoryContent;
     }
   } else {
     console.log('wait what?');

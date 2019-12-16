@@ -28,41 +28,41 @@ async function saveStoryNote_helper(event,ui) {
   if (saveNoteWasClicked) {
     if (elvBtn.is(':checked')) {
       let newElevatorPitchContent = inst.getData();
-      if (newElevatorPitchContent !== elevatorPitchContent) {
-        saveStoryContent(storyID, 'Note', elevatorPitchID, newElevatorPitchContent, 'elevatorPitch');
-        elevatorPitchContent = newElevatorPitchContent;
+      if (newElevatorPitchContent !== assocNotes.elevatorPitch.content) {
+        saveAssocContent(storyID, linkedType, 'Note', assocNotes.elevatorPitch.id, newElevatorPitchContent, 'elevatorPitch');
+        assocNotes.elevatorPitch.content = newElevatorPitchContent;
       }
     } else if (sumBtn.is(':checked')) {
       let newSummaryContent = inst.getData();
-      if (newSummaryContent !== summaryContent) {
-        saveStoryContent(storyID, 'Note', summaryID, newSummaryContent, 'summary');
-        summaryContent = newSummaryContent;
+      if (newSummaryContent !== assocNotes.summary.content) {
+        saveAssocContent(storyID, linkedType, 'Note', assocNotes.summary.id, newSummaryContent, 'summary');
+        assocNotes.summary.content = newSummaryContent;
       }
     }
     saveNoteWasClicked = false;
   }
   else if (elvBtn.is(':checked')) {
     let newSummaryContent = inst.getData();
-    inst.setData(elevatorPitchContent);
+    inst.setData(assocNotes.elevatorPitch.content);
     try {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newSummaryContent !== summaryContent) {
-      saveStoryContent(storyID, 'Note', summaryID, newSummaryContent, 'summary');
-      summaryContent = newSummaryContent;
+    if (newSummaryContent !== assocNotes.summary.content) {
+      saveAssocContent(storyID, linkedType, 'Note', assocNotes.summary.id, newSummaryContent, 'summary');
+      assocNotes.summary.content = newSummaryContent;
     }
   }
   else if (sumBtn.is(':checked')) {
     let newElevatorPitchContent = inst.getData();
-    inst.setData(summaryContent);
+    inst.setData(assocNotes.summary.content);
     try {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newElevatorPitchContent !== elevatorPitchContent) {
-      saveStoryContent(storyID, 'Note', elevatorPitchID, newElevatorPitchContent, 'elevatorPitch');
-      elevatorPitchContent = newElevatorPitchContent;
+    if (newElevatorPitchContent !== assocNotes.elevatorPitch.content) {
+      saveAssocContent(storyID, linkedType, 'Note', assocNotes.elevatorPitch.id, newElevatorPitchContent, 'elevatorPitch');
+      assocNotes.elevatorPitch.content = newElevatorPitchContent;
     }
   } else {
     console.log('wait what?');

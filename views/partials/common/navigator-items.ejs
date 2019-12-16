@@ -59,6 +59,7 @@ let events = JSON.parse(`<%- fixForJSON(JSON.stringify(events)) %>`);
 let locations = JSON.parse(`<%- fixForJSON(JSON.stringify(locations)) %>`);
 let stories = JSON.parse(`<%- fixForJSON(JSON.stringify(stories)) %>`);
 let characters = JSON.parse(`<%- fixForJSON(JSON.stringify(characters)) %>`);
+var linkedType = `<%- linkedType %>`;
 
 function setupClickHandlers() {
   var list = JSON.parse(`<%- fixForJSON(JSON.stringify(list)) %>`);
@@ -69,12 +70,12 @@ function setupClickHandlers() {
         if (s.m !== uppercaseFirst(linkedType)
           || Number(c.id) !== Number(linkedID)
 
-          || t !== 'realName'
+          || t !== s.t[0]
 
         ) {
           $(`#${domID}_${t}`).click( (event,ui) => {
             let content = (c[t]) ? c[t].content : '';
-            navigatorTitleClick_handler(event,ui,domID,t,content,c);
+            navigatorTitleClick_handler(event,ui,domID,t,content,c,linkedType);
           });
         } else {
           $(`#${domID}_${t}`).addClass('prop-main-title');

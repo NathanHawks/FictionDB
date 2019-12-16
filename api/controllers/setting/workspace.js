@@ -14,7 +14,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'setting/workspace'
+      viewTemplatePath: 'common/workspace'
     },
     navigatorOnly: {
       responseType: 'view',
@@ -28,6 +28,8 @@ module.exports = {
   fn: async function (inputs) {
     var settingID = inputs.settingID;
     var s = await Setting.get(settingID);
+    var titleNames = Setting.getTitleFieldNames();
+    var noteNames = Setting.getNoteFieldNames();
     var linkedID = s.id;
   // populate Navigator
     var characters = await SettingCharacter.getCharacters(settingID);
@@ -37,7 +39,7 @@ module.exports = {
 
     var locals = {
       settingID: settingID,
-      setting: s,
+      linkedItem: s,
       characters: characters,
       locations: locations,
       events: events,
@@ -46,6 +48,8 @@ module.exports = {
       linkedType: 'setting',
       ucfirstType: 'Setting',
       linkedID: linkedID,
+      titleNames: titleNames,
+      noteNames: noteNames,
     };
     if (inputs.navigatorOnly === true) {
       throw { navigatorOnly: locals};

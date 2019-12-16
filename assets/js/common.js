@@ -20,51 +20,34 @@ function getMainTitleFieldName(itemType) {
       return 'authorTitle';
   }
 }
-async function saveStoryTitle_helper(event,ui,domID,rName,value,parent) {
+
+
+
+async function saveAssocTitle_helper(event,ui,domID,rName,value,parent,parentType) {
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
   let newVal = event.target.value;
-  saveStoryContent(parent.id, 'Title', titleID, newVal, rName );
-  if (rName === 'mainTitle') {
+  saveAssocContent(parent.id, parentType, 'Title', titleID, newVal, rName );
+  if (rName === titleNames[0]) {
     // update header
     $(`#${domID}_header`).html(value)
   }
 }
-async function saveCharacterTitle_helper(event,ui,domID,rName,value,parent) {
-  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
-  let newVal = event.target.value;
-  saveCharacterContent(parent.id, 'Title', titleID, newVal, rName );
-  if (rName === 'realName') {
-    // update header
-    $(`#${domID}_header`).html(value)
-  }
+
+async function saveAssocContent(linkedID, linkedType, contentType, assocID, content,
+  fieldName, cb=handleResponse_saveAssocContent
+) {
+  $.ajax({ url: 'save-content', method: 'POST',
+    data: {linkedID:linkedID, linkedType:linkedType, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
+    success: cb
+  });
 }
-async function saveEventTitle_helper(event,ui,domID,rName,value,parent) {
-  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
-  let newVal = event.target.value;
-  saveEventContent(parent.id, 'Title', titleID, newVal, rName );
-  if (rName === 'authorTitle') {
-    // update header
-    $(`#${domID}_header`).html(value)
-  }
+
+function handleResponse_saveAssocContent(data) {
+  console.log(data);
 }
-async function saveSettingTitle_helper(event,ui,domID,rName,value,parent) {
-  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
-  let newVal = event.target.value;
-  saveSettingContent(parent.id, 'Title', titleID, newVal, rName );
-  if (rName === 'authorTitle') {
-    // update header
-    $(`#${domID}_header`).html(value)
-  }
-}
-async function saveLocationTitle_helper(event,ui,domID,rName,value,parent) {
-  let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
-  let newVal = event.target.value;
-  saveLocationContent(parent.id, 'Title', titleID, newVal, rName );
-  if (rName === 'authorTitle') {
-    // update header
-    $(`#${domID}_header`).html(value)
-  }
-}
+
+
+
 function gotoRecord(event, modelName, id, backBtnUrl='/home') {
   modelName = `${modelName}`.toLowerCase();
   backBtnUrl = `${backBtnUrl}`.toLowerCase();
@@ -112,50 +95,6 @@ function testIcons_responseHandler(data) {
   d.hide().html(data).fadeIn(250);
   setTimeout(() => { $('#dialog').fadeOut(250); }, 3000);
 }
-
-async function saveStoryContent(storyID, contentType, assocID, content,
-  fieldName, cb=handleResponse_saveStoryContent
-) {
-  $.ajax({ url: 'story/save-content', method: 'POST',
-    data: {storyID:storyID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: cb
-  });
-}
-async function saveCharacterContent(characterID, contentType, assocID, content,
-  fieldName, cb=handleResponse_saveStoryContent
-) {
-  $.ajax({ url: 'character/save-content', method: 'POST',
-    data: {characterID:characterID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: cb
-  });
-}
-async function saveEventContent(eventID, contentType, assocID, content,
-  fieldName, cb=handleResponse_saveStoryContent
-) {
-  $.ajax({ url: 'event/save-content', method: 'POST',
-    data: {eventID:eventID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: cb
-  });
-}
-async function saveLocationContent(locationID, contentType, assocID, content,
-  fieldName, cb=handleResponse_saveStoryContent
-) {
-  $.ajax({ url: 'location/save-content', method: 'POST',
-    data: {locationID:locationID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: cb
-  });
-}
-
-async function saveSettingContent(settingID, contentType, assocID, content, fieldName) {
-  $.ajax({ url: 'setting/save-content', method: 'POST',
-    data: {settingID:settingID, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
-    success: handleResponse_saveStoryContent
-  });
-}
-function handleResponse_saveStoryContent(data) {
-  console.log(data);
-}
-
 
 async function closeAllPopups() {
   $('#dialog').hide();

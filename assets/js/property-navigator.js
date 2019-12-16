@@ -255,7 +255,7 @@ function setupSorts() {
   setupSort('Event');
 }
 
-async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
+async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent,linkedType) {
   // sanitize value
   rn = rn.replace(/"/g, '&quot;').replace(/'/g, '&apos;');
   // prep editors
@@ -282,28 +282,11 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
         autocompleteContent[autocompleteContent.length] = v;
       }
       // save
-      switch (event.target.id.split("_")[0]) {
-        case 'Character':
-          saveCharacterTitle_helper(event,ui,domID,rName,v,parent);
-        break;
-        case 'Location':
-          saveLocationTitle_helper(event,ui,domID,rName,v,parent);
-        break;
-        case 'Story':
-          saveStoryTitle_helper(event,ui,domID,rName,v,parent);
-        break;
-        case 'Event':
-          saveEventTitle_helper(event,ui,domID,rName,v,parent);
-        break;
-        case 'Setting':
-          saveSettingTitle_helper(event,ui,domID,rName,v,parent);
-        break;
-
-      }
+      saveAssocTitle_helper(event,ui,domID,rName,v,parent,linkedType);
       // convert back to display
       rBox.html(v);
       rContainer.click((event,ui) => {
-        navigatorTitleClick_handler(event,ui,domID,rName,v,parent);
+        navigatorTitleClick_handler(event,ui,domID,rName,v,parent,linkedID);
       });
       // update page-internal data
       if (parent[rName] === null) parent[rName] = {};
@@ -313,7 +296,7 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent) {
       let text = (parent[rName] !== null) ? parent[rName].content : '';
       rBox.html(text);
       rContainer.click((event,ui) => {
-        navigatorTitleClick_handler(event,ui,domID,rName,rn,parent);
+        navigatorTitleClick_handler(event,ui,domID,rName,rn,parent,linkedID);
       });
     }
   });

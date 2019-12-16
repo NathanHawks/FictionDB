@@ -28,41 +28,41 @@ async function saveLocationNote_helper(event,ui) {
   if (saveNoteWasClicked) {
     if (elvBtn.is(':checked')) {
       let newAuthorNoteContent = inst.getData();
-      if (newAuthorNoteContent !== authorNoteContent) {
-        saveLocationContent(locationID, 'Note', authorNoteID, newAuthorNoteContent, 'authorNote');
-        authorNoteContent = newAuthorNoteContent;
+      if (newAuthorNoteContent !== assocNotes.authorNote.content) {
+        saveAssocContent(locationID, linkedType, 'Note', assocNotes.authorNote.id, newAuthorNoteContent, 'authorNote');
+        assocNotes.authorNote.content = newAuthorNoteContent;
       }
     } else if (sumBtn.is(':checked')) {
       let newPublicNoteContent = inst.getData();
-      if (newPublicNoteContent !== publicNoteContent) {
-        saveLocationContent(locationID, 'Note', publicNoteID, newPublicNoteContent, 'publicNote');
-        publicNoteContent = newPublicNoteContent;
+      if (newPublicNoteContent !== assocNotes.publicNote.content) {
+        saveAssocContent(locationID, linkedType, 'Note', assocNotes.publicNote.id, newPublicNoteContent, 'publicNote');
+        assocNotes.publicNote.content = newPublicNoteContent;
       }
     }
     saveNoteWasClicked = false;
   }
   else if (elvBtn.is(':checked')) {
     let newPublicNoteContent = inst.getData();
-    inst.setData(authorNoteContent);
+    inst.setData(assocNotes.authorNote.content);
     try {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newPublicNoteContent !== publicNoteContent) {
-      saveLocationContent(locationID, 'Note', publicNoteID, newPublicNoteContent, 'publicNote');
-      publicNoteContent = newPublicNoteContent;
+    if (newPublicNoteContent !== assocNotes.publicNote.content) {
+      saveAssocContent(locationID, linkedType, 'Note', assocNotes.publicNote.id, newPublicNoteContent, 'publicNote');
+      assocNotes.publicNote.content = newPublicNoteContent;
     }
   }
   else if (sumBtn.is(':checked')) {
     let newAuthorNoteContent = inst.getData();
-    inst.setData(publicNoteContent);
+    inst.setData(assocNotes.publicNote.content);
     try {
       inst.destroy();
       CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
     } catch (e) { }
-    if (newAuthorNoteContent !== authorNoteContent) {
-      saveLocationContent(locationID, 'Note', authorNoteID, newAuthorNoteContent, 'authorNote');
-      authorNoteContent = newAuthorNoteContent;
+    if (newAuthorNoteContent !== assocNotes.authorNote.content) {
+      saveAssocContent(locationID, linkedType, 'Note', assocNotes.authorNote.id, newAuthorNoteContent, 'authorNote');
+      assocNotes.authorNote.content = newAuthorNoteContent;
     }
   } else {
     console.log('wait what?');

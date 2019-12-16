@@ -14,7 +14,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'character/workspace'
+      viewTemplatePath: 'common/workspace'
     },
     navigatorOnly: {
       responseType: 'view',
@@ -29,6 +29,8 @@ module.exports = {
     var characterID = inputs.characterID;
     var s = await Character.get(characterID);
     var linkedID = s.id;
+    var titleNames = Character.getTitleFieldNames();
+    var noteNames = Character.getNoteFieldNames();
     // populate Navigator
     var settings = await SettingCharacter.getSettings(characterID);
     var locations = await LocationCharacter.getLocations(characterID);
@@ -36,7 +38,7 @@ module.exports = {
     var stories = await StoryCharacter.getStories(characterID);
     var locals = {
       characterID: characterID,
-      character: s,
+      linkedItem: s,
       settings: settings,
       locations: locations,
       events: events,
@@ -45,6 +47,8 @@ module.exports = {
       linkedType: 'character',
       ucfirstType: 'Character',
       linkedID: linkedID,
+      titleNames: titleNames,
+      noteNames: noteNames,
     };
     if (inputs.navigatorOnly === true) {
       throw { navigatorOnly: locals};

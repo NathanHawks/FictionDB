@@ -1,7 +1,18 @@
+<% function fixForJSON(val) {
+  return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
+}
+%>
 <script src="/js/workspace.js"></script>
 <script src="/js/property-navigator.js"></script>
-<script src="/js/ck-story.js"></script>
-
+<script src="/js/ck-<%= linkedType %>.js"></script>
+<script>
+  var linkedID = <%- linkedID %>;
+  var linkedType = `<%- linkedType %>`;
+  var titleNames = JSON.parse(`<%- fixForJSON(JSON.stringify(titleNames)) %>`);
+  var noteNames = JSON.parse(`<%- fixForJSON(JSON.stringify(noteNames)) %>`);
+  var linkedItemString = '<%- fixForJSON(JSON.stringify(linkedItem)) %>';
+  var linkedItem = JSON.parse(linkedItemString);
+</script>
 <div class="col-1-container">
   <div class="mod-col-1 mod toolbar-top">
     <fieldset id="mainToolbar">
@@ -10,42 +21,32 @@
     <br/>
   </div>
   <div class="mod-col-1 mod-main-content mod mod-mainTitle">
-    <p class="main-title-intro">A story titled</p>
-    <h1 id="mainTitle"><%= story.mainTitle.content %></h1>
-    <% function fixForJSON(val) {
-      return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
-    } %>
+    <% var article = (['a','e','i','o','u'].indexOf(linkedType.substring(0)) > -1)
+    ? 'An' : 'A'; %>
+    <p class="main-title-intro"><%= article %> <%= linkedType %> named</p>
+    <h1 id="mainTitle"><%- linkedItem[titleNames[0]].content %></h1>
     <script>
-      var storyID = `<%= story.id %>`;
-      var linkedID = <%- linkedID %>;
-      var linkedType = `<%- linkedType %>`;
       // NOTE: can't move this to a partial; the helper won't be defined there
-      function mainTitleKeydown_handler(event,ui) {
-        let story = null;
-        let storyString = null;
-        if (event.keyCode === 13) {
-          let newVal = event.target.value;
-          storyString = '<%- fixForJSON(JSON.stringify(story)) %>';
-          story = JSON.parse(storyString);
-          saveStoryTitle_helper(event,ui,null,'mainTitle',newVal,story);
+      function mainTitleKeydown_handler(e,ui) {
+        if (e.keyCode === 13) {
+          let newVal = e.target.value;
+          saveAssocTitle_helper(e,ui,null,titleNames[0],newVal,linkedItem,linkedType);
           $('h1#mainTitle').html(newVal);
           $('h1#mainTitle').click(mainTitleClick_handler);
           oldTitle = null;
           $('p.main-title-intro').click(mainTitleClick_handler);
-        } else if (event.keyCode === 27) {
+        } else if (e.keyCode === 27) {
           try {
-            storyString = '<%- fixForJSON(JSON.stringify(story)) %>';
-            story = JSON.parse(storyString);
-            $('h1#mainTitle').html(story.mainTitle.content);
+            $('h1#mainTitle').html(linkedItem[titleNames[0]].content);
             $('h1#mainTitle').click(mainTitleClick_handler);
             $('p.main-title-intro').click(mainTitleClick_handler);
-        } catch (e) {console.log(e);}
+          } catch (e) {console.log(e);}
           oldTitle = null;
-        } else if (event.keyCode === 65 && event.ctrlKey) {
+        } else if (e.keyCode === 65 && e.ctrlKey) {
           $('#mainTitle_editor').focus().select();
         }
       }
-      function mainTitleClick_handler(event,ui) {
+      function mainTitleClick_handler(e,ui) {
         $('h1#mainTitle').off('click');
         $('p.main-title-intro').off('click')
           .click((e) => { $('input#mainTitle_editor').focus().select(); });
@@ -76,16 +77,15 @@
 
         <span class="flexspacer">&nbsp;</span>
         <input type='text' id='Navigator_filter_input' value="(filter)"/><span
-          id="Navigator_filter_hint" onclick="navFilterSubmit();">&nbsp;</span><span
-          id="Navigator_filter_clear" onclick="navFilterClear();">&nbsp;</span>
+         id="Navigator_filter_hint" onclick="navFilterSubmit();">&nbsp;</span><span
+         id="Navigator_filter_clear" onclick="navFilterClear();">&nbsp;</span>
       </div>
       <div id="Navigator_table">
 
       <%- partial('../partials/common/navigator-items'); %>
-      <script>setupAccordion();</script>
-      <script>setupSorts();</script>
-      <script>setupClickHandlers();</script>
 
+      <script>
+      </script>
       </div>
     </div>
   </div>
@@ -95,10 +95,12 @@
   <div class="mod-col-2 mod toolbar-top" style="margin-bottom: 0px; height: ">
     <form>
       <fieldset id="col-2-editorType">
-        <label for="editorType_summary">Summary</label>
-        <input type="radio" name="editorType" id="editorType_summary" checked="checked">
-        <label for="editorType_elevator">Elevator Pitch</label>
-        <input type="radio" name="editorType" id="editorType_elevator">
+        <% for (let x = 0; x < noteNames.length; x++) {
+          let name = noteNames[x]; %>
+          <label for="editorType_<%= name %>"><%= name %></label>
+          <input type="radio" name="editorType" id="editorType_<%= name %>"
+            <%= (x === 0) ? 'checked="checked"' : '0' %>>
+        <% } %>
       </fieldset>
       <fieldset id="col-2-mainToolbar">
         <input class="btn" type="button" id="editorSubmit" value="Save">
@@ -107,8 +109,8 @@
     <br/>
   </div>
   <div class="mod-col-2 mod" style="flex-grow: 8; display: flex; margin-top: 0px;">
-    <textarea id="noteEditor"><%- (story.summary !== null)
-      ? story.summary.content : '' %></textarea>
+    <textarea id="noteEditor"><%- (linkedItem[noteNames[0]] !== null)
+      ? linkedItem[noteNames[0]].content : '' %></textarea>
   </div>
 </div>
 
@@ -124,7 +126,7 @@
   <div class="mod-col-1 mod toolbar-top">&nbsp;
   </div>
   <div class="mod-col-4 mod" style="height: 5vh;">
-    <p>Generated Summary:<br/>
+    <p>Generated Public Note:<br/>
       Sequence of Events ea. w/<br/> Characters & Locations
     </p>
   </div>
@@ -134,21 +136,23 @@
   makeAttachItemMenu();
   makeNewAttachItemMenu();
   setupFilterField();
-  setupSort('Character');
-  setupSort('Event');
-  setupSort('Setting');
+  setupAccordion();
+  setupSorts();
+  setupClickHandlers();
 
-  // Notes editor (ckeditor) ===================================================
-  // a switch for saveStoryNote_helper (twas first writ for radio btn logic)
+  // Notes editor (ckeditor) prep ==============================================
+  // a switch for saveSettingNote_helper (twas first writ for radio btn logic)
   var saveNoteWasClicked = false;
+  var assocNotes = {};
   try {
-    var elevatorPitchContent = `<%- (story.elevatorPitch !== null)
-      ? story.elevatorPitch.content : '' %>`;
-    var summaryContent = `<%- (story.summary !== null)
-      ? story.summary.content : '' %>`;
-    var elevatorPitchID = `<%= (story.elevatorPitch !== null)
-      ? story.elevatorPitch.id : -1 %>`;
-    var summaryID = `<%= (story.summary !== null)
-      ? story.summary.id : -1  %>`;
-    } catch (e) { console.log(e); }
+    for (let x = 0; x < noteNames.length; x++) {
+      console.log(noteNames[x]);
+      assocNotes[noteNames[x]] = {};
+      assocNotes[noteNames[x]].id = (linkedItem[noteNames[x]])
+        ? linkedItem[noteNames[x]].id : -1;
+      assocNotes[noteNames[x]].content = (linkedItem[noteNames[x]])
+        ? linkedItem[noteNames[x]].content : '';
+    }
+  } catch (e) { console.log(e); }
+
 </script>

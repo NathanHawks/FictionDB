@@ -14,7 +14,7 @@ module.exports = {
   exits: {
     success: {
       responseType: 'view',
-      viewTemplatePath: 'event/workspace'
+      viewTemplatePath: 'common/workspace'
     },
     navigatorOnly: {
       responseType: 'view',
@@ -29,6 +29,8 @@ module.exports = {
     var eventID = inputs.eventID;
     var s = await Event.get(eventID);
     var linkedID = s.id;
+    var titleNames = Event.getTitleFieldNames();
+    var noteNames = Event.getNoteFieldNames();
     // populate Navigator
     var characters = await EventCharacter.getCharacters(eventID);
     var locations = await EventLocation.getLocations(eventID);
@@ -37,7 +39,7 @@ module.exports = {
 
     var locals = {
       eventID: eventID,
-      event: s,
+      linkedItem: s,
       characters: characters,
       locations: locations,
       settings: settings,
@@ -46,6 +48,8 @@ module.exports = {
       linkedType: 'event',
       ucfirstType: 'Event',
       linkedID: linkedID,
+      titleNames: titleNames,
+      noteNames: noteNames,
     }
     if (inputs.navigatorOnly === true) {
       throw { navigatorOnly: locals};
