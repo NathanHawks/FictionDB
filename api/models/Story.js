@@ -12,6 +12,18 @@ module.exports = {
     return [Title];
   },
   getNoteFieldNames: () => { return ['elevatorPitch','summary']; },
+  getNativeFieldNames: () => {
+    return [];
+  },
+  getNativeFieldTypes: () => {
+    return [];
+  },
+  getNativeFieldUI: () => {
+    return [];
+  },
+  getNativeFieldValues: () => {
+    return [];
+  },
   get: async (storyID) => {
     return await Story.findOne({id: storyID})
       .populate('mainTitle')

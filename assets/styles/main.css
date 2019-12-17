@@ -460,6 +460,16 @@ div#context-menu ul li.context-menu-item:hover {
 .Navigator_item.ui-accordion-content.alt-list-color {
   background-color: #252525;
 }
+.Navigator_Title span input.ui-spinner-input {
+  margin: 0;
+  padding: 0;
+  width: 16vw;
+}
+.Navigator_Title > div > span > a.ui-spinner-button.ui-button-icon-only,
+.Navigator_Title > div > span > a.ui-spinner-button.ui-button-icon-only > span.ui-button-icon {
+  height: 8px;
+  padding: 0;
+}
 /* ckeditor */
 .cke_reset { color: #BEC0BE; background: black; }
 .mod textarea { width: 100%; margin: 4px 0; padding: 0; border: 0; outline: 0;}

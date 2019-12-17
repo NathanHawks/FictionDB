@@ -301,3 +301,110 @@ async function navigatorTitleClick_handler(event,ui,domID,rName,rn,parent,linked
     }
   });
 }
+
+async function navigatorNativeClick_handler(event,ui,domID,fieldName,parent,linkedType,opt) {
+  let rContainer = $(`#${domID}_${fieldName}`);
+  let rBox = $(`#${domID}_${fieldName} div`);
+  rContainer.off('click');
+  let val = parent[fieldName];
+  // setup bare interface
+  switch (opt.u) {
+    case 'spinner':
+      // sanitize value
+      val = Number(val);
+      val = (val >= opt.v[0] && val <= opt.v[opt.v.length-1]) ? val : opt.v[0];
+      // spinner and others
+      rBox.html(
+        `<input id="${domID}_${fieldName}_editor" type='text' value="${val}">`
+      );
+    break;
+    case 'select':
+      let select = `<select id="${domID}_${fieldName}_editor">`;
+      for (let x = 0; x < opt.v.length; x++) {
+        let active = (x == val) ? 'selected' : ''
+        select += `<option value="${x}" ${active}>${opt.v[x]}</option>`
+      }
+      select += `</select>`
+      rBox.html( select );
+    break;
+  }
+
+  let rEditor = $(`#${domID}_${fieldName}_editor`);
+
+  // add tricks
+  switch (opt.u) {
+    case 'spinner':
+      rEditor.spinner({
+        min: opt.v[0], max: opt.v[opt.v.length-1], step: 1, start: val,
+      });
+      // jquery mangles the wheel event
+      document.getElementById(`${domID}_${fieldName}_editor`)
+        .addEventListener('wheel', (e) =>
+      {
+        e.preventDefault();
+        let updown = (-e.deltaY > 0) ? 'up' : 'down';
+        switch (updown) {
+          case 'up': rEditor.spinner('stepUp'); break;
+          case 'down': rEditor.spinner('stepDown'); break;
+        }
+      });
+    break;
+    case 'select':
+      rEditor.change((event) => {
+        let v = rEditor.val().replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+        // save
+        saveNativeField_helper(event, fieldName, parent, opt.p);
+        // convert back to display
+        rBox.html(opt.v[v]);
+        rContainer.click((event,ui) => {
+          navigatorNativeClick_handler(event,ui,domID,fieldName,parent,linkedType,opt);
+        });
+        // update page-internal data
+        parent[fieldName] = v;
+
+      });
+    break;
+  }
+  // key controls
+  rEditor.focus().select();
+  rEditor.keydown((event,ui) => {
+    if (event.keyCode === 65 && event.ctrlKey) {
+      rEditor.focus().select();
+    }
+    else if (event.keyCode === 13) {
+      // enter key -- save
+      let v = rEditor.val().replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+      saveNativeField_helper(event, fieldName, parent, opt.p);
+      // convert back to display
+      switch (opt.u) {
+        case 'spinner':
+          rBox.html(v);
+        break;
+        case 'select':
+          rBox.html(opt.v[v]);
+        break;
+      }
+      // re-add click handler to display
+      rContainer.click((event,ui) => {
+        navigatorNativeClick_handler(event,ui,domID,fieldName,parent,linkedType,opt);
+      });
+      // update page-internal data
+      parent[fieldName] = v;
+    } else if (event.keyCode === 27) {
+      // esc key -- revert
+      switch (opt.u) {
+        case 'spinner':
+          let val = (parent[fieldName] !== null) ? parent[fieldName] : '1';
+          val = (val >= opt.v[0] && val <= opt.v[opt.v.length-1]) ? val : opt.v[0];
+          rBox.html(val);
+        break;
+        case 'select':
+          rBox.html(opt.v[parent[fieldName]]);
+        break;
+      }
+      rContainer.click((event,ui) => {
+        navigatorNativeClick_handler(event,ui,domID,fieldName,parent,linkedType,opt);
+      });
+    }
+  });
+}

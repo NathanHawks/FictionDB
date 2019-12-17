@@ -5,6 +5,7 @@ module.exports = {
     colloqTitle: { model: 'Title' },
     authorNote: { model: 'Note' },
     publicNote: { model: 'Note' },
+    intensity: { type: 'number' },
     trash: { type: 'boolean' }
   },
   getTitleFieldNames: () => {
@@ -14,6 +15,22 @@ module.exports = {
     return [Title, Title, Title];
   },
   getNoteFieldNames: () => { return ['authorNote', 'publicNote']; },
+  getNativeFieldNames: () => {
+    return ['intensity'];
+  },
+  getNativeFieldTypes: () => {
+    return ['number'];
+  },
+  getNativeFieldUI: () => {
+    return ['spinner'];
+  },
+  getNativeFieldValues: () => {
+    let r = [];
+    // intensity
+    let i = [];
+    for (x = 1; x < 101; x++) { i[x-1] = x; }
+    return [i];
+  },
   get: async (eventID) => {
     return await Event.findOne({id: eventID})
       .populate('authorTitle')

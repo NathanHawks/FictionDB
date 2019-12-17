@@ -1,49 +1,105 @@
 <%
 var list = [];
+let charLine = () => {return {v:
+  characters, h: 'Characters', m: 'Character',
+  t: Character.getTitleFieldNames(),
+  nn: Character.getNativeFieldNames(),
+  nt: Character.getNativeFieldTypes(),
+  nu: Character.getNativeFieldUI(),
+  nv: Character.getNativeFieldValues(),
+};}
+let settLine = () => {return {
+  v: settings,   h: 'Settings',   m: 'Setting',
+  t: Setting.getTitleFieldNames(),
+  nn: Setting.getNativeFieldNames(),
+  nt: Setting.getNativeFieldTypes(),
+  nu: Setting.getNativeFieldUI(),
+  nv: Setting.getNativeFieldValues(),
+};}
+let evntLine = () => {return {
+  v: events,     h: 'Events',     m: 'Event',
+  t: Event.getTitleFieldNames(),
+  nn: Event.getNativeFieldNames(),
+  nt: Event.getNativeFieldTypes(),
+  nu: Event.getNativeFieldUI(),
+  nv: Event.getNativeFieldValues(),
+};}
+let locaLine = () => {return {
+  v: locations,  h: 'Locations',  m: 'Location',
+  t: Location.getTitleFieldNames(),
+  nn: Location.getNativeFieldNames(),
+  nt: Location.getNativeFieldTypes(),
+  nu: Location.getNativeFieldUI(),
+  nv: Location.getNativeFieldValues(),
+};}
+let storLine = () => {return {
+  v: stories,    h: 'Stories',    m: 'Story',
+  t: Story.getTitleFieldNames(),
+  nn: Story.getNativeFieldNames(),
+  nt: Story.getNativeFieldTypes(),
+  nu: Story.getNativeFieldUI(),
+  nv: Story.getNativeFieldValues(),
+};}
 switch (linkedType) {
+  // self-type should always be first as a properties line
   case 'character':
-    list = [
-      {v: characters, h: 'Properties', m: 'Character', t: Character.getTitleFieldNames()},
-      {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting.getTitleFieldNames()},
-      {v: events,     h: 'Events',     m: 'Event',     t: Event.getTitleFieldNames()},
-      {v: locations,  h: 'Locations',  m: 'Location',  t: Location.getTitleFieldNames()},
-      {v: stories,    h: 'Stories',    m: 'Story',     t: Story.getTitleFieldNames()},
+    list = [{
+        v: characters, h: 'Properties', m: 'Character',
+        t: Character.getTitleFieldNames(),
+        nn: Character.getNativeFieldNames(),
+        nt: Character.getNativeFieldTypes(),
+        nu: Character.getNativeFieldUI(),
+        nv: Character.getNativeFieldValues(),
+      },
+      settLine(), evntLine(), locaLine(), storLine()
     ];
   break;
   case 'event':
-    list = [
-      {v: events,     h: 'Properties', m: 'Event',     t: Event.getTitleFieldNames()},
-      {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
-      {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting.getTitleFieldNames()},
-      {v: locations,  h: 'Locations',  m: 'Location',  t: Location.getTitleFieldNames()},
-      {v: stories,    h: 'Stories',    m: 'Story',     t: Story.getTitleFieldNames()},
+    list = [{
+        v: events,     h: 'Properties', m: 'Event',
+        t: Event.getTitleFieldNames(),
+        nn: Event.getNativeFieldNames(),
+        nt: Event.getNativeFieldTypes(),
+        nu: Event.getNativeFieldUI(),
+        nv: Event.getNativeFieldValues(),
+		  },
+      charLine(), settLine(), locaLine(), storLine(),
     ];
   break;
   case 'location':
-    list = [
-      {v: locations,  h: 'Properties', m: 'Location',  t: Location.getTitleFieldNames()},
-      {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
-      {v: events,     h: 'Events',     m: 'Event',     t: Event.getTitleFieldNames()},
-      {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting. getTitleFieldNames()},
-      {v: stories,    h: 'Stories',    m: 'Story',     t: Story.getTitleFieldNames()},
+    list = [{
+        v: locations,  h: 'Properties', m: 'Location',
+        t: Location.getTitleFieldNames(),
+        nn: Location.getNativeFieldNames(),
+        nt: Location.getNativeFieldTypes(),
+        nu: Location.getNativeFieldUI(),
+        nv: Location.getNativeFieldValues(),
+		  },
+      charLine(), evntLine(), settLine(), storLine(),
     ];
   break;
   case 'setting':
-    list = [
-      {v: settings,   h: 'Properties', m: 'Setting',   t: Setting.getTitleFieldNames()},
-      {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
-      {v: events,     h: 'Events',     m: 'Event',     t: Event.getTitleFieldNames()},
-      {v: locations,  h: 'Locations',  m: 'Location',  t: Location.getTitleFieldNames()},
-      {v: stories,    h: 'Stories',    m: 'Story',     t: Story.getTitleFieldNames()},
+    list = [{
+        v: settings,   h: 'Properties', m: 'Setting',
+        t: Setting.getTitleFieldNames(),
+        nn: Setting.getNativeFieldNames(),
+        nt: Setting.getNativeFieldTypes(),
+        nu: Setting.getNativeFieldUI(),
+        nv: Setting.getNativeFieldValues(),
+		  },
+      charLine(), evntLine(), locaLine(), storLine(),
     ];
   break;
   case 'story':
-    list = [
-      {v: stories,    h: 'Properties', m: 'Story',     t: Story.getTitleFieldNames()},
-      {v: characters, h: 'Characters', m: 'Character', t: Character.getTitleFieldNames()},
-      {v: events,     h: 'Events',     m: 'Event',     t: Event.getTitleFieldNames()},
-      {v: settings,   h: 'Settings',   m: 'Setting',   t: Setting.getTitleFieldNames()},
-      {v: locations,  h: 'Locations',  m: 'Location',  t: Location.getTitleFieldNames()}
+    list = [{
+        v: stories,    h: 'Properties', m: 'Story',
+        t: Story.getTitleFieldNames(),
+        nn: Story.getNativeFieldNames(),
+        nt: Story.getNativeFieldTypes(),
+        nu: Story.getNativeFieldUI(),
+        nv: Story.getNativeFieldValues(),
+		  },
+      charLine(), evntLine(), settLine(), locaLine(),
     ];
   break;
 }
@@ -92,6 +148,19 @@ function setupClickHandlers() {
           $(`#${domID}_${t}`).addClass('prop-main-title');
         }
       });
+
+      for (let x = 0; x < s.nn.length; x++) {
+        let fieldName = s.nn[x];
+        let fieldType = s.nt[x];
+        let fieldUI = s.nu[x];
+        let vals = s.nv[x];
+        let opt = {t: fieldType, u: fieldUI, v: vals, p: s.m};
+        let content = c[s.nn[x]];
+        $(`#${domID}_${fieldName}`).click( (event,ui) => {
+          navigatorNativeClick_handler(event,ui,domID,s.nn[x],c,linkedType,opt);
+        });
+      }
+
     });
   });
 }
@@ -167,6 +236,24 @@ list.map((s) => { if (s.v.length) { %>
 
               </div>
             <% } %>
+
+            <% for (let x = 0; x < s.nn.length; x++) { %>
+              <div class='Navigator_Title' id="<%= domID %>_<%= s.nn[x] %>">
+                <%= splitCamelCase(s.nn[x]) %>:
+                <div>
+                  <% switch (s.nu[x]) {
+                    case 'spinner': %>
+                      <%= (c[s.nn[x]]) ? c[s.nn[x]] : 1; %>
+                    <% break;
+                    case 'select': %>
+                      <%= s.nv[x][c[s.nn[x]]] %>
+                    <% break;
+                  } %>
+                </div>
+
+              </div>
+            <% } %>
+
           </div>
         </div>
       <% }); %>

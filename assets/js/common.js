@@ -19,12 +19,14 @@ function getMainTitleFieldName(itemType) {
   return mainTitleFieldNames[itemType];
 }
 
-async function saveAssocTitle_helper(event,ui,domID,rName,value,parent,parentType) {
+async function saveAssocTitle_helper(
+  event,ui, domID, rName, value, parent, parentType
+) {
   let titleID = (parent[rName] !== null) ? parent[rName].id : -1;
   let newVal = event.target.value;
   saveAssocContent(parent.id, parentType, 'Title', titleID, newVal, rName );
   // domID option serves as a request to update an accordion header if needed
-  if (domID) {
+  if (domID !== null) {
     let [assocType,junk] = domID.split("_");
     assocType = assocType.toLowerCase();
     // update header if we've changed the object's first title field
@@ -34,17 +36,51 @@ async function saveAssocTitle_helper(event,ui,domID,rName,value,parent,parentTyp
   }
 }
 
-async function saveAssocContent(linkedID, linkedType, contentType, assocID, content,
+async function saveAssocContent(
+  linkedID, linkedType, contentType, assocID, content,
   fieldName, cb=handleResponse_saveAssocContent
 ) {
   if (!assocID) assocID = -1;
   $.ajax({ url: 'save-content', method: 'POST',
-    data: {linkedID:linkedID, linkedType:linkedType, contentType:contentType, assocID:assocID, content:content, fieldName:fieldName},
+    data: {
+      linkedID:linkedID,
+      linkedType:linkedType,
+      contentType:contentType,
+      assocID:assocID,
+      content:content,
+      fieldName:fieldName
+    },
     success: cb
   });
 }
 
 function handleResponse_saveAssocContent(data) {
+  console.log(data);
+}
+
+function saveNativeField_helper(
+  event, fieldName, parent, parentType
+) {
+  let newVal = event.target.value;
+  saveNativeField(parent.id, parentType, newVal, fieldName);
+}
+
+function saveNativeField(
+  linkedID, linkedType, content, fieldName,
+  cb=handleResponse_saveNativeField
+) {
+  $.ajax({ url: 'save-native', method: 'POST',
+    data: {
+      linkedID: linkedID,
+      linkedType: linkedType,
+      content: content,
+      fieldName: fieldName
+    },
+    success: cb
+  });
+}
+
+function handleResponse_saveNativeField(data) {
   console.log(data);
 }
 

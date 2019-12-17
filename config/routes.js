@@ -31,6 +31,7 @@ module.exports.routes = {
   'GET /new-location': { action: 'common/new-location' },
   'GET /new-setting': { action: 'common/new-setting' },
   'POST /save-content': { action: 'common/save-content' },
+  'POST /save-native': { action: 'common/save-native' },
   '/story/:storyID': { action: 'story/workspace' },
   '/character/:characterID': { action: 'character/workspace' },
   '/event/:eventID': { action: 'event/workspace' },

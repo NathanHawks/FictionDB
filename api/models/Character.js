@@ -13,6 +13,18 @@ module.exports = {
     return [Title, Title];
   },
   getNoteFieldNames: () => { return ['traits', 'backstory']; },
+  getNativeFieldNames: () => {
+    return [];
+  },
+  getNativeFieldTypes: () => {
+    return [];
+  },
+  getNativeFieldUI: () => {
+    return [];
+  },
+  getNativeFieldValues: () => {
+    return [];
+  },
   get: async (characterID) => {
     return await Character.findOne({id: characterID})
       .populate('realName')
