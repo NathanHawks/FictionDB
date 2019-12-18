@@ -2,6 +2,10 @@
 var iconSelection = [];
 // which item triggered the event
 var itemRightClicked = null;
+// which checkboxes are checked
+var iconsShowing = [];
+// which sort was chosen last
+var iconsSorting = 'alpha-asc';
 
 async function initDesktop() {
   makeIconsDraggable();
@@ -15,6 +19,10 @@ async function initDesktop() {
     .keyup((event) => {
       if (event.keyCode === 46) deleteKey_handler();
     });
+  // special UI commands
+  $('.checkbox-btn').checkboxradio({
+    icon: false,
+  });
 }
 async function makeIconsDraggable() {
   try { $(".deskicon").draggable({
@@ -132,7 +140,8 @@ async function makeDesktopCloseThings() {
     $('#context-menu').fadeOut(100);
     itemRightClicked = null;
     if (closeAllPopups !== null) closeAllPopups();
-  })
+    $('#deskicon-container').focus();
+  });
 }
 
 // ajax =================================================

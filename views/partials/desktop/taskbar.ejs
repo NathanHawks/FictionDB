@@ -1,0 +1,56 @@
+<div id="taskbar">
+  Shown:
+  <span id="show-hide-icons-container" style="background-color: black; padding: 0; margin: 0; height: 3vh; display: inline-block; padding: 0 .5em;">
+    <script>
+      let types = [ 'character', 'event', 'location', 'setting', 'story' ];
+      for (let x = 0; x < types.length; x++) {
+        let checked = (<%= isStartup %> || iconsShowing.includes(types[x])) ? "checked" : '';
+        $('#show-hide-icons-container').append(
+          `<label id="show-${types[x]}s-label" for="show-${types[x]}s" class="${types[x]}-icon taskbar-btn" show-hide-type="${types[x]}"></label>`
+          +`<input type="checkbox" id="show-${types[x]}s" class="show-hide-icon-btn checkbox-btn" ${checked}/>`
+        );
+      }
+      $('#show-hide-icons-container').click((e)=>{
+        if ($(event.target).prop('tagName') === 'INPUT') {
+          let showing = $('.show-hide-icon-btn:checked');
+          iconsShowing = [];
+          for (let y = 0; y < showing.length; y++) {
+            id = $(showing.get(y)).attr('id') + "-label";
+            iconsShowing[iconsShowing.length] = $(`#${id}`).attr('show-hide-type');
+          };
+          $.ajax({
+            url: '/home', method: 'POST',
+            data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing}
+          }).done(handleResponse_requestPage_instant);
+
+        }
+      });
+    </script>
+  </span>
+  Sort:
+  <select id="desktop-sort-menu" style="height: 3vh; background-color: black; color: #BEC0BE;">
+    <script>
+      let options = [
+        {v: 'alpha-asc',  l: 'Alphabetic A-Z'},
+        {v: 'alpha-desc', l: 'Alphabetic Z-A'},
+        {v: 'creat-asc',  l: 'Oldest First'},
+        {v: 'creat-desc', l: 'Newest First'},
+        {v: 'updat-asc',  l: 'Updated Recently'},
+        {v: 'updat-desc',  l: 'Updated Longest Ago'},
+      ];
+      options.map((s) => {
+        let active = (iconsSorting === s.v) ? 'selected' : ''
+        $('#desktop-sort-menu').append(`<option value="${s.v}" ${active}>${s.l}</option>`);
+      });
+    </script>
+  </select>
+</div>
+<script>
+$('#desktop-sort-menu').change((e) => {
+  iconsSorting = $('#desktop-sort-menu').val();
+  $.ajax({
+    url: '/home', method: 'POST',
+    data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing}
+  }).done(handleResponse_requestPage_instant);
+});
+</script>

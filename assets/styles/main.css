@@ -602,23 +602,34 @@ div.dialogicon a {
   width: 96px;
   display: block;
 }
-div.dialogicon.story-icon {
+.taskbar-btn, .taskbar-btn.ui-button {
+  height: 3vh;
+  width: 3vh;
+  background-size: 3vh 3vh;
+  display: inline-block;
+  padding: 2px;
+  margin: 0;
+}
+.taskbar-btn.ui-checkboxradio-checked {
+  background-color: #6060BB;
+}
+div.dialogicon.story-icon, .taskbar-btn.story-icon {
   background-image: url('/images/story-icon-32.png');
   background-repeat: no-repeat;
 }
-div.dialogicon.location-icon {
+div.dialogicon.location-icon, .taskbar-btn.location-icon {
   background-image: url('/images/location-icon-32.png');
   background-repeat: no-repeat;
 }
-div.dialogicon.character-icon {
+div.dialogicon.character-icon, .taskbar-btn.character-icon {
   background-image: url('/images/character-icon-32.png');
   background-repeat: no-repeat;
 }
-div.dialogicon.event-icon {
+div.dialogicon.event-icon, .taskbar-btn.event-icon {
   background-image: url('/images/event-icon-32.png');
   background-repeat: no-repeat;
 }
-div.dialogicon.setting-icon {
+div.dialogicon.setting-icon, .taskbar-btn.setting-icon {
   background-image: url('/images/setting-icon-32.png');
   background-repeat: no-repeat;
 }

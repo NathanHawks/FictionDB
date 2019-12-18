@@ -100,7 +100,11 @@ async function requestPage(url, instant=false, backBtnUrl='/home') {
   if (backBtnUrl !== 'SKIP') backBtnHistory.unshift(backBtnUrl);
   if (instant) response = handleResponse_requestPage_instant;
   else response = handleResponse_requestPage
-  $.ajax({url: url}).done(response);
+  // special treatment for /home
+  if (url === '/home') $.ajax({url: url, method: 'POST',
+    data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing}
+  }).done(response);
+  else $.ajax({url: url}).done(response);
 }
 
 async function requestBackBtn() {

@@ -18,6 +18,7 @@ module.exports = {
     var mainTitleFieldNames = await sails.helpers.getMainTitleFieldNames();
 
     return {
+      isStartup: true,
       storyIcons: storyIcons,
       characterIcons: characterIcons,
       eventIcons: eventIcons,
