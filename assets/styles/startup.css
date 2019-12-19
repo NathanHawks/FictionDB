@@ -43,14 +43,15 @@ div#home-workspace {
   overflow-x: hidden;
   width: 100vw;
   height: 100vh;
-  padding: 1vh 1vw;
+  padding: 0vh 0vw;
   background-color: #303030;
 }
 div#home-workspace div#taskbar {
   height: 3vh;
   width: 100vw;
   background-color: #404040;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  z-index: 9001;
 }

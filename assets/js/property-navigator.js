@@ -37,11 +37,11 @@ function setupSort(tmpType) {
   $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
     let cb = null;
     if ((tmpType === 'Event' && linkedType === 'story')
-      || (tmpType === 'Story' && linkedType === 'event')
+      || (false && tmpType === 'Story' && linkedType === 'event')
     ) {
       // special treatment for StoryEvent to reload intensity graph
       cb = (data) => {
-        // makeStoryEventIntensityGraphs();
+        makeStoryEventIntensityGraphs();
         handleResponse_saveAssocContent(data);
         // requestPage(`${linkedType}/${linkedID}`, true, 'SKIP');
       }
