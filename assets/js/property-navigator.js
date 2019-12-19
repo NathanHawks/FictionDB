@@ -35,8 +35,22 @@ function setupAccordion() {
 }
 function setupSort(tmpType) {
   $(`#Nav${tmpType}Container`).on('sortstop', null, null, (event) => {
+    let cb = null;
+    if ((tmpType === 'Event' && linkedType === 'story')
+      || (tmpType === 'Story' && linkedType === 'event')
+    ) {
+      // special treatment for StoryEvent to reload intensity graph
+      cb = (data) => {
+        // makeStoryEventIntensityGraphs();
+        handleResponse_saveAssocContent(data);
+        // requestPage(`${linkedType}/${linkedID}`, true, 'SKIP');
+      }
+    } else {
+      cb = handleResponse_saveAssocContent;
+    }
     // get the character sortables as jquery objects
     let sortables = $(`#Nav${tmpType}Container .item_accordion .Navigator_item .Navigator_TopTitle`);
+    // prep data for ajax call
     let sorted = [];
     for (let x = 0; x < sortables.length; x++) {
       let domID = sortables.get(x).id;
@@ -44,7 +58,7 @@ function setupSort(tmpType) {
       sorted[sorted.length] = {type: info[0], id: info[1], sequence: x, linkedID: linkedID};
     }
     $.ajax({url: `/${linkedType}/save-sequence`, method: 'POST', data: {items: sorted}})
-      .done(handleResponse_saveAssocContent);
+      .done(cb);
   });
 }
 
@@ -374,7 +388,18 @@ async function navigatorNativeClick_handler(event,ui,domID,fieldName,parent,link
     else if (event.keyCode === 13) {
       // enter key -- save
       let v = rEditor.val().replace(/"/g, '&quot;').replace(/'/g, '&apos;');
-      saveNativeField_helper(event, fieldName, parent, opt.p);
+      let newVal = event.target.value;
+      // determine callback (some cases get special treatment)
+      let cb = handleResponse_saveNativeField;
+      // special treatment for story event intensity, to refresh graph
+      if (fieldName === 'intensity' && linkedType === 'story') {
+        cb = (data) => {
+          $.ajax({ url: `/intensity-graph/story/${linkedID}`}).done((data)=>{
+            $('#col-3-mod-1').html(data);
+          });
+        };
+      }
+      saveNativeField(parent.id, opt.p, newVal, fieldName, cb);
       // convert back to display
       switch (opt.u) {
         case 'spinner':

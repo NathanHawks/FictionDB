@@ -47,3 +47,19 @@ async function indicateSaved() {
   $('#editorSubmit').prop('disabled', true);
   $('#editorSubmit').attr('value', 'Saved');
 }
+
+async function makeStoryEventIntensityGraphs() {
+  $('.mod-intensity-graph').fadeOut(150);
+  setTimeout(() => {
+    $('.mod-intensity-graph').remove();
+    for (let x = 0; x < stories.length; x++) {
+      let modX = x + 1;
+      let div = $('<div>').attr('id', `col-3-mod-${modX}`)
+        .addClass('mod-col-3 mod mod-intensity-graph').appendTo('.col-3-scroller')
+        .hide().fadeIn(250);
+      $.ajax({ url: `intensity-graph/${linkedType}/${stories[x].id}`}).done((data) => {
+        $(`#col-3-mod-${modX}`).html(data);
+      });
+    }
+  },150);
+}

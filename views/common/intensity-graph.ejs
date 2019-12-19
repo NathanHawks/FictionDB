@@ -1,0 +1,22 @@
+<% function fixForDisplay(val) {
+  return val.replace(/&apos;/g, "'").replace(/\\\\/g, '\\');
+}
+  let titleText = (linkedType === 'story') ? 'Event Intensity Graph' : storyTitle;
+%>
+<h3 style="padding: .5vh; text-align: center;"><%= titleText %></h3>
+<div id="Story_<%= storyID %>__intensityGraph" class="intensity-container">
+  <% events.map((el) => {
+    let maxH = 18; // vw, to make it square
+    let unit = maxH / 100;
+    let h = el.intensity*unit;
+    let maxW = 100; // %
+    unit = maxW / events.length;
+    let w = unit;
+    %>
+    <div class="intensity-bar" style="height: <%- h %>vw; width: <%- w %>%"
+      title="<%= fixForDisplay(el.authorTitle.content) %>"
+      onclick="gotoRecord(event, `Event`, <%- el.id %>, `Story/<%- storyID %>`)"
+      >&nbsp;</div>
+    <%
+  });%>
+</div>

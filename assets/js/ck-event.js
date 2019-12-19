@@ -47,10 +47,14 @@ async function saveEventNote_helper(event,ui) {
   }
   else if (elvBtn.is(':checked')) {
     let newPublicNoteContent = inst.getData();
-    inst.setData(assocNotes.authorNote.content);
+    $('#cke_veil').hide().fadeIn(150);
     try {
-      inst.destroy();
-      CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+      setTimeout(()=>{
+        inst.setData(assocNotes.authorNote.content);
+        inst.destroy();
+        CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+        setTimeout(()=>{$('#cke_veil').fadeOut(150);},50);
+      },150);
     } catch (e) { }
     if (newPublicNoteContent !== assocNotes.publicNote.content) {
       saveAssocContent(linkedID, linkedType, 'Note', assocNotes.publicNote.id,
@@ -61,10 +65,14 @@ async function saveEventNote_helper(event,ui) {
   }
   else if (sumBtn.is(':checked')) {
     let newAuthorNoteContent = inst.getData();
-    inst.setData(assocNotes.publicNote.content);
+    $('#cke_veil').hide().fadeIn(150);
     try {
-      inst.destroy();
-      CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+      setTimeout(()=>{
+        inst.setData(assocNotes.publicNote.content);
+        inst.destroy();
+        CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+        setTimeout(()=>{$('#cke_veil').fadeOut(150);},50);
+      },150);
     } catch (e) { }
     if (newAuthorNoteContent !== assocNotes.authorNote.content) {
       saveAssocContent(linkedID, linkedType, 'Note', assocNotes.authorNote.id,

@@ -43,10 +43,14 @@ async function saveCharacterNote_helper(event,ui) {
   }
   else if (elvBtn.is(':checked')) {
     let newTraitsContent = inst.getData();
-    inst.setData(assocNotes.backstory.content);
+    $('#cke_veil').hide().fadeIn(150);
     try {
-      inst.destroy();
-      CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+      setTimeout(()=>{
+        inst.setData(assocNotes.backstory.content);
+        inst.destroy();
+        CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+        setTimeout(()=>{$('#cke_veil').fadeOut(150);},50);
+      },150);
     } catch (e) { }
     if (newTraitsContent !== assocNotes.traits.content) {
       saveAssocContent(linkedID, linkedType, 'Note', assocNotes.traits.id, newTraitsContent, 'traits');
@@ -55,10 +59,14 @@ async function saveCharacterNote_helper(event,ui) {
   }
   else if (sumBtn.is(':checked')) {
     let newBackstoryContent = inst.getData();
-    inst.setData(assocNotes.traits.content);
+    $('#cke_veil').hide().fadeIn(150);
     try {
-      inst.destroy();
-      CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+      setTimeout(()=>{
+        inst.setData(assocNotes.traits.content);
+        inst.destroy();
+        CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
+        setTimeout(()=>{$('#cke_veil').fadeOut(150);},50);
+      },150);
     } catch (e) { }
     if (newBackstoryContent !== assocNotes.backstory.content) {
       saveAssocContent(linkedID, linkedType, 'Note', assocNotes.backstory.id, newBackstoryContent, 'backstory');

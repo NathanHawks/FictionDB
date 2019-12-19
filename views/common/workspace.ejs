@@ -70,10 +70,10 @@ function splitCamelCase(s) {
   <div class="mod-col-1 mod">
     <div id="Navigator">
       <div id="Navigator_toolbar">
-        <a href="#" onclick="navigatorExpandAll();"
+        <a href="#" class="ui" onclick="navigatorExpandAll();"
         id="navigatorExpandAllBtn" title="Expand All" alt="Expand All"><img
         src="/images/expand-all-icon.png"/></a>
-        <a href="#" onclick="navigatorCollapseAll();"
+        <a href="#" class="ui" onclick="navigatorCollapseAll();"
         id="navigatorCollapseAllBtn" title="Collapse All" alt="Collapse All"><img
         src="/images/collapse-all-icon.png"/></a>
 
@@ -81,7 +81,7 @@ function splitCamelCase(s) {
         <%- partial('../partials/common/new-attach-menu') %>
 
         <span class="flexspacer">&nbsp;</span>
-        <input type='text' id='Navigator_filter_input' value="(filter)"/><span
+        <input type='text' id='Navigator_filter_input' class="ui" value="(filter)"/><span
          id="Navigator_filter_hint" onclick="navFilterSubmit();">&nbsp;</span><span
          id="Navigator_filter_clear" onclick="navFilterClear();">&nbsp;</span>
       </div>
@@ -89,8 +89,6 @@ function splitCamelCase(s) {
 
       <%- partial('../partials/common/navigator-items'); %>
 
-      <script>
-      </script>
       </div>
     </div>
   </div>
@@ -118,12 +116,22 @@ function splitCamelCase(s) {
       ? linkedItem[noteNames[0]].content : '' %></textarea>
   </div>
 </div>
+<div id="cke_veil">&nbsp;</div>
 
 <div class="col-3-container">
-  <div class="mod-col-1 mod toolbar-top">&nbsp;
-  </div>
-  <div class="mod-col-3 mod" style="height: 5vh;">
-    <p>???</p>
+  <div class="mod-col-1 mod toolbar-top">&nbsp;</div>
+  <div class="col-3-scroller">
+    <script>
+      switch (linkedType) {
+        case 'story':
+          var stories = [linkedItem];
+          makeStoryEventIntensityGraphs();
+        break;
+        case 'event':
+          var stories = JSON.parse(`<%- fixForJSON(JSON.stringify(stories)) %>`);
+          makeStoryEventIntensityGraphs();
+      }
+    </script>
   </div>
 </div>
 
@@ -131,7 +139,7 @@ function splitCamelCase(s) {
   <div class="mod-col-1 mod toolbar-top">&nbsp;
   </div>
   <div class="mod-col-4 mod" style="height: 5vh;">
-    <p>Generated Public Note:<br/>
+    <p>Generated Summary:<br/>
       Sequence of Events ea. w/<br/> Characters & Locations
     </p>
   </div>

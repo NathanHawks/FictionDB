@@ -43,6 +43,7 @@ module.exports.routes = {
   'POST /location/save-sequence': {action: 'location/save-sequence' },
   'POST /character/save-sequence': {action: 'character/save-sequence' },
   'POST /event/save-sequence': {action: 'event/save-sequence' },
+  '/intensity-graph/:linkedType/:storyID': {action: 'common/intensity-graph' },
   /***************************************************************************
   *                                                                          *
   * More custom routes here...                                               *
