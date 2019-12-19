@@ -1,5 +1,15 @@
 <div id="taskbar">
-  Shown:
+  <script>
+    if (backBtnHistory.length > 0) {
+      $('<a>').addClass('btn back-btn').attr('href', '#')
+        .html('←').prependTo('#taskbar')
+        .attr('title', 'Back')
+        .click(()=>{requestBackBtn()})
+        .button();
+    }
+  </script>
+
+  <span style="padding: 0 1vw">Shown:</span>
   <span id="show-hide-icons-container" style="background-color: black; padding: 0; margin: 0; height: 3vh; display: inline-block; padding: 0 .5em;">
     <script>
       let types = [ 'character', 'event', 'location', 'setting', 'story' ];
@@ -20,14 +30,14 @@
           };
           $.ajax({
             url: '/home', method: 'POST',
-            data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing}
+            data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing, iconsSize: iconsSize}
           }).done(handleResponse_requestPage_instant);
 
         }
       });
     </script>
   </span>
-  Sort:
+  <span style="padding: 0 1vw;">Sort:</span>
   <select id="desktop-sort-menu" style="height: 3vh; background-color: black; color: #BEC0BE;">
     <script>
       let options = [
@@ -44,13 +54,23 @@
       });
     </script>
   </select>
+  <span style="padding: 0 1vw;">Icons:</span>
+  <form><fieldset>
+    <label for="iconSize_small" title="Small" class="btn">▫</label>
+    <input type="radio" id="iconSize_small" name="iconSize_radio"
+     <%= (iconsSize === 'small') ? 'checked' : '' %> class="iconSize_radio btn"/>
+    <label for="iconSize_large" title="Large" class="btn">⬜</label>
+    <input type="radio" id="iconSize_large" name="iconSize_radio"
+     <%= (iconsSize === 'large') ? 'checked' : '' %> class="iconSize_radio btn"/>
+  </fieldset></form>
 </div>
 <script>
 $('#desktop-sort-menu').change((e) => {
   iconsSorting = $('#desktop-sort-menu').val();
   $.ajax({
     url: '/home', method: 'POST',
-    data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing}
+    data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing, iconsSize: iconsSize}
   }).done(handleResponse_requestPage_instant);
 });
+
 </script>

@@ -102,7 +102,7 @@ async function requestPage(url, instant=false, backBtnUrl='/home') {
   else response = handleResponse_requestPage
   // special treatment for /home
   if (url === '/home') $.ajax({url: url, method: 'POST',
-    data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing}
+    data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing, iconsSize: iconsSize}
   }).done(response);
   else $.ajax({url: url}).done(response);
 }

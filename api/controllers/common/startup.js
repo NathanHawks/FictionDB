@@ -18,6 +18,8 @@ module.exports = {
     var mainTitleFieldNames = await sails.helpers.getMainTitleFieldNames();
 
     return {
+      cssClass: '',
+      iconsSize: 'large',
       isStartup: true,
       storyIcons: storyIcons,
       characterIcons: characterIcons,

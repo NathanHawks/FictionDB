@@ -21,7 +21,12 @@ function splitCamelCase(s) {
 <div class="col-1-container">
   <div class="mod-col-1 mod toolbar-top">
     <fieldset id="mainToolbar">
-      <a class='btn back-btn' href="#" onclick="requestBackBtn()">Back</a>
+      <a class='btn back-btn' title="Back" href="#"
+       onclick="requestBackBtn()">←</a>
+      <a class='btn home-btn' title="Home" href="#"
+       onclick="requestPage('/home', false, '<%- linkedType %>/<%- linkedID %>');">⌂</a>
+      <a class='btn reload-btn' title="Refresh" href="#"
+       onclick="requestPage('<%- linkedType %>/<%- linkedID %>', true, 'SKIP');">↻</a>
     </fieldset>
     <br/>
   </div>

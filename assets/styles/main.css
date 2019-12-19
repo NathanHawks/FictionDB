@@ -114,6 +114,16 @@ h1#mainTitle:hover {
   text-align: center;
 }
 /* system interface */
+#mainToolbar a.btn,
+#taskbar a.btn,
+#taskbar form fieldset label.ui-checkboxradio-label {
+  height: 2.7vh;
+  width: 2.7vh;
+  padding: 0;
+  font-size: 1.5em;
+}
+#mainToolbar a.btn.back-btn {
+}
 .mod.toolbar-top {
   height: 3vh;
   padding: 0.15vh 0.15vw;
@@ -611,7 +621,7 @@ div#dialogicon-container {
   align-content: flex-start;
 }
 div.dialogicon {
-  margin: 16px 100px 16px 16px;
+  margin: 8px 100px 8px 16px;
   font-size: 8pt;
   height: 32px;
   width: 32px;
@@ -647,7 +657,8 @@ div.dialogicon a {
   padding: 2px;
   margin: 0;
 }
-.taskbar-btn.ui-checkboxradio-checked {
+.taskbar-btn.ui-checkboxradio-checked,
+#taskbar form fieldset label.ui-checkboxradio-checked {
   background-color: #6060BB;
 }
 div.dialogicon.story-icon, .taskbar-btn.story-icon {
@@ -671,14 +682,12 @@ div.dialogicon.setting-icon, .taskbar-btn.setting-icon {
   background-repeat: no-repeat;
 }
 div.dialogicon.new-icon a {
-  background-image: url('/images/new-icon.png');
+  background-image: url('/images/new-icon-32.png');
   background-repeat: no-repeat;
 }
 div.dialogicon:hover, div.dialogicon.ui-droppable-hover {
   background-color: #f84;
 }
-
-
 /* intensity graph */
 .intensity-container {
   height: 18vw;

@@ -6,6 +6,8 @@ var itemRightClicked = null;
 var iconsShowing = [];
 // which sort was chosen last
 var iconsSorting = 'alpha-asc';
+// size selection
+var iconsSize = 'large';
 
 async function initDesktop() {
   makeIconsDraggable();
@@ -22,6 +24,16 @@ async function initDesktop() {
   // special UI commands
   $('.checkbox-btn').checkboxradio({
     icon: false,
+  });
+  // icon size radio buttons
+  $('input[name="iconSize_radio"]').checkboxradio({icon: false}).click((e)=> {
+    let [junk,size] = $(e.target).attr('id').split('_'); // lol
+    iconsSize = size;
+    console.log(size);
+    $.ajax({
+      url: '/home', method: 'POST',
+      data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing, iconsSize: iconsSize}
+    }).done(handleResponse_requestPage_instant);
   });
 }
 async function makeIconsDraggable() {

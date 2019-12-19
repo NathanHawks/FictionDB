@@ -33,7 +33,9 @@
         );
         initDesktop();
         // captureMousePos();
+        // disable selecting text except in input fields
         $('*').disableSelection().not('input');
+
       });
       // UI ====================================================================
       async function captureMousePos() {
