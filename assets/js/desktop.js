@@ -260,7 +260,6 @@ function setupDesktopFilter() {
   let icons = $('.deskicon').not('.new-icon').children('a');
   autocompleteContent = [];
   icons.each((i,el) => {
-    console.log(el)
     autocompleteContent[i] = fixForDisplay($(el).html());
   });
   $('#desktop_filter_input').autocomplete({

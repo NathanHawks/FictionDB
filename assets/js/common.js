@@ -88,6 +88,16 @@ function handleResponse_saveNativeField(data) {
   console.log(data);
 }
 
+function requestNew(type) {
+  let url = `/new-${type}`;
+  $.ajax({url: url}).done(requestNew_handleResponse);
+}
+function requestNew_handleResponse(data) {
+  data = JSON.parse(data);
+  let url = `${data.type}/${data.id}`;
+  requestPage(url);
+}
+
 function gotoRecord(event, modelName, id, backBtnUrl='/home') {
   modelName = `${modelName}`.toLowerCase();
   backBtnUrl = `${backBtnUrl}`.toLowerCase();

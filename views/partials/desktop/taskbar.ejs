@@ -9,8 +9,15 @@
     }
   </script>
 
-  <span style="padding: 0 1vw">Shown:</span>
-  <span id="show-hide-icons-container" style="background-color: black; padding: 0; margin: 0; height: 3vh; display: inline-block; padding: 0 .5em;">
+  <div style="padding: 0 1vw;">Create:</div>
+  <div id="new-character" class="btn taskbaricon new-icon character-icon"><div onclick="requestNew('character');" class="overlay">&nbsp;</div></div>
+  <div id="new-event" class="btn taskbaricon new-icon event-icon"><div onclick="requestNew('event');" class="overlay">&nbsp;</div></div>
+  <div id="new-location" class="btn taskbaricon new-icon location-icon"><div onclick="requestNew('location');" class="overlay">&nbsp;</div></div>
+  <div id="new-setting" class="btn taskbaricon new-icon setting-icon"><div onclick="requestNew('setting');" class="overlay">&nbsp;</div></div>
+  <div id="new-story" class="btn taskbaricon new-icon story-icon"><div onclick="requestNew('story');" class="overlay">&nbsp;</div></div>
+
+  <div style="padding: 0 1vw">Show/Hide:</div>
+  <div id="show-hide-icons-container" style="background-color: black; padding: 0; margin: 0; height: 3vh; display: inline-block; padding: 0 .5em;">
     <script>
       let types = [ 'character', 'event', 'location', 'setting', 'story' ];
       for (let x = 0; x < types.length; x++) {
@@ -36,8 +43,10 @@
         }
       });
     </script>
-  </span>
-  <span style="padding: 0 1vw;">Sort:</span>
+  </div>
+  <div class="flexspacer">&nbsp;</div>
+
+  <div style="padding: 0 1vw;">Sort:</div>
   <select id="desktop-sort-menu" style="height: 3vh; background-color: black; color: #BEC0BE;">
     <script>
       let options = [
@@ -54,20 +63,19 @@
       });
     </script>
   </select>
-  <span style="padding: 0 1vw;">Icons:</span>
-  <form><fieldset>
+  <div style="padding: 0 1vw;">Size:</div>
     <label for="iconSize_small" title="Small" class="btn">▫</label>
     <input type="radio" id="iconSize_small" name="iconSize_radio"
      <%= (iconsSize === 'small') ? 'checked' : '' %> class="iconSize_radio btn"/>
     <label for="iconSize_large" title="Large" class="btn">⬜</label>
     <input type="radio" id="iconSize_large" name="iconSize_radio"
      <%= (iconsSize === 'large') ? 'checked' : '' %> class="iconSize_radio btn"/>
-  </fieldset></form>
-  <span class="flexspacer">&nbsp;</span>
-  <input type='text' id='desktop_filter_input' class="ui" value="(filter)"/><span
-   id="desktop_filter_hint" onclick="desktopFilterSubmit();">&nbsp;</span><span
-   id="desktop_filter_clear" onclick="desktopFilterClear();">&nbsp;</span>
-  <span style="flex-grow: 1;">&nbsp;</span>
+
+  <div class="flexspacer">&nbsp;</div>
+  <input type='text' id='desktop_filter_input' class="ui" value="(filter)"/><div
+   id="desktop_filter_hint" onclick="desktopFilterSubmit();">&nbsp;</div><div
+   id="desktop_filter_clear" onclick="desktopFilterClear();">&nbsp;</div>
+  <div style="flex-grow: 1;">&nbsp;</div>
 </div>
 <script>
 $('#desktop-sort-menu').change((e) => {

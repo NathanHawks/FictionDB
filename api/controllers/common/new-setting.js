@@ -11,6 +11,13 @@ module.exports = {
   },
   fn: async function (inputs) {
     let title = await sails.helpers.getUntitledString();
-    return await sails.helpers.newSetting(title);
+    let r = await sails.helpers.newSetting(title);
+    let id = r.setting.id;
+    let type = 'setting';
+    return {
+      id: id,
+      type: type,
+    }
+
   }
 };

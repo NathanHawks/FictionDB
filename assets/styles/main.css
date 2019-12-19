@@ -116,7 +116,7 @@ h1#mainTitle:hover {
 /* system interface */
 #mainToolbar a.btn,
 #taskbar a.btn,
-#taskbar form fieldset label.ui-checkboxradio-label {
+#taskbar label.ui-checkboxradio-label {
   height: 2.7vh;
   width: 2.7vh;
   padding: 0;
@@ -663,9 +663,54 @@ div.dialogicon a {
   margin: 0;
 }
 .taskbar-btn.ui-checkboxradio-checked,
-#taskbar form fieldset label.ui-checkboxradio-checked {
+#taskbar label.ui-checkboxradio-checked {
   background-color: #6060BB;
 }
+div.taskbaricon {
+  margin: 0;
+  padding: 0;
+  font-size: 8pt;
+  height: 32px;
+  width: 32px;
+  background: #404040;
+  text-align: center;
+  display: inline-block;
+}
+div.taskbaricon div.overlay {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  margin: 0;
+  display: inline-block;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+div.taskbaricon.story-icon, .taskbar-btn.story-icon {
+  background-image: url('/images/story-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.taskbaricon.location-icon, .taskbar-btn.location-icon {
+  background-image: url('/images/location-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.taskbaricon.character-icon, .taskbar-btn.character-icon {
+  background-image: url('/images/character-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.taskbaricon.event-icon, .taskbar-btn.event-icon {
+  background-image: url('/images/event-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.taskbaricon.setting-icon, .taskbar-btn.setting-icon {
+  background-image: url('/images/setting-icon-32.png');
+  background-repeat: no-repeat;
+}
+div.taskbaricon.new-icon div.overlay {
+  background-image: url('/images/new-icon-32.png');
+  background-repeat: no-repeat;
+}
+
 div.dialogicon.story-icon, .taskbar-btn.story-icon {
   background-image: url('/images/story-icon-32.png');
   background-repeat: no-repeat;
