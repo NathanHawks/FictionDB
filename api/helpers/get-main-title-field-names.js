@@ -13,8 +13,8 @@ module.exports = {
     var r = {};
     r.character = Character.getTitleFieldNames()[0];
     r.event     = Event.getTitleFieldNames()[0];
-    r.location  = Character.getTitleFieldNames()[0];
-    r.setting   = Character.getTitleFieldNames()[0];
+    r.location  = Location.getTitleFieldNames()[0];
+    r.setting   = Setting.getTitleFieldNames()[0];
     r.story   = Character.getTitleFieldNames()[0];
     return r;
 
