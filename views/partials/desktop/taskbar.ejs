@@ -63,6 +63,11 @@
     <input type="radio" id="iconSize_large" name="iconSize_radio"
      <%= (iconsSize === 'large') ? 'checked' : '' %> class="iconSize_radio btn"/>
   </fieldset></form>
+  <span class="flexspacer">&nbsp;</span>
+  <input type='text' id='desktop_filter_input' class="ui" value="(filter)"/><span
+   id="desktop_filter_hint" onclick="desktopFilterSubmit();">&nbsp;</span><span
+   id="desktop_filter_clear" onclick="desktopFilterClear();">&nbsp;</span>
+  <span style="flex-grow: 1;">&nbsp;</span>
 </div>
 <script>
 $('#desktop-sort-menu').change((e) => {

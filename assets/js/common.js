@@ -12,6 +12,10 @@ function splitCamelCase(s) {
   ;
 }
 
+function fixForDisplay(val) {
+  return val.replace(/&apos;/g, "'").replace(/&amp;/g, "&").replace(/\\\\/g, '\\');
+}
+
 function fixForJSON(val) {
   return val.replace(/'/g, '&apos;').replace(/\\/g, '\\\\');
 }

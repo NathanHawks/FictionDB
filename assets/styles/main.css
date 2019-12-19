@@ -252,6 +252,7 @@ div#context-menu ul li.context-menu-item:hover {
   padding: 12px;
   height: 32px;
   width: 64px;
+  z-index: 9002;
 }
 #item-toaster:before {
   content: '';
@@ -260,8 +261,8 @@ div#context-menu ul li.context-menu-item:hover {
   left: 0;
   height: 100%;
   width: 51%;
-  background: #040;
-  transform: skew(0deg, 12deg);
+  background: #404040;
+  transform: skew(12deg, 12deg);
 }
 #item-toaster:after {
   content: '';
@@ -270,8 +271,8 @@ div#context-menu ul li.context-menu-item:hover {
   right: 0;
   height: 100%;
   width: 50%;
-  background: #040;
-  transform: skew(0deg, -12deg);
+  background: #404040;
+  transform: skew(-12deg, -12deg);
 }
 #dialog {
   display: none;
@@ -392,7 +393,8 @@ div#context-menu ul li.context-menu-item:hover {
   flex-grow: 8;
   display: block;
 }
-#Navigator_filter_input {
+#Navigator_filter_input,
+#desktop_filter_input {
   background-color: black;
   color: #606060;
   width: 10vw;
@@ -401,7 +403,8 @@ div#context-menu ul li.context-menu-item:hover {
   padding-right: 54px;
   padding-left: 4px;
 }
-#Navigator_filter_hint {
+#Navigator_filter_hint,
+#desktop_filter_hint {
   background-image: url('/images/search-24.png');
   background-position: 0 0;
   background-repeat: no-repeat;
@@ -415,7 +418,8 @@ div#context-menu ul li.context-menu-item:hover {
   z-index: 9000;
   cursor: pointer;
 }
-#Navigator_filter_clear {
+#Navigator_filter_clear,
+#desktop_filter_clear {
   background-image: url('/images/no-24.png');
   background-position: 0 0;
   background-repeat: no-repeat;
@@ -559,6 +563,7 @@ div.deskicon {
   width: 64px;
   background: #323232;
   text-align: center;
+  z-index: 9005;
 }
 div.deskicon.ui-selecting {
   background: #F84;
@@ -621,7 +626,7 @@ div#dialogicon-container {
   align-content: flex-start;
 }
 div.dialogicon {
-  margin: 8px 100px 8px 16px;
+  margin: 10px 110px 10px 16px;
   font-size: 8pt;
   height: 32px;
   width: 32px;

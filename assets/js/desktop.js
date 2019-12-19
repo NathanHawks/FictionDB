@@ -15,6 +15,8 @@ async function initDesktop() {
   makeIconsSelectable();
   makeIconsRightClickable();
   makeDesktopCloseThings();
+  // setup desktop filter field
+  setupDesktopFilter();
   // key handler requires the desktop be given focus
   $('#deskicon-container')
     .focus()
@@ -25,11 +27,10 @@ async function initDesktop() {
   $('.checkbox-btn').checkboxradio({
     icon: false,
   });
-  // icon size radio buttons
+  // icon sizing controlled by radio buttons
   $('input[name="iconSize_radio"]').checkboxradio({icon: false}).click((e)=> {
     let [junk,size] = $(e.target).attr('id').split('_'); // lol
     iconsSize = size;
-    console.log(size);
     $.ajax({
       url: '/home', method: 'POST',
       data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing, iconsSize: iconsSize}
@@ -170,22 +171,22 @@ async function handleResponse_dragdrop(data) {
   let tgt = $(`#${data.dropTargetID}`);
   let pop = $('#item-toaster');
   let xy = tgt.position();
-  let y = xy.top - 48;
-  let x = xy.left + 32 - 12; // half width of icon - padding of chevron
+  let y = xy.top+32;
+  let x = xy.left; // half width of icon - padding of chevron
   pop.css({position: 'absolute', top: `${y}px`, left: `${x}px`});
-  pop.hide().fadeIn();
-  setTimeout(()=>{pop.effect('drop', {direction: 'up'});}, 1400);
+  pop.hide().show();
+  setTimeout(()=>{pop.effect('drop', {direction: 'up'});}, 25);
   // spin the chevron as it's rising and fading
   var spin = 0;
   let spinIt = function(pop, spin) {
-    pop.css('transform', `rotateY(${spin}deg)`);
+    pop.css('transform', `rotateZ(${spin}deg)`);
     spin = spin + 20;
     return spin;
   }
   setTimeout(() => {
     let interval = setInterval( () => {spin = spinIt(pop, spin)}, 20);
     setTimeout(()=>{clearInterval(interval);}, 400);
-  }, 1400);
+  }, 25);
 }
 
 function getIconSelection() {
@@ -228,7 +229,7 @@ function launchRename() {
 }
 function renameItem(itemID, itemType, fieldName, assocID, content) {
   let contentType = 'Title';
-  let cb = (data) => { requestPage('/home', true); }
+  let cb = (data) => { requestPage('/home', true, 'SKIP'); }
   saveAssocContent(itemID, itemType, contentType, assocID, content, fieldName, cb);
 }
 
@@ -252,5 +253,66 @@ async function trashItems() {
   });
 }
 function handleResponse_trashItems(data) {
-  requestPage('/home',true);
+  requestPage('/home',true,'SKIP');
+}
+
+function setupDesktopFilter() {
+  let icons = $('.deskicon').not('.new-icon').children('a');
+  autocompleteContent = [];
+  icons.each((i,el) => {
+    console.log(el)
+    autocompleteContent[i] = fixForDisplay($(el).html());
+  });
+  $('#desktop_filter_input').autocomplete({
+    source: autocompleteContent
+  }).keydown((e) => {
+    if (e.keyCode === 65 && event.ctrlKey) {
+      $('#desktop_filter_input').focus().select();
+    } else if (e.keyCode === 13) {
+      desktopFilterSubmit();
+    }
+  }).focus((e) => {
+    if ($('#desktop_filter_input').val() === '(filter)') {
+      $('#desktop_filter_input').val('').css('color', '#bdbdbd');
+    }
+  }).blur((e) => {
+    if ($('#desktop_filter_input').val() === '') {
+      $('#desktop_filter_input').val('(filter)').css('color', '#606060');
+    }
+  });
+}
+
+function desktopFilterSubmit() {
+  // close menu, focus and select the field, get the value
+  $('#desktop_filter_input').focus().select().autocomplete('close');
+  var filter = $('#desktop_filter_input').val();
+  let items = $('.deskicon');
+  if (filter.length) {
+    // index of bands, heads and items will match
+    // show all (in case we're going directly from one filter to another)
+    items.each((index, item) => { $(item).show(); });
+    // hide non-matching items
+    items.each((index, item) => {
+      var matched = false;
+      let a = $(item).children('a');
+
+          let val = $(a).html();
+          if (fixForDisplay(val.toLowerCase()).includes(fixForDisplay(filter.toLowerCase()))) {
+            matched = true;
+          }
+
+      if (matched === false) {
+        $( item ).hide();
+      }
+    });
+
+  } else {
+    // show all items
+    items.each( (index, item) => { $(item).show(); } );
+  }
+}
+
+function desktopFilterClear() {
+  $('#desktop_filter_input').val('');
+  desktopFilterSubmit();
 }
