@@ -22,6 +22,8 @@ function setupAccordion() {
   $('.Navigator_container').sortable({axis: 'y', handle: 'h3',
     distance: 5,
     revert: 200,
+    tolerance: 'pointer',
+    containment: 'parent',
     start: (event,ui)=>{
       // prevent accordion state-change during dragdrop
       sorting = true;
