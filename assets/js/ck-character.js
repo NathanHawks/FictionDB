@@ -49,7 +49,11 @@ async function saveCharacterNote_helper(event,ui) {
         inst.setData(assocNotes.backstory.content);
         inst.destroy();
         CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
-        setTimeout(()=>{$('#cke_veil').fadeOut(150);},50);
+        setTimeout(()=>{
+          $('#cke_veil').fadeOut(150);
+          attachAutoSave();
+          indicateSaved();
+        },50);
       },150);
     } catch (e) { }
     if (newTraitsContent !== assocNotes.traits.content) {
@@ -65,7 +69,11 @@ async function saveCharacterNote_helper(event,ui) {
         inst.setData(assocNotes.traits.content);
         inst.destroy();
         CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
-        setTimeout(()=>{$('#cke_veil').fadeOut(150);},50);
+        setTimeout(()=>{
+          $('#cke_veil').fadeOut(150);
+          attachAutoSave();
+          indicateSaved();
+        },50);
       },150);
     } catch (e) { }
     if (newBackstoryContent !== assocNotes.backstory.content) {

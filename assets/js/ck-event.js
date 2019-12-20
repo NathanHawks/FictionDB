@@ -53,7 +53,11 @@ async function saveEventNote_helper(event,ui) {
         inst.setData(assocNotes.authorNote.content);
         inst.destroy();
         CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
-        setTimeout(()=>{$('#cke_veil').fadeOut(150);},50);
+        setTimeout(()=>{
+          $('#cke_veil').fadeOut(150);
+          attachAutoSave();
+          indicateSaved();
+        },50);
       },150);
     } catch (e) { }
     if (newPublicNoteContent !== assocNotes.publicNote.content) {
@@ -71,7 +75,11 @@ async function saveEventNote_helper(event,ui) {
         inst.setData(assocNotes.publicNote.content);
         inst.destroy();
         CKEDITOR.replace('noteEditor', {height: '60vh', width: '32vw'});
-        setTimeout(()=>{$('#cke_veil').fadeOut(150);},50);
+        setTimeout(()=>{
+          $('#cke_veil').fadeOut(150);
+          attachAutoSave();
+          indicateSaved();
+        },50);
       },150);
     } catch (e) { }
     if (newAuthorNoteContent !== assocNotes.authorNote.content) {
