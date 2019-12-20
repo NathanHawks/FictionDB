@@ -8,7 +8,7 @@
         .button();
     }
   </script>
-  <select class="ui" id="gearMenu" title="More Options">
+  <select class="ui" id="gearMenu" title="More options">
     <option value="none" data-class="ui-icon-nullify">&nbsp;</option>
     <option>Open Project Folder</option>
     <option>Make Backup</option>
@@ -17,21 +17,20 @@
   </select>
   <div style="flex-grow: 1;">&nbsp;</div>
 
-  <div style="padding: 0 1vw;">Create:</div>
-  <div id="new-character" class="btn taskbaricon new-icon character-icon"><div onclick="requestNew('character');" class="overlay">&nbsp;</div></div>
-  <div id="new-event" class="btn taskbaricon new-icon event-icon"><div onclick="requestNew('event');" class="overlay">&nbsp;</div></div>
-  <div id="new-location" class="btn taskbaricon new-icon location-icon"><div onclick="requestNew('location');" class="overlay">&nbsp;</div></div>
-  <div id="new-setting" class="btn taskbaricon new-icon setting-icon"><div onclick="requestNew('setting');" class="overlay">&nbsp;</div></div>
-  <div id="new-story" class="btn taskbaricon new-icon story-icon"><div onclick="requestNew('story');" class="overlay">&nbsp;</div></div>
+  <div id="new-character" title="New character" class="btn taskbaricon new-icon character-icon"><div onclick="requestNew('character');" class="overlay">&nbsp;</div></div>
+  <div id="new-event" title="New event" class="btn taskbaricon new-icon event-icon"><div onclick="requestNew('event');" class="overlay">&nbsp;</div></div>
+  <div id="new-location" title="New location" class="btn taskbaricon new-icon location-icon"><div onclick="requestNew('location');" class="overlay">&nbsp;</div></div>
+  <div id="new-setting" title="New setting" class="btn taskbaricon new-icon setting-icon"><div onclick="requestNew('setting');" class="overlay">&nbsp;</div></div>
+  <div id="new-story" title="New story" class="btn taskbaricon new-icon story-icon"><div onclick="requestNew('story');" class="overlay">&nbsp;</div></div>
+  <div class="flexspacer">&nbsp;</div>
 
-  <div style="padding: 0 1vw">Show/Hide:</div>
   <div id="show-hide-icons-container" style="background-color: black; padding: 0; margin: 0; height: 3vh; display: inline-block; padding: 0 .5em;">
     <script>
       let types = [ 'character', 'event', 'location', 'setting', 'story' ];
       for (let x = 0; x < types.length; x++) {
         let checked = (<%= isStartup %> || iconsShowing.includes(types[x])) ? "checked" : '';
         $('#show-hide-icons-container').append(
-          `<label id="show-${types[x]}s-label" for="show-${types[x]}s" class="${types[x]}-icon taskbar-btn" show-hide-type="${types[x]}"></label>`
+          `<label title="Show/hide ${types[x]} icons" id="show-${types[x]}s-label" for="show-${types[x]}s" class="${types[x]}-icon taskbar-btn" show-hide-type="${types[x]}"></label>`
           +`<input type="checkbox" id="show-${types[x]}s" class="show-hide-icon-btn checkbox-btn" ${checked}/>`
         );
       }
@@ -54,8 +53,7 @@
   </div>
   <div class="flexspacer">&nbsp;</div>
 
-  <div style="padding: 0 1vw;">Sort:</div>
-  <select id="desktop-sort-menu" style="height: 3vh; background-color: black; color: #BEC0BE;">
+  <select title="Sort icons" id="desktop-sort-menu" style="height: 3vh; background-color: black; color: #BEC0BE;">
     <script>
       let options = [
         {v: 'alpha-asc',  l: 'Alphabetic A-Z'},
@@ -71,11 +69,10 @@
       });
     </script>
   </select>
-  <div style="padding: 0 1vw;">Size:</div>
-    <label for="iconSize_small" title="Small" class="btn">▫</label>
+    <label for="iconSize_small" title="Small icons" class="btn">▫</label>
     <input type="radio" id="iconSize_small" name="iconSize_radio"
      <%= (iconsSize === 'small') ? 'checked' : '' %> class="iconSize_radio btn"/>
-    <label for="iconSize_large" title="Large" class="btn">⬜</label>
+    <label for="iconSize_large" title="Large icons" class="btn">⬜</label>
     <input type="radio" id="iconSize_large" name="iconSize_radio"
      <%= (iconsSize === 'large') ? 'checked' : '' %> class="iconSize_radio btn"/>
 
