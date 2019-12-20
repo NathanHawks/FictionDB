@@ -9,6 +9,10 @@ module.exports = {
     linkedType: {
       type: 'string',
       required: true
+    },
+    eventID: {
+      type: 'number',
+      required: false
     }
   },
   exits: {
@@ -19,6 +23,7 @@ module.exports = {
   },
   fn: async function (inputs) {
     let storyID = inputs.storyID;
+    let eventID = (inputs.eventID) ? inputs.eventID : -1;
     let linkedType = inputs.linkedType;
     let selected = await StoryEvent.getEvents(storyID);
     let r = await Story.get(storyID);
@@ -27,6 +32,7 @@ module.exports = {
     return {
       storyTitle: storyTitle,
       storyID: storyID,
+      eventID: eventID,
       events: selected,
       linkedType: linkedType,
     }

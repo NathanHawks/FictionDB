@@ -13,10 +13,14 @@
     unit = maxW / events.length;
     let w = unit;
     %>
-    <div class="intensity-bar" style="height: <%- h %>vw; width: <%- w %>%"
+    <div class="intensity-bar event_<%= el.id %>" style="height: <%- h %>vw; width: <%- w %>%"
       title="<%= fixForDisplay(el.authorTitle.content) %>"
       onclick="gotoRecord(event, `Event`, <%- el.id %>, `Story/<%- storyID %>`)"
       >&nbsp;</div>
     <%
-  });%>
+  });
+  %>
+  <script>
+    $(`.intensity-bar.event_<%= eventID %>`).addClass('intensity-bar-current-event');
+  </script>
 </div>
