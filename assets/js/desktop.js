@@ -17,6 +17,7 @@ async function initDesktop() {
   makeDesktopCloseThings();
   // setup desktop filter field
   setupDesktopFilter();
+  setupGearMenu();
   // key handler requires the desktop be given focus
   $('#deskicon-container')
     .focus()
@@ -314,4 +315,37 @@ function desktopFilterSubmit() {
 function desktopFilterClear() {
   $('#desktop_filter_input').val('');
   desktopFilterSubmit();
+}
+
+function setupGearMenu() {
+  $.widget( "custom.iconselectmenu", $.ui.selectmenu, {
+   _renderItem: function( ul, item ) {
+     var li = $( "<li>" );
+     var wrapper = $( "<div>", { text: item.label } );
+     // add icon
+     $( "<span>", {
+       style: item.element.attr( "data-style" ),
+       "class": "ui-icon " + item.element.attr( "data-class" )
+     })
+       .appendTo( wrapper );
+
+     return li.append( wrapper ).appendTo( ul );
+   }
+ });
+
+  $('#gearMenu').iconselectmenu({
+    change: (event, ui) => {
+      gearMenu_changeHandler();
+    }
+  });
+   //.iconselectmenu( "menuWidget" )
+
+}
+
+function gearMenu_changeHandler() {
+  // first get the value...
+  let type = $('#gearMenu').val();
+  // ...before resetting and redrawing the menu
+  $('#gearMenu').val('none').iconselectmenu('refresh');
+
 }

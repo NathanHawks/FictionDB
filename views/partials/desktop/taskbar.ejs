@@ -8,6 +8,14 @@
         .button();
     }
   </script>
+  <select class="ui" id="gearMenu" title="More Options">
+    <option value="none" data-class="ui-icon-nullify">&nbsp;</option>
+    <option>Open Project Folder</option>
+    <option>Make Backup</option>
+    <option>Preferences</option>
+    <!-- append recents with jquery -->
+  </select>
+  <div style="flex-grow: 1;">&nbsp;</div>
 
   <div style="padding: 0 1vw;">Create:</div>
   <div id="new-character" class="btn taskbaricon new-icon character-icon"><div onclick="requestNew('character');" class="overlay">&nbsp;</div></div>

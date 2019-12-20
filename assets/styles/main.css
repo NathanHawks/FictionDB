@@ -339,7 +339,8 @@ div#context-menu ul li.context-menu-item:hover {
   background-repeat: no-repeat;
 }
 #newAttachItemMenu-button:hover, #newAttachItemMenu-button:active,
-#attachItemMenu-button:hover, #attachItemMenu-button:active {
+#attachItemMenu-button:hover, #attachItemMenu-button:active,
+#gearMenu-button:hover, #gearMenu-button:active {
   background-color: #101010;
 }
 #newAttachItemMenu-menu, #attachItemMenu-menu {
@@ -347,7 +348,8 @@ div#context-menu ul li.context-menu-item:hover {
   background-color: #101010;
 }
 #newAttachItemMenu-menu li.ui-menu-item,
-#attachItemMenu-menu li.ui-menu-item {
+#attachItemMenu-menu li.ui-menu-item,
+#gearMenu-menu li.ui-menu-item {
   height: 36px;
   display: flex;
   align-items: center;
@@ -356,7 +358,8 @@ div#context-menu ul li.context-menu-item:hover {
   padding: none;
 }
 #newAttachItemMenu-menu li.ui-menu-item div,
-#attachItemMenu-menu li.ui-menu-item div {
+#attachItemMenu-menu li.ui-menu-item div,
+#gearMenu-menu li.ui-menu-item div {
   padding-left: calc(32px + .5em);
 }
 .ui-selectmenu-menu .ui-menu .ui-menu-item .ui-icon {
@@ -366,7 +369,8 @@ div#context-menu ul li.context-menu-item:hover {
   background-color: #101010;
 }
 #newAttachItemMenu-menu li.ui-menu-item:first-child,
-#attachItemMenu-menu li.ui-menu-item:first-child {
+#attachItemMenu-menu li.ui-menu-item:first-child,
+#gearMenu-menu li.ui-menu-item:first-child {
   display: none;
 }
 #newAttachItemMenu-menu li.ui-menu-item .ui-icon-story,
@@ -438,6 +442,17 @@ div#context-menu ul li.context-menu-item:hover {
   color: #bdbdbd;
 
 }
+
+#gearMenu-button {
+  width: calc(32px + 1em);
+  height: 24px;
+  padding: 0;
+  background-color: #404040;
+  background-image: url('/images/gear-24.png');
+  background-position: .5em 0;
+  background-repeat: no-repeat;
+}
+
 .Navigator_header, .Navigator_Title, .Navigator_TopTitle,
 .Navigator_Title div, .Navigator_TopTitle div {
   font-family: Tahoma, sans-serif;
@@ -666,6 +681,11 @@ div.dialogicon a {
 #taskbar label.ui-checkboxradio-checked {
   background-color: #6060BB;
 }
+.taskbar-btn.ui-checkboxradio-label.ui-button.ui-widget:hover,
+#taskbar label.ui-checkboxradio-label.ui-button.ui-widget:hover {
+  outline: 0;
+  background-color: #f84;
+}
 div.taskbaricon {
   margin: 0;
   padding: 0;
@@ -686,23 +706,28 @@ div.taskbaricon div.overlay {
   border: 1px solid black;
 }
 
-div.taskbaricon.story-icon, .taskbar-btn.story-icon {
+div.taskbaricon.story-icon, .taskbar-btn.story-icon,
+.taskbar-btn.story-icon.taskbar-btn.ui-checkboxradio-label.ui-button.ui-widget:hover {
   background-image: url('/images/story-icon-32.png');
   background-repeat: no-repeat;
 }
-div.taskbaricon.location-icon, .taskbar-btn.location-icon {
+div.taskbaricon.location-icon, .taskbar-btn.location-icon,
+.taskbar-btn.location-icon.taskbar-btn.ui-checkboxradio-label.ui-button.ui-widget:hover {
   background-image: url('/images/location-icon-32.png');
   background-repeat: no-repeat;
 }
-div.taskbaricon.character-icon, .taskbar-btn.character-icon {
+div.taskbaricon.character-icon, .taskbar-btn.character-icon,
+.taskbar-btn.character-icon.taskbar-btn.ui-checkboxradio-label.ui-button.ui-widget:hover {
   background-image: url('/images/character-icon-32.png');
   background-repeat: no-repeat;
 }
-div.taskbaricon.event-icon, .taskbar-btn.event-icon {
+div.taskbaricon.event-icon, .taskbar-btn.event-icon,
+.taskbar-btn.event-icon.taskbar-btn.ui-checkboxradio-label.ui-button.ui-widget:hover {
   background-image: url('/images/event-icon-32.png');
   background-repeat: no-repeat;
 }
-div.taskbaricon.setting-icon, .taskbar-btn.setting-icon {
+div.taskbaricon.setting-icon, .taskbar-btn.setting-icon,
+.taskbar-btn.setting-icon.taskbar-btn.ui-checkboxradio-label.ui-button.ui-widget:hover {
   background-image: url('/images/setting-icon-32.png');
   background-repeat: no-repeat;
 }
@@ -762,6 +787,10 @@ div.dialogicon:hover, div.dialogicon.ui-droppable-hover {
   display: inline-block;
   cursor: pointer;
 }
+.intensity-bar.intensity-bar-current-event {
+  background-color: #205050;
+}
+
 .intensity-container:hover .intensity-bar:hover {
   background-color: #F84;
 }
