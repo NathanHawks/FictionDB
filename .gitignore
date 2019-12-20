@@ -51,6 +51,7 @@ config/local.js
 .eslintrc
 .npmrc
 designDocuments
+fictionDB
 
 ################################################
 # Dependencies
