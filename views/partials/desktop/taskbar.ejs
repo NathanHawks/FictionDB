@@ -51,7 +51,7 @@
       });
     </script>
   </div>
-  <div class="flexspacer">&nbsp;</div>
+  <div style="flex-grow: 1;">&nbsp;</div>
 
   <select title="Sort icons" id="desktop-sort-menu" style="height: 3vh; background-color: black; color: #BEC0BE;">
     <script>
@@ -69,12 +69,14 @@
       });
     </script>
   </select>
-    <label for="iconSize_small" title="Small icons" class="btn">▫</label>
-    <input type="radio" id="iconSize_small" name="iconSize_radio"
-     <%= (iconsSize === 'small') ? 'checked' : '' %> class="iconSize_radio btn"/>
-    <label for="iconSize_large" title="Large icons" class="btn">⬜</label>
-    <input type="radio" id="iconSize_large" name="iconSize_radio"
-     <%= (iconsSize === 'large') ? 'checked' : '' %> class="iconSize_radio btn"/>
+  <div style="flex-grow: 1;">&nbsp;</div>
+
+  <label for="iconSize_small" title="Small icons" class="btn">▫</label>
+  <input type="radio" id="iconSize_small" name="iconSize_radio"
+   <%= (iconsSize === 'small') ? 'checked' : '' %> class="iconSize_radio btn"/>
+  <label for="iconSize_large" title="Large icons" class="btn">⬜</label>
+  <input type="radio" id="iconSize_large" name="iconSize_radio"
+   <%= (iconsSize === 'large') ? 'checked' : '' %> class="iconSize_radio btn"/>
 
   <div class="flexspacer">&nbsp;</div>
   <input type='text' id='desktop_filter_input' class="ui" value="(filter)"/><div
