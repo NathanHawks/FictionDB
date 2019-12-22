@@ -15,10 +15,7 @@ module.exports = {
     r.event     = Event.getTitleFieldNames()[0];
     r.location  = Location.getTitleFieldNames()[0];
     r.setting   = Setting.getTitleFieldNames()[0];
-    r.story   = Character.getTitleFieldNames()[0];
+    r.story   = Story.getTitleFieldNames()[0];
     return r;
-
   }
-
-
 };
