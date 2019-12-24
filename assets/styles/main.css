@@ -731,6 +731,9 @@ div.taskbaricon.setting-icon, .taskbar-btn.setting-icon,
   background-image: url('/images/setting-icon-32.png');
   background-repeat: no-repeat;
 }
+div.taskbaricon.new-icon {
+  background-color: #404040;
+}
 div.taskbaricon.new-icon div.overlay {
   background-image: url('/images/new-icon-32.png');
   background-repeat: no-repeat;
