@@ -3,7 +3,7 @@
   "private": false,
   "version": "0.0.0a",
   "description": "A way for fiction writers to plan & organize",
-  "keywords": [],
+  "keywords": ["organize", "database", "fiction", "writer", "author"],
   "dependencies": {
     "@sailshq/connect-redis": "^3.2.1",
     "@sailshq/lodash": "^3.10.3",
@@ -13,6 +13,8 @@
     "ckeditor4": "^4.13.1",
     "connect-redis": "^4.0.3",
     "electron": "^7.1.7",
+    "electron-compile": "^6.4.4",
+    "electron-squirrel-startup": "^1.0.0",
     "grunt": "^1.0.4",
     "jquery": "^3.4.1",
     "jquery-ui-dist": "^1.12.1",
@@ -25,16 +27,22 @@
     "socket.io-redis": "^5.2.0"
   },
   "devDependencies": {
-    "electron-prebuilt-compile": "^4.0.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "electron-forge": "^5.2.4",
+    "electron-prebuilt-compile": "4.0.0",
     "eslint": "5.16.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production node app/app.js",
+    "start": "electron-forge start",
     "test": "npm run lint && npm run custom-tests && echo 'Done.'",
     "lint": "./node_modules/eslint/bin/eslint.js . --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
-    "custom-tests": "echo \"(No other custom tests yet.)\" && echo"
+    "custom-tests": "echo \"(No other custom tests yet.)\" && echo",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
-  "main": "./app/app.js",
+  "main": "app/app.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/NathanHawks/FictionDB.git"
@@ -43,5 +51,37 @@
   "license": "MIT License",
   "engines": {
     "node": "^8.9"
+  },
+  "config": {
+    "forge": {
+      "make_targets": {
+        "win32": [
+          "squirrel"
+        ],
+        "darwin": [
+          "zip"
+        ],
+        "linux": [
+          "deb",
+          "rpm"
+        ]
+      },
+      "electronPackagerConfig": {
+        "packageManager": "npm"
+      },
+      "electronWinstallerConfig": {
+        "name": "fictionDB"
+      },
+      "electronInstallerDebian": {},
+      "electronInstallerRedhat": {},
+      "github_repository": {
+        "owner": "",
+        "name": ""
+      },
+      "windowsStoreConfig": {
+        "packageName": "",
+        "name": "fictionDB"
+      }
+    }
   }
 }
