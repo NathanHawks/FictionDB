@@ -44,19 +44,24 @@ const appAddress = 'http://127.0.0.1';
 const appPort = 1337;
 
 const BrowserWindow = electron.BrowserWindow;
-app.on('ready', tryLaunchingForElectron);
+if (app) app.on('ready', tryLaunchingForElectron);
+else electronIsReady = true;
 
 function tryLaunchingForSails() {
   sailsIsReady = true;
   // "prime" the webapp by requesting content early
-  request(`${appAddress}:${appPort}`,function (error,response,body) {/*nada*/});
+  try {
+    request(`${appAddress}:${appPort}`,function (error,response,body) {/*nada*/});
+    if (app && electronIsReady) createWindow();
+  }
+  catch (e) { error.log(e); }
   // now that sails is ready, enter UI phase if electron is also ready
-  if (electronIsReady) createWindow();
+  console.log('got here');
 }
 function tryLaunchingForElectron() {
   electronIsReady = true;
   // enter UI phase if sails is also ready
-  if (sailsIsReady) createWindow();
+  if (app && sailsIsReady) createWindow();
 }
 
 function createWindow() {
@@ -64,40 +69,45 @@ function createWindow() {
   windowIsLaunching = true;
   // give sails about 7-12 more seconds to get its crap fully together
   setTimeout(() => {
-    // create the browser window
-    mainWindow = new BrowserWindow({show: false, width: width, height: height,
-      backgroundColor: backgroundColor, darkTheme: true /*linux only*/
-    });
-    // hide menu bar where available
-    mainWindow.setMenuBarVisibility(false);
-    // hide cursor while typing where available (mac only, crashes others)
-    // mainWindow.setAutoHideCursor(true);
-    // maximize the window
-    mainWindow.maximize();
-    // go to the sails app
-    mainWindow.loadURL(`http://127.0.0.1:1337/`);
-    // show javascript & DOM consoles
-    mainWindow.webContents.openDevTools();
-    // show browser only when it's ready to render itself
-    mainWindow.once('ready-to-show', () => {
-      mainWindow.show();
-    });
-    // setup close function
-    mainWindow.on('closed', function() {
-      mainWindow = null;
-    });
+    try {
+      // create the browser window
+      if (app) {
+        mainWindow = new BrowserWindow({show: false, width: width, height: height,
+          backgroundColor: backgroundColor, darkTheme: true /*linux only*/
+        });
+        // hide menu bar where available
+        mainWindow.setMenuBarVisibility(false);
+        // hide cursor while typing where available (mac only, crashes others)
+        // mainWindow.setAutoHideCursor(true);
+        // maximize the window
+        mainWindow.maximize();
+        // go to the sails app
+        mainWindow.loadURL(`http://127.0.0.1:1337/`);
+        // show javascript & DOM consoles
+        mainWindow.webContents.openDevTools();
+        // show browser only when it's ready to render itself
+        mainWindow.once('ready-to-show', () => {
+          mainWindow.show();
+        });
+        // setup close function
+        mainWindow.on('closed', function() {
+          mainWindow = null;
+        });
+      }
+    }
+    catch (e) { console.error(e); }
   }, windowCreationDelay);
 }
 
 // quit when all windows are closed
-app.on('window-all-closed', function() {
+if (app) app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {
     app.quit();
   }
 })
 
 // probably for mobile
-app.on('activate', function() {
+if (app) app.on('activate', function() {
   if (mainWindow === null) {
     createWindow();
   }
@@ -113,8 +123,11 @@ try {
 	sails = require('sails');
 	rc = require('sails/accessible/rc');
 } catch (err) {
-	console.error(err.stack);
+	console.error(err);
 }
 
 // Start server
-sails.lift(rc('sails'), tryLaunchingForSails );
+try {
+  sails.lift(rc('sails'), tryLaunchingForSails );
+}
+catch (e) { console.log(e); }
