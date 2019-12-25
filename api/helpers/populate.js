@@ -49,11 +49,11 @@ module.exports = {
         // store a function in a matrix
         f[x][y] = async (fieldRef, assocID) => {
           // fetch e.g. Title based on e.g. Character.realName & assign to main entity
-          return Promise.resolve(await fieldRef.findOne({id: assocID}));
+          return await fieldRef.findOne({id: assocID});
         }
         // try the function
         try {
-          if (holder[x][fieldName]) {
+          if (holder[x][fieldName] !== null) {
             holder[x][fieldName] = await f[x][y](
               fieldRefs[y], holder[x][fieldName]
             );
@@ -72,6 +72,5 @@ module.exports = {
       }
     }
     return holder;
-
   }
 };
