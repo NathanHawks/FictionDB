@@ -28,7 +28,8 @@ module.exports = {
   fn: async function (inputs) {
     var locationID = inputs.locationID;
     var s = await Location.get(locationID);
-    var titleNames = Location.getTitleFieldNames();
+    if (!s) { throw 'notFound'; }
+  var titleNames = Location.getTitleFieldNames();
     var noteNames = Location.getNoteFieldNames();
     var linkedID = s.id;
     // populate Navigator

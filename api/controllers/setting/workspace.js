@@ -28,6 +28,7 @@ module.exports = {
   fn: async function (inputs) {
     var settingID = inputs.settingID;
     var s = await Setting.get(settingID);
+    if (!s) { throw 'notFound'; }
     var titleNames = Setting.getTitleFieldNames();
     var noteNames = Setting.getNoteFieldNames();
     var linkedID = s.id;

@@ -28,6 +28,7 @@ module.exports = {
   fn: async function (inputs) {
     var characterID = inputs.characterID;
     var s = await Character.get(characterID);
+    if (!s) { throw 'notFound'; }
     var linkedID = s.id;
     var titleNames = Character.getTitleFieldNames();
     var noteNames = Character.getNoteFieldNames();

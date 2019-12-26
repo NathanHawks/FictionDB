@@ -29,6 +29,7 @@ module.exports = {
   fn: async function (inputs) {
     var storyID = inputs.storyID;
     var s = await Story.get(storyID);
+    if (!s) { throw 'notFound'; }
     var titleNames = Story.getTitleFieldNames();
     var noteNames = Story.getNoteFieldNames();
     var linkedID = s.id;

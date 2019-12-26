@@ -28,6 +28,7 @@ module.exports = {
   fn: async function (inputs) {
     var eventID = inputs.eventID;
     var s = await Event.get(eventID);
+    if (!s) { throw 'notFound'; }
     var linkedID = s.id;
     var titleNames = Event.getTitleFieldNames();
     var noteNames = Event.getNoteFieldNames();
