@@ -29,7 +29,7 @@ module.exports = {
     // the field in thisRef to match linkedID against
     var linkField = 'character';
 
-    q = {};
+    var q = {};
     q[linkField] = linkedID
     var results = await thisRef.find({
       where: q, sort: 'sequence ASC'
@@ -51,7 +51,7 @@ module.exports = {
     // the field in thisRef to match linkedID against
     var linkField = 'event';
 
-    q = {};
+    var q = {};
     q[linkField] = linkedID
     var results = await thisRef.find({
       where: q, sort: 'sequence ASC'

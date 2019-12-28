@@ -28,7 +28,7 @@ module.exports = {
     let r = [];
     // intensity
     let i = [];
-    for (x = 1; x < 101; x++) { i[x-1] = x; }
+    for (let x = 1; x < 101; x++) { i[x-1] = x; }
     return [i];
   },
   get: async (eventID) => {

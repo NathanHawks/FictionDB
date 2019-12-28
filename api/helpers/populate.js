@@ -63,7 +63,7 @@ module.exports = {
         // create empty object if no result
         if (holder[x][fieldName] === undefined) {
           let stub = {};
-          for (key in fieldRefs[y].attributes) {
+          for (let key in fieldRefs[y].attributes) {
             stub[key] = '';
           }
           stub.id = -1;
