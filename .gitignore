@@ -52,6 +52,7 @@ config/local.js
 .npmrc
 designDocuments
 fictionDB
+dist
 
 ################################################
 # Dependencies
