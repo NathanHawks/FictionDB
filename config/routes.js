@@ -9,16 +9,6 @@
  */
 
 module.exports.routes = {
-
-  /***************************************************************************
-  *                                                                          *
-  * Make the view located at `views/homepage.ejs` your home page.            *
-  *                                                                          *
-  * (Alternatively, remove this and add an `index.html` file in your         *
-  * `assets` directory)                                                      *
-  *                                                                          *
-  ***************************************************************************/
-
   '/': { action: 'common/startup', locals: {layout: 'layouts/layout'} },
   '/home': { action: 'common/home' },
   'POST /dragdrop': { action: 'common/dragdrop' },
