@@ -138,7 +138,8 @@ h1#mainTitle:hover {
 .ui-button.ui-widget,
 .ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited,
 a.ui-button, a:link.ui-button, a:visited.ui-button, .ui-button,
-a.btn.ui-button.ui-widget {
+a.btn.ui-button.ui-widget, .ui-state-default a, .ui-state-default a:link,
+.ui-accordion-header.ui-state-default a, .ui-accordion-header.ui-state-default a:link {
    /* jquery */
   background: #444;
   color: #bdbdbd;
@@ -151,14 +152,16 @@ a.btn.ui-button.ui-widget {
 .ui-button.ui-widget:hover,
 .ui-state-default a:hover, .ui-state-default a:link:hover, .ui-state-default a:visited:hover,
 a.ui-button:hover, a:link.ui-button:hover, a:visited.ui-button:hover, .ui-button:hover,
-a.btn.ui-button.ui-widget:hover {
+a.btn.ui-button.ui-widget:hover, .ui-state-default a:hover, .ui-state-default a:link:hover,
+.ui-accordion-header.ui-state-default a:hover, .ui-accordion-header.ui-state-default a:link:hover {
   border-color: #F84;
 }
 .ui-button.ui-widget.ui-checkboxradio-radio-label.ui-controlgroup-item.ui-checkboxradio-label:disabled,
 .ui-button.ui-widget:disabled,
 .ui-state-default a:disabled, .ui-state-default a:link:disabled, .ui-state-default a:visited:disabled,
 a.ui-button:disabled, a:link.ui-button:disabled, a:visited.ui-button:disabled, .ui-button:disabled,
-a.btn.ui-button.ui-widget:disabled {
+a.btn.ui-button.ui-widget:disabled, .ui-state-default a:disabled, .ui-state-default a:link:disabled,
+.ui-accordion-header.ui-state-default a:disabled, .ui-accordion-header.ui-state-default a:link:disabled {
   background-color: #303030;
   color: #909090;
   text-shadow: 1px 1px 2px black;

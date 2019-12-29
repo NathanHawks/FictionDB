@@ -1,5 +1,4 @@
-// back button history
-var backBtnHistory = [];
+
 
 function uppercaseFirst(s) {
   return s.replace(/^[a-z]/,m=>m.toUpperCase());
@@ -113,7 +112,7 @@ async function requestPage(url, instant=false, backBtnUrl='/home') {
   autocompleteContent = [];
   if (backBtnUrl !== 'SKIP') backBtnHistory.unshift(backBtnUrl);
   if (instant) response = handleResponse_requestPage_instant;
-  else response = handleResponse_requestPage
+  else response = handleResponse_requestPage;
   // special treatment for /home
   if (url === '/home') $.ajax({url: url, method: 'POST',
     data: {iconsSorting: iconsSorting, iconsShowing: iconsShowing, iconsSize: iconsSize}
@@ -122,7 +121,7 @@ async function requestPage(url, instant=false, backBtnUrl='/home') {
 }
 
 async function requestBackBtn() {
-  backBtnUrl = backBtnHistory.shift();
+  let backBtnUrl = backBtnHistory.shift();
   requestPage(backBtnUrl, false, 'SKIP');
 }
 

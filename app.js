@@ -33,6 +33,7 @@ const app = electron.app;
 // flags: don't enter GUI launch until both sails & electron report ready
 var electronIsReady = false;
 var sailsIsReady = false;
+var gruntIsReady = false;
 // block repeat launches (edge contingency)
 var windowIsLaunching = false;
 // electron window(s)
@@ -52,7 +53,7 @@ function tryLaunchingForSails() {
   // "prime" the webapp by requesting content early
   try {
     request(`${appAddress}:${appPort}`,function (error,response,body) {/*nada*/});
-    if (app && electronIsReady) createWindow();
+    if (app && electronIsReady && gruntIsReady) createWindow();
   }
   catch (e) { console.error(e); }
 }
@@ -119,6 +120,10 @@ var sails;
 var rc;
 try {
 	sails = require('sails');
+  sails.on('hook:grunt:done', () => {
+    gruntIsReady = true;
+    tryLaunchingForSails();
+  });
 	rc = require('sails/accessible/rc');
 } catch (err) {
 	console.error(err);
