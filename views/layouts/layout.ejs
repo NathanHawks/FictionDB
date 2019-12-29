@@ -6,13 +6,17 @@
     <meta name="viewport"
      content="width=device-width, initial-scale=1, maximum-scale=1">
     <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
-    <script src="/js/polyfill.min.js"></script>
-
+    <!-- script src="/js/polyfill.min.js"></script-->
+    <!--SCRIPTS-->
+    <script src="/polyfill/polyfill.min.js"></script>
+    <script src="/dependencies/sails.io.js"></script>
+    <!--SCRIPTS END-->
     <script src="/js/ckeditor/ckeditor.js"></script>
     <script src="/js/jquery-ui/external/jquery/jquery.js"></script>
     <script src="/js/common.js"></script>
     <script src="/js/desktop.js"></script>
-
+    <script src="/js/workspace.js"></script>
+    <script src="/js/property-navigator.js"></script>
     <script>
       // these icons are immune from being selected
       const launcherIcons = ['new-story','new-event','new-character',
@@ -73,9 +77,6 @@
     <%- body %>
     <!--TEMPLATES-->
     <!--TEMPLATES END-->
-    <!--SCRIPTS-->
-    <script src="/dependencies/sails.io.js"></script>
-    <!--SCRIPTS END-->
   </body>
   <script src="/js/jquery-ui/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="/js/jquery-ui/jquery-ui.min.css">

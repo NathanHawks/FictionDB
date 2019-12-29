@@ -39,7 +39,7 @@ var windowIsLaunching = false;
 // electron window(s)
 var mainWindow = null;
 // when sails says it's lifted, wait a delay or else JS & CSS return 404's
-var windowCreationDelay = 12000;
+var windowCreationDelay = 0;
 // sails app address
 const appAddress = 'http://127.0.0.1';
 const appPort = 1337;
