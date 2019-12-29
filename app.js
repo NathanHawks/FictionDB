@@ -54,9 +54,7 @@ function tryLaunchingForSails() {
     request(`${appAddress}:${appPort}`,function (error,response,body) {/*nada*/});
     if (app && electronIsReady) createWindow();
   }
-  catch (e) { error.log(e); }
-  // now that sails is ready, enter UI phase if electron is also ready
-  console.log('got here');
+  catch (e) { console.error(e); }
 }
 function tryLaunchingForElectron() {
   electronIsReady = true;

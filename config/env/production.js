@@ -371,7 +371,7 @@ module.exports = {
   *                                                                         *
   ***************************************************************************/
   custom: {
-    baseUrl: 'https://127.0.0.1:1337',
+    baseUrl: 'http://127.0.0.1:1337',
     internalEmailAddress: 'nhawks@gmail.com',
 
     // mailgunDomain: 'mg.example.com',
