@@ -1,30 +1,3 @@
-function setupCharacterNote_helper() {
-  try {
-    CKEDITOR.replace('noteEditor', {height: '66vh', width: '32vw'});
-  } catch (e) { console.error(e); }
-  try {
-    // setup toolbar
-    $('.btn').button();
-    $('input[name="editorType"]').checkboxradio();
-    $('#col-2-editorType').controlgroup();
-    $('#mainToolbar').controlgroup();
-    $('#col-2-mainToolbar').controlgroup();
-    var sumBtn = $('#editorType_traits');
-    var elvBtn = $('#editorType_backstory');
-    $('input[type=radio][name=editorType]').change((event, ui)=>{
-      saveCharacterNote_helper(event,ui);
-      attachAutoSave();
-    });
-    $('#editorSubmit').click((e,ui) => {
-      saveNoteWasClicked = true;
-      saveCharacterNote_helper(e,ui);
-    });
-    attachAutoSave();
-    indicateSaved();
-  } catch (e) { console.log(e); }
-}
-
-
 async function saveCharacterNote_helper(event,ui) {
   disableSaveBtn();
   autosaveCandidate = false;
@@ -89,32 +62,6 @@ async function saveCharacterNote_helper(event,ui) {
     console.log('wait what?');
   }
   indicateSaved();
-}
-
-function setupEventNote_helper() {
-  try {
-    CKEDITOR.replace('noteEditor', {height: '66vh', width: '32vw'});
-  } catch (e) { console.log(e); }
-  try {
-    // setup toolbar
-    $('.btn').button();
-    $('input[name="editorType"]').checkboxradio();
-    $('#col-2-editorType').controlgroup();
-    $('#mainToolbar').controlgroup();
-    $('#col-2-mainToolbar').controlgroup();
-    var sumBtn = $('#editorType_publicNote');
-    var elvBtn = $('#editorType_authorNote');
-    $('input[type=radio][name=editorType]').change((event, ui)=>{
-      saveEventNote_helper(event,ui);
-      attachAutoSave();
-    });
-    $('#editorSubmit').click((e,ui) => {
-      saveNoteWasClicked = true;
-      saveEventNote_helper(e,ui);
-    });
-    attachAutoSave();
-    indicateSaved();
-  } catch (e) { console.log(e); }
 }
 
 async function saveEventNote_helper(event,ui) {
@@ -191,32 +138,6 @@ async function saveEventNote_helper(event,ui) {
   indicateSaved();
 }
 
-function setupLocationNote_helper() {
-  try {
-    CKEDITOR.replace('noteEditor', {height: '66vh', width: '32vw'});
-  } catch (e) { console.log(e); }
-  try {
-    // setup toolbar
-    $('.btn').button();
-    $('input[name="editorType"]').checkboxradio();
-    $('#col-2-editorType').controlgroup();
-    $('#mainToolbar').controlgroup();
-    $('#col-2-mainToolbar').controlgroup();
-    var sumBtn = $('#editorType_publicNote');
-    var elvBtn = $('#editorType_authorNote');
-    $('input[type=radio][name=editorType]').change((event, ui)=>{
-      saveLocationNote_helper(event,ui);
-      attachAutoSave();
-    });
-    $('#editorSubmit').click((e,ui) => {
-      saveNoteWasClicked = true;
-      saveLocationNote_helper(e,ui);
-    });
-    attachAutoSave();
-    indicateSaved();
-  } catch (e) { console.log(e); }
-}
-
 async function saveLocationNote_helper(event,ui) {
   disableSaveBtn();
   autosaveCandidate = false;
@@ -283,32 +204,6 @@ async function saveLocationNote_helper(event,ui) {
   indicateSaved();
 }
 
-function setupSettingNote_helper() {
-  try {
-    CKEDITOR.replace('noteEditor', {height: '66vh', width: '32vw'});
-  } catch (e) { console.log(e); }
-  try {
-    // setup toolbar
-    $('.btn').button();
-    $('input[name="editorType"]').checkboxradio();
-    $('#col-2-editorType').controlgroup();
-    $('#mainToolbar').controlgroup();
-    $('#col-2-mainToolbar').controlgroup();
-    var sumBtn = $('#editorType_publicNote');
-    var elvBtn = $('#editorType_authorNote');
-    $('input[type=radio][name=editorType]').change((event, ui)=>{
-      saveSettingNote_helper(event,ui);
-      attachAutoSave();
-    });
-    $('#editorSubmit').click((e,ui) => {
-      saveNoteWasClicked = true;
-      saveSettingNote_helper(e,ui);
-    });
-    attachAutoSave();
-    indicateSaved();
-  } catch (e) { console.log(e); }
-}
-
 async function saveSettingNote_helper(event,ui) {
   disableSaveBtn();
   autosaveCandidate = false;
@@ -373,31 +268,6 @@ async function saveSettingNote_helper(event,ui) {
     console.log('wait what?');
   }
   indicateSaved();
-}
-
-function setupStoryNote_helper() {
-  try {
-    CKEDITOR.replace('noteEditor', {height: '66vh', width: '32vw'});
-  } catch (e) { console.log(e); }
-  try {
-    // setup toolbar
-    $('.btn').button();
-    $('input[name="editorType"]').checkboxradio();
-    $('#col-2-editorType').controlgroup();
-    $('#mainToolbar').controlgroup();
-    $('#col-2-mainToolbar').controlgroup();
-    var sumBtn = $('#editorType_summary');
-    var elvBtn = $('#editorType_elevatorPitch');
-    $('input[type=radio][name=editorType]').change((event, ui)=>{
-      saveStoryNote_helper(event,ui);
-    });
-    $('#editorSubmit').click((e,ui) => {
-      saveNoteWasClicked = true;
-      saveStoryNote_helper(e,ui);
-    });
-    attachAutoSave();
-    indicateSaved();
-  } catch (e) { console.log(e); }
 }
 
 async function saveStoryNote_helper(event,ui) {
