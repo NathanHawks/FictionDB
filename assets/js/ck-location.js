@@ -1,5 +1,7 @@
 try {
   CKEDITOR.replace('noteEditor', {height: '66vh', width: '32vw'});
+} catch (e) { console.log(e); }
+try {
   // setup toolbar
   $('.btn').button();
   $('input[name="editorType"]').checkboxradio();
