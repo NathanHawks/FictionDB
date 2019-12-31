@@ -53,6 +53,7 @@ config/local.js
 designDocuments
 fictionDB
 dist
+deprecated.txt
 
 ################################################
 # Dependencies
