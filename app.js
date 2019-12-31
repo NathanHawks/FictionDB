@@ -22,6 +22,13 @@
 // we need to prime the sails app with a request before loading the window
 // or else CSS & JS files are 404'd, it takes some 7-12 seconds for sails to
 // finish setting up after it claims sails have been lifted
+const jsdom = require('jsdom');
+const jquery = require('jquery');
+const { JSDOM } = jsdom;
+const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+const $ = jquery(dom.window);
+global.jq = $;
+
 const request = require('request');
 // electron config stuff
 var backgroundColor = '#1A1A1A';
