@@ -1,9 +1,0 @@
-{
-  "presets": [
-    ["es2015", {
-      "exclude": ["transform-regenerator"]
-    }],
-    ["stage-0"]
-  ],
-  "ignore": [ ".tmp/public/js/ckeditor/ckeditor.js", ".tmp/public/js/ck-*.js" ]
-}
