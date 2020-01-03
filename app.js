@@ -25,7 +25,7 @@
 const jsdom = require('jsdom');
 const jquery = require('jquery');
 const { JSDOM } = jsdom;
-const dom = new JSDOM(`<!DOCTYPE html><p>Hello world</p>`);
+const dom = new JSDOM('<!DOCTYPE html>');
 const $ = jquery(dom.window);
 global.jq = $;
 
@@ -37,15 +37,23 @@ var width = 800, height = 600;
 const electron = require('electron');
 // prime electron app
 const app = electron.app;
+// get the theme handler
+// const nativeTheme = require('electron').nativeTheme;
+// set dark theme
+// nativeTheme.themeSource = 'dark';
+// try to prevent multiple instances of the app running
+app.requestSingleInstanceLock();
 // flags: don't enter GUI launch until both sails & electron report ready
 var electronIsReady = false;
 var sailsIsReady = false;
 var gruntIsReady = false;
 // block repeat launches (edge contingency)
 var windowIsLaunching = false;
+var splashIsUp = false;
 // electron window(s)
 var mainWindow = null;
-// when sails says it's lifted, wait a delay or else JS & CSS return 404's
+var splashWindow = null;
+// delay after all preflight checks pass
 var windowCreationDelay = 0;
 // sails app address
 const appAddress = 'http://127.0.0.1';
@@ -57,29 +65,39 @@ else electronIsReady = true;
 
 function tryLaunchingForSails() {
   sailsIsReady = true;
-  // "prime" the webapp by requesting content early
   try {
-    request(`${appAddress}:${appPort}`,function (error,response,body) {/*nada*/});
+    // "prime" the webapp by requesting content early
+    request(`${appAddress}:${appPort}`, (error,response,body) => {/*nada*/});
     if (app && electronIsReady && gruntIsReady) createWindow();
   }
   catch (e) { console.error(e); }
 }
 function tryLaunchingForElectron() {
   electronIsReady = true;
+  if (!splashIsUp) {
+    splashIsUp = true;
+    // show splash screen
+    splashWindow = new BrowserWindow({
+      width: width, height: height,
+      transparent: true, frame: false, alwaysOnTop: true,
+      focusable: false, fullscreenable: false
+    });
+    splashWindow.loadURL(`file://${__dirname}/splash.html`);
+  }
   // enter UI phase if sails is also ready
-  if (app && sailsIsReady) createWindow();
+  if (app && sailsIsReady && gruntIsReady) createWindow();
 }
 
 function createWindow() {
   if (windowIsLaunching === true) return -1;
   windowIsLaunching = true;
-  // give sails about 7-12 more seconds to get its crap fully together
+  // optional: give sails time to get it fully together
   setTimeout(() => {
     try {
       // create the browser window
       if (app) {
         mainWindow = new BrowserWindow({show: false, width: width, height: height,
-          backgroundColor: backgroundColor, darkTheme: true /*linux only*/
+          backgroundColor: backgroundColor
         });
         // hide menu bar where available
         mainWindow.setMenuBarVisibility(false);
@@ -87,13 +105,19 @@ function createWindow() {
         // mainWindow.setAutoHideCursor(true);
         // maximize the window
         mainWindow.maximize();
+        // bring to the front
+        mainWindow.focus();
         // go to the sails app
-        mainWindow.loadURL(`http://127.0.0.1:1337/`);
+        mainWindow.loadURL(`${appAddress}:${appPort}/`);
         // show javascript & DOM consoles
-        mainWindow.webContents.openDevTools();
+        //mainWindow.webContents.openDevTools();
         // show browser only when it's ready to render itself
         mainWindow.once('ready-to-show', () => {
+          // show the main window
+          mainWindow.setAlwaysOnTop(true);
           mainWindow.show();
+          mainWindow.setAlwaysOnTop(false);
+          app.focus();
         });
         // setup close function
         mainWindow.on('closed', function() {
@@ -106,11 +130,17 @@ function createWindow() {
 }
 
 // quit when all windows are closed
-if (app) app.on('window-all-closed', function() {
+app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {
-    app.quit();
+    sails.lower(function (err) {
+      if (err) {
+        console.log(err);
+        app.exit(1);
+      } else
+        app.exit();
+    });
   }
-})
+});
 
 // probably for mobile
 if (app) app.on('activate', function() {

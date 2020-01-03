@@ -32,3 +32,12 @@
   <%- partial("../partials/dialog/title-bar") %>
   <div id="dialogContent">&nbsp;</div>
 </div>
+<script>
+  $(function() {
+    const remote = require('electron').remote;
+    var remoteWin = remote.getCurrentWindow();
+    remoteWin.setAlwaysOnTop(true);
+    remoteWin.focus();
+    setTimeout(() => {remoteWin.setAlwaysOnTop(false);}, 100);
+  });
+</script>

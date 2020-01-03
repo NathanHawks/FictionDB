@@ -1,0 +1,62 @@
+<<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <style>
+      div#splash-container {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        z-index: 9001;
+        overflow: hidden;
+      }
+      div#splash {
+        background: rgba(0,0,0, 0.3) url('./assets/images/splash.png') no-repeat;
+        border: 1px solid #303030;
+        width: 640px;
+        height: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      div#splash-text {
+        height: 100px;
+        width: 640px;
+        padding-top: 380px;
+        line-height: 120%;
+        text-align: center;
+        color: white;
+        background-color: rgba(0,0,0, 0.3);
+      }
+      div#splash-logo {
+        display: block;
+        font-size: 14pt;
+        font-variant: small-caps;
+        font-style: italic;
+        margin: 0 0 25px 0;
+        color: white;
+        background-color: rgba(0,0,0, 0.3);
+      }
+
+    </style>
+    <script>
+      const remote = require('electron').remote;
+      var remoteWin = remote.getCurrentWindow();
+      setTimeout(() => {remoteWin.hide();}, 8000);
+      setTimeout(() => {remoteWin.close();}, 45000);
+    </script>
+    <meta charset="utf-8">
+    <title>fictionDB Splash Screen</title>
+  </head>
+  <body>
+    <div id="splash-container">
+      <div id="splash">
+        <div id="splash-text"><div id="splash-logo">FictionDB</div><p>Starting</p></div>
+      </div>
+    </div>
+  </body>
+</html>
