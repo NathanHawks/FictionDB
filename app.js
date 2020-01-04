@@ -1,34 +1,11 @@
-/**
- * app.js
- *
- * Use `app.js` to run your app without `sails lift`.
- * To start the server, run: `node app.js`.
- *
- * This is handy in situations where the sails CLI is not relevant or useful,
- * such as when you deploy to a server, or a PaaS like Heroku.
- *
- * For example:
- *   => `node app.js`
- *   => `npm start`
- *   => `forever start app.js`
- *   => `node debug app.js`
- *
- * The same command-line arguments and env vars are supported, e.g.:
- * `NODE_ENV=production node app.js --port=80 --verbose`
- *
- * For more information see:
- *   https://sailsjs.com/anatomy/app.js
- */
-// we need to prime the sails app with a request before loading the window
-// or else CSS & JS files are 404'd, it takes some 7-12 seconds for sails to
-// finish setting up after it claims sails have been lifted
+// server-side jquery
 const jsdom = require('jsdom');
 const jquery = require('jquery');
 const { JSDOM } = jsdom;
 const dom = new JSDOM('<!DOCTYPE html>');
 const $ = jquery(dom.window);
 global.jq = $;
-
+// for priming the webapp
 const request = require('request');
 // electron config stuff
 var backgroundColor = '#1A1A1A';
@@ -37,10 +14,6 @@ var width = 800, height = 600;
 const electron = require('electron');
 // prime electron app
 const app = electron.app;
-// get the theme handler
-// const nativeTheme = require('electron').nativeTheme;
-// set dark theme
-// nativeTheme.themeSource = 'dark';
 // try to prevent multiple instances of the app running
 app.requestSingleInstanceLock();
 // flags: don't enter GUI launch until both sails & electron report ready
@@ -50,6 +23,7 @@ var gruntIsReady = false;
 // block repeat launches (edge contingency)
 var windowIsLaunching = false;
 var splashIsUp = false;
+var splashResponse = 'pong';
 // electron window(s)
 var mainWindow = null;
 var splashWindow = null;
@@ -80,7 +54,8 @@ function tryLaunchingForElectron() {
     splashWindow = new BrowserWindow({
       width: width, height: height,
       transparent: true, frame: false, alwaysOnTop: true,
-      focusable: false, fullscreenable: false
+      focusable: false, fullscreenable: false,
+      webPreferences: { nodeIntegration: true } 
     });
     splashWindow.loadURL(`file://${__dirname}/splash.html`);
   }
@@ -92,52 +67,68 @@ function createWindow() {
   if (windowIsLaunching === true) return -1;
   windowIsLaunching = true;
   // optional: give sails time to get it fully together
-  setTimeout(() => {
+  setTimeout(function() {
     try {
-      // create the browser window
-      if (app) {
-        mainWindow = new BrowserWindow({show: false, width: width, height: height,
-          backgroundColor: backgroundColor
-        });
-        // hide menu bar where available
-        mainWindow.setMenuBarVisibility(false);
-        // hide cursor while typing where available (mac only, crashes others)
-        // mainWindow.setAutoHideCursor(true);
-        // maximize the window
-        mainWindow.maximize();
-        // bring to the front
-        mainWindow.focus();
-        // go to the sails app
-        mainWindow.loadURL(`${appAddress}:${appPort}/`);
-        // show javascript & DOM consoles
-        //mainWindow.webContents.openDevTools();
-        // show browser only when it's ready to render itself
-        mainWindow.once('ready-to-show', () => {
-          // show the main window
-          mainWindow.setAlwaysOnTop(true);
-          mainWindow.show();
-          mainWindow.setAlwaysOnTop(false);
-          app.focus();
-        });
-        // setup close function
-        mainWindow.on('closed', function() {
-          mainWindow = null;
-        });
-      }
+      // tell the splash page to close
+      splashResponse = 'close';
+      // create main window
+      mainWindow = new BrowserWindow({show: false, width: width, height: height,
+        backgroundColor: backgroundColor
+      });
+      // hide menu bar where available
+      mainWindow.setMenuBarVisibility(false);
+      // maximize the window
+      mainWindow.maximize();
+      // bring to the front
+      mainWindow.focus();
+      // go to the sails app
+      mainWindow.loadURL(`${appAddress}:${appPort}/`);
+      // show javascript & DOM consoles
+      // mainWindow.webContents.openDevTools();
+      // show browser only when it's ready to render itself
+      mainWindow.once('ready-to-show', function() {
+        // get the splash out of the way
+        splashWindow.setAlwaysOnTop(false);
+        // show the main window
+        mainWindow.setAlwaysOnTop(true);
+        mainWindow.show();
+        mainWindow.setAlwaysOnTop(false);
+        app.focus();
+      });
+      // setup close function
+      mainWindow.on('closed', function() {
+        mainWindow = null;
+      });
     }
     catch (e) { console.error(e); }
   }, windowCreationDelay);
 }
 
+// tell the splash window when it's time to hide & close
+if (app) app.on('ready', function() {
+  var ipcMain = electron.ipcMain;
+  ipcMain.on('splashPing', (event, arg) => {
+    try {
+      event.sender.send('splashPing', splashResponse);
+    } catch (e) { console.log(e); }
+    if (splashResponse === 'close') {
+      //splashWindow = null;
+      ipcMain.removeAllListeners('splashPing');
+    }
+    console.log(`${arg}||${splashResponse}`);
+  });
+});
+
 // quit when all windows are closed
-app.on('window-all-closed', function() {
+if (app) app.on('window-all-closed', function() {
   if (process.platform !== 'darwin') {
     sails.lower(function (err) {
       if (err) {
         console.log(err);
         app.exit(1);
       } else
-        app.exit();
+        app.quit();
+      setTimeout(()=>{app.quit();},5000);
     });
   }
 });
