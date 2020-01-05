@@ -55,7 +55,7 @@ function tryLaunchingForElectron() {
       width: width, height: height,
       transparent: true, frame: false, alwaysOnTop: true,
       focusable: false, fullscreenable: false,
-      webPreferences: { nodeIntegration: true } 
+      webPreferences: { nodeIntegration: true }
     });
     splashWindow.loadURL(`file://${__dirname}/splash.html`);
   }
@@ -115,7 +115,7 @@ if (app) app.on('ready', function() {
       //splashWindow = null;
       ipcMain.removeAllListeners('splashPing');
     }
-    console.log(`${arg}||${splashResponse}`);
+    // console.log(`${arg}||${splashResponse}`);
   });
 });
 
