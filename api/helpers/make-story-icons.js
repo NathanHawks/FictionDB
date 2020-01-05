@@ -30,42 +30,42 @@ module.exports = {
       // icons are shown in upside-down order so all sorts must be reverse
       switch (sorting) {
         case 'creat-desc':
-          sortFn = (a, b) => {
+          sortFn = function (a, b) {
             if (a.createdAt < b.createdAt) return -1;
             if (a.createdAt > b.createdAt) return 1;
             return 0;
           }
         break;
         case 'creat-asc':
-          sortFn = (a, b) => {
+          sortFn = function (a, b) {
             if (a.createdAt < b.createdAt) return 1;
             if (a.createdAt > b.createdAt) return -1;
             return 0;
           }
         break;
         case 'updat-desc':
-          sortFn = (a, b) => {
+          sortFn = function (a, b) {
             if (a.updatedAt < b.updatedAt) return 1;
             if (a.updatedAt > b.updatedAt) return -1;
             return 0;
           }
         break;
         case 'updat-asc':
-          sortFn = (a, b) => {
+          sortFn = function (a, b) {
             if (a.updatedAt < b.updatedAt) return -1;
             if (a.updatedAt > b.updatedAt) return 1;
             return 0;
           }
         break;
         case 'alpha-desc':
-          sortFn = (a, b) => {
+          sortFn = function (a, b) {
             if (a.mainTitle.content < b.mainTitle.content) return -1;
             if (a.mainTitle.content > b.mainTitle.content) return 1;
             return 0;
           }
         case 'alpha-asc':
         default:
-          sortFn = (a, b) => {
+          sortFn = function (a, b) {
             if (a.mainTitle.content < b.mainTitle.content) return 1;
             if (a.mainTitle.content > b.mainTitle.content) return -1;
             return 0;
