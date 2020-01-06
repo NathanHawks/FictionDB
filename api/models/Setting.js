@@ -25,9 +25,22 @@ module.exports = {
     return ['select'];
   },
   getNativeFieldValues: () => {
-    return [['Multiverse', 'Universe', 'Galaxy', 'Solar System',
-    'Planetary System', 'Planet', 'Continent', 'Country', 'State', 'County',
-    'City', 'District', 'Land Plot']];
+    return [[
+      'Land Plot',
+      'District',
+      'City',
+      'County',
+      'State',
+      'Country',
+      'Continent',
+      'Hemisphere',
+      'Planet',
+      'Planetary System',
+      'Solar System',
+      'Galaxy',
+      'Universe',
+      'Multiverse',
+    ]];
   },
   get: async (settingID) => {
     return await Setting.findOne({id: settingID})

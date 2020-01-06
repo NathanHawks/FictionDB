@@ -26,9 +26,25 @@ module.exports = {
     return ['select'];
   },
   getNativeFieldValues: () => {
-    return [['Universe', 'Galaxy', 'Solar System', 'Planetary System', 'Planet',
-    'Continent', 'Country', 'State', 'County', 'City', 'District', 'Land Plot',
-    'Complex', 'Building', 'Area of Building', 'Room', 'Precise Spot']];
+    return [[
+      'Precise Spot',
+      'Room',
+      'Area of Building',
+      'Building',
+      'Complex',
+      'Land Plot',
+      'District',
+      'City',
+      'County',
+      'State',
+      'Country',
+      'Continent',
+      'Planet',
+      'Planetary System',
+      'Solar System',
+      'Galaxy',
+      'Universe',
+    ]];
   },
   get: async (locationID) => {
     return await Location.findOne({id: locationID})
