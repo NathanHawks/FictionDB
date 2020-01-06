@@ -14,8 +14,6 @@ var width = 800, height = 600;
 const electron = require('electron');
 // prime electron app
 const app = electron.app;
-// try to prevent multiple instances of the app running
-app.requestSingleInstanceLock();
 // flags: don't enter GUI launch until both sails & electron report ready
 var electronIsReady = false;
 var sailsIsReady = false;
@@ -47,6 +45,8 @@ function tryLaunchingForSails() {
   catch (e) { console.error(e); }
 }
 function tryLaunchingForElectron() {
+  // try to prevent multiple instances of the app running
+  app.requestSingleInstanceLock();
   electronIsReady = true;
   if (!splashIsUp) {
     splashIsUp = true;
@@ -84,7 +84,7 @@ function createWindow() {
       // go to the sails app
       mainWindow.loadURL(`${appAddress}:${appPort}/`);
       // show javascript & DOM consoles
-      // mainWindow.webContents.openDevTools();
+      mainWindow.webContents.openDevTools();
       // show browser only when it's ready to render itself
       mainWindow.once('ready-to-show', function() {
         // get the splash out of the way
