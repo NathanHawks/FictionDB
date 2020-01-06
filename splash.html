@@ -54,26 +54,27 @@
       }
     </style>
     <script>
-    const electron = require('electron');
-    const remote = electron.remote;
-    const ipcRenderer = electron.ipcRenderer;
-    var interval = setInterval(() => {
-      try {
-        ipcRenderer.send('splashPing', 'ping')
-      } catch (e) { alert('Timer: ' + e); }
-    }, 1000);
-    ipcRenderer.on('splashPing', (event, arg) => {
-      if (arg === 'pong') return;
-      if (arg === 'close') {
-        clearInterval(interval);
+    try {
+      const electron = require('electron');
+      const remote = electron.remote;
+      const ipcRenderer = electron.ipcRenderer;
+      var interval = setInterval(function() {
         try {
-          var remoteWin = remote.getCurrentWindow();
-          setTimeout(() => {remoteWin.hide();}, 100);
-          setTimeout(() => {remoteWin.close();}, 8000);
-        } catch (e) { alert('Receipt: ' + e); }
-      }
-    });
-
+          ipcRenderer.send('splashPing', 'ping')
+        } catch (e) { console.log('Timer: ' + e); }
+      }, 1000);
+      ipcRenderer.on('splashPing', (event, arg) => {
+        if (arg === 'pong') return;
+        if (arg === 'close') {
+          clearInterval(interval);
+          try {
+            var remoteWin = remote.getCurrentWindow();
+            setTimeout(() => {remoteWin.hide();}, 100);
+            setTimeout(() => {remoteWin.close();}, 8000);
+          } catch (e) { console.log('Receipt: ' + e); }
+        }
+      });
+    } catch (e) { console.log(e); }
     </script>
     <meta charset="utf-8">
     <title>fictionDB Splash Screen</title>
