@@ -30,23 +30,23 @@ module.exports = {
     let name = await sails.helpers.getUntitledString();
     switch (createType) {
       case 'Character':
-        info = await sails.helpers.newCharacter(name);
+        info = await sails.helpers.newRecord(Character, 'Character', name);
         createdID = info.character.id;
       break;
       case 'Event':
-        info = await sails.helpers.newEvent(name);
+        info = await sails.helpers.newRecord(Event, 'Event', name);
         createdID = info.event.id;
       break;
       case 'Location':
-        info = await sails.helpers.newLocation(name);
+        info = await sails.helpers.newRecord(Location, 'Location', name);
         createdID = info.location.id;
       break;
       case 'Setting':
-        info = await sails.helpers.newSetting(name);
+        info = await sails.helpers.newRecord(Setting, 'Setting', name);
         createdID = info.setting.id
       break;
       case 'Story':
-        info = await sails.helpers.newStory(name);
+        info = await sails.helpers.newRecord(Story, 'Story', name);
         createdID = info.story.id;
       break;
     }

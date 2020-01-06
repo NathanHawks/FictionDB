@@ -11,7 +11,7 @@ module.exports = {
   },
   fn: async function (inputs) {
     let title = await sails.helpers.getUntitledString();
-    let r = await sails.helpers.newEvent(title);
+    let r = await sails.helpers.newRecord(Event, 'Event', title);
     let id = r.event.id;
     let type = 'event';
     return {

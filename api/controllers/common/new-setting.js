@@ -11,7 +11,7 @@ module.exports = {
   },
   fn: async function (inputs) {
     let title = await sails.helpers.getUntitledString();
-    let r = await sails.helpers.newSetting(title);
+    let r = await sails.helpers.newRecord(Setting, 'Setting', title);
     let id = r.setting.id;
     let type = 'setting';
     return {

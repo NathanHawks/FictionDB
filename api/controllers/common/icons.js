@@ -22,11 +22,20 @@ module.exports = {
     }
   },
   fn: async function (inputs) {
-    let type = await sails.helpers['uppercaseFirst'](inputs.type);
-    let helper = `make${type}Icons`;
+    let className = await sails.helpers['uppercaseFirst'](inputs.type);
+
+    switch (className) {
+      case 'Character':  className = 'Character';  classRef = Character;  break;
+      case 'Event':      className = 'Event';      classRef = Event;      break;
+      case 'Setting':    className = 'Setting';    classRef = Setting;    break;
+      case 'Location':   className = 'Location';   classRef = Location;   break;
+      case 'Story':      className = 'Story';      classRef = Story;      break;
+    }
+
+    let helper = `makeIcons`;
     let cssClass = (inputs.cssClass) ? inputs.cssClass : '';
     let clickHandler = (inputs.clickHandler) ? inputs.clickHandler : '';
-    let icons = await sails.helpers[helper](cssClass, clickHandler);
+    let icons = await sails.helpers[helper](classRef, className, cssClass, clickHandler);
     return { icons: icons, cssClass: cssClass };
 
   }

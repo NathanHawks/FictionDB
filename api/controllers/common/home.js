@@ -37,15 +37,15 @@ module.exports = {
     var locationIcons = [];
     var settingIcons = [];
     if (showing === 'all' || showing.includes('story'))
-      storyIcons = await sails.helpers.makeStoryIcons(cssClass, '', sorting);
+      storyIcons = await sails.helpers.makeIcons(Story, 'Story', cssClass, '', sorting);
     if (showing === 'all' || showing.includes('character'))
-      characterIcons = await sails.helpers.makeCharacterIcons(cssClass, '', sorting);
+      characterIcons = await sails.helpers.makeIcons(Character, 'Character', cssClass, '', sorting);
     if (showing === 'all' || showing.includes('event'))
-      eventIcons = await sails.helpers.makeEventIcons(cssClass, '', sorting);
+      eventIcons = await sails.helpers.makeIcons(Event, 'Event', cssClass, '', sorting);
     if (showing === 'all' || showing.includes('location'))
-      locationIcons = await sails.helpers.makeLocationIcons(cssClass, '', sorting);
+      locationIcons = await sails.helpers.makeIcons(Location, 'Location', cssClass, '', sorting);
     if (showing === 'all' || showing.includes('setting'))
-      settingIcons = await sails.helpers.makeSettingIcons(cssClass, '', sorting);
+      settingIcons = await sails.helpers.makeIcons(Setting, 'Setting', cssClass, '', sorting);
 
     // template gets whiny if cssClass === ''
     cssClass = (cssClass) ? cssClass : ' ';
