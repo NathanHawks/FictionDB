@@ -1,5 +1,9 @@
 <script>
-  const mainTitleFieldNames = JSON.parse(`<%- JSON.stringify(mainTitleFieldNames) %>`);
+  try {
+    const mainTitleFieldNames = JSON.parse(
+      `<%- JSON.stringify(mainTitleFieldNames) %>`
+    );
+  } catch (e) { console.log(e); }
   iconsShowing = [ 'character', 'event', 'location', 'setting', 'story' ];
 </script>
 <div id="home-workspace">
@@ -34,10 +38,15 @@
 </div>
 <script>
   $(function() {
-    const remote = require('electron').remote;
-    var remoteWin = remote.getCurrentWindow();
-    remoteWin.setAlwaysOnTop(true);
-    remoteWin.focus();
-    setTimeout(() => {remoteWin.setAlwaysOnTop(false);}, 100);
+    try {
+      var userAgent = navigator.userAgent.toLowerCase();
+      if (userAgent.indexOf(' electron/') > -1) {
+        const remote = require('electron').remote;
+        var remoteWin = remote.getCurrentWindow();
+        remoteWin.setAlwaysOnTop(true);
+        remoteWin.focus();
+        setTimeout(() => {remoteWin.setAlwaysOnTop(false);}, 100);
+      }
+    } catch (e) { console.log(e); }
   });
 </script>
