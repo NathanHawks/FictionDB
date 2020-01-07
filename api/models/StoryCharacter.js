@@ -39,7 +39,7 @@ module.exports = {
     var linkField = 'story';
 
     var q = {};
-    q[linkField] = linkedID
+    q[linkField] = linkedID;
     var results = await thisRef.find({
       where: q, sort: 'sequence ASC'
     });
@@ -61,7 +61,7 @@ module.exports = {
     var linkField = 'character';
 
     var q = {};
-    q[linkField] = linkedID
+    q[linkField] = linkedID;
     var results = await thisRef.find({
       where: q, sort: 'sequence ASC'
     });
