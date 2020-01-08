@@ -7,7 +7,7 @@ module.exports = {
       required: true
     },
     className: {
-      type: 'string',
+      type: 'ref',
       required: true
     },
     cssClass: {
@@ -30,15 +30,32 @@ module.exports = {
   },
   fn: async function (inputs) {
     var sorting = inputs.sorting;
-    var classRef = inputs.classRef;
-    var className = inputs.className;
-    var lowerClassName = className.toLowerCase();
-    var nameFieldName = classRef.getTitleFieldNames()[0];
-    var sortFn = null;
-    var output = null;
+    var classRef, className;
+    var results = [], holder = null;
+    if (inputs.classRef.constructor === Array) { classRef = inputs.classRef; }
+    else classRef = [inputs.classRef];
+    if (inputs.className.constructor === Array) { className = inputs.className; }
+    else className = [inputs.className];
+    for (var x = 0; x < classRef.length; x++) {
+      var nameFieldName = classRef[x].getTitleFieldNames()[0];
+      var sortFn = null;
+      var output = null;
+      try {
+        holder = await classRef[x].find({where:{trash: false}})
+          .populate(nameFieldName);
+      } catch (e) { console.log(e); }
+      // mutate and concatenate
+      for (let ri = 0; ri < holder.length; ri++) {
+        // uncomment the next line if you need the classRef in the row
+        // holder[ri].classRef = classRef[x];
+        holder[ri].className = className[x];
+        holder[ri].lcaseName = className[x].toLowerCase();
+        holder[ri].nameFieldName = classRef[x].getTitleFieldNames()[0];
+        holder[ri].name = holder[ri][nameFieldName].content;
+      }
+      results = holder.concat(results);
+    }
     try {
-      var results = await classRef.find({where:{trash: false}})
-        .populate(nameFieldName);
       // icons are shown in upside-down order so all sorts must be reverse
       switch (sorting) {
         case 'creat-desc':
@@ -71,15 +88,15 @@ module.exports = {
         break;
         case 'alpha-desc':
           sortFn = function (a, b) {
-            if (a[nameFieldName].content < b[nameFieldName].content) return -1;
-            if (a[nameFieldName].content > b[nameFieldName].content) return 1;
+            if (a.name < b.name) return -1;
+            if (a.name > b.name) return 1;
             return 0;
           }
         case 'alpha-asc':
         default:
           sortFn = function (a, b) {
-            if (a[nameFieldName].content < b[nameFieldName].content) return 1;
-            if (a[nameFieldName].content > b[nameFieldName].content) return -1;
+            if (a.name < b.name) return 1;
+            if (a.name > b.name) return -1;
             return 0;
           }
         break;
@@ -90,18 +107,18 @@ module.exports = {
       for (let x = 0; x < results.length; x++) {
         let c = results[x];
         let id = c.id;
-        let t = c[nameFieldName];
-        let title = t.content;
+        let t = c[c.nameFieldName];
+        let title = c.name;
         let cssClass = (inputs.cssClass) ? inputs.cssClass : 'deskicon'
         let clickHandler = (inputs.clickHandler)
           ? inputs.clickHandler : 'requestPage';
         let icon = $('<div>')
-          .attr('id', `${className}_${id}`)
-          .addClass(`${cssClass} ${lowerClassName}-icon`);
+          .attr('id', `${c.className}_${id}`)
+          .addClass(`${cssClass} ${c.lcaseName}-icon`);
         let link = $('<a>')
           .attr('associd', t.id)
           .attr('href', '#')
-          .attr('onclick', `${clickHandler}('${lowerClassName}/${id}');`)
+          .attr('onclick', `${clickHandler}('${c.lcaseName}/${id}');`)
           .html(title)
           .appendTo(icon);
         icon.appendTo(output);

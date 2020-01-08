@@ -26,26 +26,24 @@ module.exports = {
     }
   },
   fn: async function (inputs) {
+    var showRef = [], showStr = [];
     let cssClass = (inputs.cssClass) ? inputs.cssClass : '';
     let sorting = (inputs.iconsSorting) ? inputs.iconsSorting : 'alpha-asc';
     let showing = (inputs.iconsShowing) ? inputs.iconsShowing : 'all';
     let iconsSize = (inputs.iconsSize) ? inputs.iconsSize : '';
     cssClass += (iconsSize === 'small') ? 'deskicon dialogicon ' : '';
-    var storyIcons = [];
-    var characterIcons = [];
-    var eventIcons = [];
-    var locationIcons = [];
-    var settingIcons = [];
+    var icons = [];
     if (showing === 'all' || showing.includes('story'))
-      storyIcons = await sails.helpers.makeIcons(Story, 'Story', cssClass, '', sorting);
+      { showRef[showRef.length] = Story;      showStr[showStr.length] = 'Story'; }
     if (showing === 'all' || showing.includes('character'))
-      characterIcons = await sails.helpers.makeIcons(Character, 'Character', cssClass, '', sorting);
+      { showRef[showRef.length] = Character;  showStr[showStr.length] = 'Character'; }
     if (showing === 'all' || showing.includes('event'))
-      eventIcons = await sails.helpers.makeIcons(Event, 'Event', cssClass, '', sorting);
+      { showRef[showRef.length] = Event;      showStr[showStr.length] = 'Event'; }
     if (showing === 'all' || showing.includes('location'))
-      locationIcons = await sails.helpers.makeIcons(Location, 'Location', cssClass, '', sorting);
+      { showRef[showRef.length] = Location;   showStr[showStr.length] = 'Location'; }
     if (showing === 'all' || showing.includes('setting'))
-      settingIcons = await sails.helpers.makeIcons(Setting, 'Setting', cssClass, '', sorting);
+      { showRef[showRef.length] = Setting;    showStr[showStr.length] = 'Setting'; }
+    var icons = await sails.helpers.makeIcons( showRef, showStr, cssClass, '', sorting );
 
     // template gets whiny if cssClass === ''
     cssClass = (cssClass) ? cssClass : ' ';
@@ -53,11 +51,7 @@ module.exports = {
       iconsSize: iconsSize,
       cssClass: cssClass,
       isStartup: false,
-      storyIcons: storyIcons,
-      characterIcons: characterIcons,
-      eventIcons: eventIcons,
-      locationIcons: locationIcons,
-      settingIcons: settingIcons
+      icons: icons
     };
   }
 };
