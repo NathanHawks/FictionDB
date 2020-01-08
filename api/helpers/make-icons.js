@@ -58,6 +58,20 @@ module.exports = {
     try {
       // icons are shown in upside-down order so all sorts must be reverse
       switch (sorting) {
+        case 'type-desc':
+          sortFn = function (a, b) {
+            if (a.className < b.className) return -1;
+            if (a.className > b.className) return 1;
+            return 0;
+          }
+        break;
+        case 'type-asc':
+          sortFn = function (a, b) {
+            if (a.className < b.className) return 1;
+            if (a.className > b.className) return -1;
+            return 0;
+          }
+        break;
         case 'creat-desc':
           sortFn = function (a, b) {
             if (a.createdAt < b.createdAt) return -1;
