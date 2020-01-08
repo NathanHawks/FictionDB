@@ -5,7 +5,7 @@
 %>
 <h3 style="padding: .5vh; text-align: center;"><%= titleText %></h3>
 <div id="Story_<%= storyID %>__intensityGraph" class="intensity-container">
-  <% events.map((el) => {
+  <% events.map((el) => { if (el !== undefined) {
     let maxH = 18; // vw, to make it square
     let unit = maxH / 100;
     let h = el.intensity*unit;
@@ -18,7 +18,7 @@
       onclick="gotoRecord(event, `Event`, <%- el.id %>, `Story/<%- storyID %>`)"
       >&nbsp;</div>
     <%
-  });
+  }});
   %>
   <script>
     $(`.intensity-bar.event_<%= eventID %>`).addClass('intensity-bar-current-event');

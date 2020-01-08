@@ -1,9 +1,7 @@
 <script>
-  try {
-    const mainTitleFieldNames = JSON.parse(
-      `<%- JSON.stringify(mainTitleFieldNames) %>`
-    );
-  } catch (e) { console.log(e); }
+  var mainTitleFieldNames = JSON.parse(
+    `<%- JSON.stringify(mainTitleFieldNames) %>`
+  );
   iconsShowing = [ 'character', 'event', 'location', 'setting', 'story' ];
 </script>
 <div id="home-workspace">

@@ -33,7 +33,7 @@ async function saveAssocTitle_helper(
     let [assocType,junk] = domID.split("_");
     assocType = assocType.toLowerCase();
     // update header if we've changed the object's first title field
-    if (rName === mainTitleFieldNames[assocType]) {
+    if (rName === getMainTitleFieldName(assocType)) {
       $(`#${domID}_header`).html(value)
     }
   }

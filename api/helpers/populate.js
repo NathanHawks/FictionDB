@@ -40,10 +40,11 @@ module.exports = {
       // prep a query
       var q = {};
       q['id'] = foundID;
+      q.trash = false;
       // request the e.g. Character identified by e.g. StoryCharacter.character
       holder[x] = await classRef.findOne(q);
       // loop fieldNames param
-      for (let y = 0; y < fieldNames.length; y++) {
+      if (holder[x] !== undefined) for (let y = 0; y < fieldNames.length; y++) {
         // get a fieldName from the param
         var fieldName = fieldNames[y];
         // store a function in a matrix

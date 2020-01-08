@@ -131,7 +131,7 @@ var linkedType = `<%- linkedType %>`;
 function setupClickHandlers() {
   var list = JSON.parse(`<%- fixForJSON(JSON.stringify(list)) %>`);
   list.map((s) => {
-    s.v.map((c) => {
+    s.v.map((c) => { if (c) {
       let domID = `${s.m}_${c.id}_`;
       s.t.map((t) => {
         if (s.m !== uppercaseFirst(linkedType)
@@ -161,7 +161,7 @@ function setupClickHandlers() {
         });
       }
 
-    });
+    }});
   });
 }
 function unlinkRecords(event, subjectType, subjectID, objectType, objectID) {
@@ -184,7 +184,7 @@ list.map((s) => { if (s.v.length) { %>
     <div id='Nav<%= s.m %>Container' class='Navigator_container'>
       <% var altColor = false;
       var colorStyle = '';
-      s.v.map((c) => { %>
+      s.v.map((c) => { if (c !== undefined) { %>
         <div class='item_accordion'>
           <%
           altColor = !altColor;
@@ -256,6 +256,6 @@ list.map((s) => { if (s.v.length) { %>
 
           </div>
         </div>
-      <% }); %>
+      <% }}); %>
     </div>
 <% } }); %>
