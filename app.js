@@ -1,35 +1,26 @@
 // server-side jquery
-const jsdom = require('jsdom');
 const jquery = require('jquery');
-const { JSDOM } = jsdom;
-const dom = new JSDOM('<!DOCTYPE html>');
-const $ = jquery(dom.window);
-global.jq = $;
+// global usage necessary for scope in .ejs files and helpers
+global.jq = jquery(new (require('jsdom')).JSDOM('<!DOCTYPE html>').window);
 // for priming the webapp
 const request = require('request');
 // electron config stuff
-var backgroundColor = '#1A1A1A';
-var width = 800, height = 600;
+var backgroundColor = '#1A1A1A', width = 800, height = 600;
 // get electron
 const electron = require('electron');
-// prime electron app
+// get electron app
 const app = electron.app;
 // flags: don't enter GUI launch until both sails & electron report ready
-var electronIsReady = false;
-var sailsIsReady = false;
-var gruntIsReady = false;
+var electronIsReady = sailsIsReady = gruntIsReady = false;
 // block repeat launches (edge contingency)
-var windowIsLaunching = false;
-var splashIsUp = false;
+var windowIsLaunching = splashIsUp = false;
 var splashResponse = 'pong';
 // electron window(s)
-var mainWindow = null;
-var splashWindow = null;
+var mainWindow = splashWindow = null;
 // delay after all preflight checks pass
 var windowCreationDelay = 0;
 // sails app address
-const appAddress = 'http://127.0.0.1';
-const appPort = 1337;
+const appAddress = 'http://127.0.0.1', appPort = 1337;
 
 const BrowserWindow = electron.BrowserWindow;
 if (app) app.on('ready', tryLaunchingForElectron);
@@ -38,8 +29,6 @@ else electronIsReady = true;
 function tryLaunchingForSails() {
   sailsIsReady = true;
   try {
-    // "prime" the webapp by requesting content early
-    request(`${appAddress}:${appPort}`, (error,response,body) => {/*nada*/});
     if (app && electronIsReady && gruntIsReady) createWindow();
   }
   catch (e) { console.error(e); }
@@ -139,6 +128,11 @@ if (app) app.on('activate', function() {
     createWindow();
   }
 })
+
+// if (app) app.on('ready', function() {
+//   nativeTheme = electron.nativeTheme;
+//   nativeTheme.themeSource = 'dark';
+// });
 
 // sails wants this
 process.chdir(__dirname);
