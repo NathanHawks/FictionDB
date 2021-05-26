@@ -18,7 +18,7 @@
     "@sailshq/connect-redis": "^3.2.1",
     "@sailshq/lodash": "^3.10.3",
     "@sailshq/socket.io-redis": "^5.2.0",
-    "acorn": "^7.1.0",
+    "acorn": "^7.1.1",
     "ckeditor": "^4.12.1",
     "connect-redis": "^4.0.3",
     "electron-compile": "^6.4.4",
